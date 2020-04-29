@@ -1,0 +1,234 @@
+/**
+ * @description :  This file has category add, edit, delete, blog detail functions
+ * @param: CRUD values and access token
+ * @return : Boolean and success, error message
+ * @author JC Software Solution PVT. LTD.
+ */
+
+import {
+  AXIOS_INSTANCE,
+  CATEGORY_ADD,
+  CATEGORY_UPDATE,
+  GET_CATEGORIES,
+  GET_SINGLE_CATEGORY,
+  DELETE_SINGLE_CATEGORY,
+  CATEGORY_API,
+  ALL_CATEGORY_API
+} from '../constants';
+import { checkHttpStatus, parseJSON } from '../../utils/helpers';
+import { getRequest, getSuccess, getFailure, reset } from './index';
+
+// add the category
+
+export function categoryAdd(postObj, token) {
+  return dispatch => {
+    dispatch(getRequest(CATEGORY_ADD.CATEGORY_ADD_REQUEST));
+    const getUrl = CATEGORY_API;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.post(getUrl, postObj, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('response', data);
+        if (data.success) {
+          dispatch(getSuccess(CATEGORY_ADD.CATEGORY_ADD_SUCCESS, data));
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response && error.response.data && error.response.data.error
+            ? error.response.data.error.message
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(CATEGORY_ADD.CATEGORY_ADD_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+// update the category
+
+export function categoryUpdate(obj, id, token) {
+  return dispatch => {
+    dispatch(getRequest(CATEGORY_UPDATE.CATEGORY_UPDATE_REQUEST));
+    const getUrl = `${CATEGORY_API}/${id}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.put(getUrl, obj, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('updateUser', data);
+        if (data.success) {
+          dispatch(getSuccess(CATEGORY_UPDATE.CATEGORY_UPDATE_SUCCESS, data));
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response && error.response.data && error.response.data.error
+            ? error.response.data.error.message
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(CATEGORY_UPDATE.CATEGORY_UPDATE_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+// get all categories
+
+export function categories(token, type, page, count, sortType, sort, search) {
+  return dispatch => {
+    dispatch(getRequest(GET_CATEGORIES.GET_CATEGORIES_REQUEST));
+    const getUrl = `${ALL_CATEGORY_API}?type=${type}&search=${search}&page=${page}&count=${10}&sortBy=${sortType} ${sort}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.get(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('response', data);
+        if (data.success) {
+          dispatch(getSuccess(GET_CATEGORIES.GET_CATEGORIES_SUCCESS, data));
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(GET_CATEGORIES.GET_CATEGORIES_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+// get single category
+
+export function singleCategory(id, token) {
+  return dispatch => {
+    dispatch(getRequest(GET_SINGLE_CATEGORY.GET_SINGLE_CATEGORY_REQUEST));
+    const getUrl = `${CATEGORY_API}/${id}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.get(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('singleCategory', data);
+        if (data.success) {
+          dispatch(
+            getSuccess(
+              GET_SINGLE_CATEGORY.GET_SINGLE_CATEGORY_SUCCESS,
+              data.data
+            )
+          );
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(GET_SINGLE_CATEGORY.GET_SINGLE_CATEGORY_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+// delete single category
+
+export function deleteCategory(id, token) {
+  return dispatch => {
+    dispatch(getRequest(DELETE_SINGLE_CATEGORY.DELETE_SINGLE_CATEGORY_REQUEST));
+    const getUrl = `${CATEGORY_API}/${id}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.delete(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('deleteUser', data);
+        if (data.success) {
+          dispatch(
+            getSuccess(
+              DELETE_SINGLE_CATEGORY.DELETE_SINGLE_CATEGORY_SUCCESS,
+              data.data
+            )
+          );
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(DELETE_SINGLE_CATEGORY.DELETE_SINGLE_CATEGORY_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+export function resetDeleteCategory() {
+  return dispatch => {
+    dispatch(reset(DELETE_SINGLE_CATEGORY.DELETE_SINGLE_CATEGORY_RESET));
+  };
+}
+
+export function resetAddCategory() {
+  return dispatch => {
+    dispatch(reset(CATEGORY_ADD.CATEGORY_ADD_RESET));
+  };
+}
+
+export function resetSingleCategory() {
+  return dispatch => {
+    dispatch(reset(GET_SINGLE_CATEGORY.GET_SINGLE_CATEGORY_RESET));
+  };
+}
+
+export function resetUpdateCategory() {
+  return dispatch => {
+    dispatch(reset(CATEGORY_UPDATE.CATEGORY_UPDATE_RESET));
+  };
+}

@@ -27,57 +27,56 @@ import SubscriptionPackages from './SubscriptionPackages';
 import SubscriptionTypes from './SubscriptionTypes';
 import RolesAndPermissions from './RolesAndPermissions';
 import Credits from './Credits';
+import PublicRoute from './PublicRoute';
 
 const App = ({ authenticated }) => {
   // console.log('base', authenticated);
   return (
     <BrowserRouter>
       <Switch>
-        <PrivateRoute
+        {/* <PrivateRoute
           exact
           path="/"
           component={Login}
           authenticated={authenticated}
-        />
-        <Route
+        /> */}
+        <PublicRoute restricted={true} component={Login} path="/" exact />
+
+        <PrivateRoute component={Home} path="/dashboard" exact />
+        <PrivateRoute component={Users} path="/users" exact />
+        <PrivateRoute component={Category} path="/categories" exact />
+        <PrivateRoute component={Blogs} path="/blogs" exact />
+        <PrivateRoute
+          component={RolesAndPermissions}
+          path="/roles-and-permissions"
           exact
-          path="/dashboard"
-          component={Home}
+        />
+        <PrivateRoute
+          path="/roles-and-permissions"
+          component={RolesAndPermissions}
+          exact
           // authenticated={authenticated}
         />
-        <Route path="/about" component={About} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/cars" component={Cars} />
-        <Route path="/users" component={Users} />
-        <Route path="/user/:id" component={User} />
-        <Route path="/categories" component={Category} />
-        <Route path="/category/:categoryId" component={CategoryView} />
-        <Route path="/questions" component={Questions} />
-        <Route path="/question/:questionId" component={QuestionView} />
-        <Route path="/blogs" component={Blogs} />
-        <Route path="/blog/:blogId" component={BlogView} />
-        <Route path="/skills" component={Skills} />
-        <Route path="/skill/:skillId" component={SkillView} />
-        <Route path="/counter" component={Counter} />
-        <Route
+
+        <PublicRoute
+          restricted={true}
+          component={ForgotPassword}
           path="/forgot-password"
+          exact
+        />
+        <PublicRoute
+          restricted={true}
+          component={ChangePassword}
+          path="/forgot-password"
+          exact
+        />
+        <Route
+          path="/change-password"
           component={ForgotPassword}
           // authenticated={authenticated}
         />
-        <Route
-          path="/roles-and-permissions"
-          component={RolesAndPermissions}
-          // authenticated={authenticated}
-        />
-        <Route
-          path="/credits"
-          component={Credits}
-          // authenticated={authenticated}
-        />
+
         <Route path="/change-password" component={ChangePassword} />
-        <Route path="/subscription-names" component={SubscriptionNames} />
-        <Route path="/subscription-packages" component={SubscriptionPackages} />
-        <Route path="/subscription-types" component={SubscriptionTypes} />
       </Switch>
     </BrowserRouter>
   );
@@ -92,7 +91,4 @@ const mapStateToProps = state => ({
   // data: state.authentication.data
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(App);
+export default connect(mapStateToProps, null)(App);

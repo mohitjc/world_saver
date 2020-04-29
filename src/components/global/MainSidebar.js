@@ -49,11 +49,11 @@ const MainSidebar = ({ history }) => {
             </NavLink>
           </li>
 
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <NavLink className="nav-link" to="/skills" activeStyle={styles}>
               <i className="fas fa-walking" /> <span>Manage Skills</span>
             </NavLink>
-          </li>
+          </li> */}
 
           <li className="nav-item dropdown">
             <NavLink
@@ -66,12 +66,12 @@ const MainSidebar = ({ history }) => {
             </NavLink>
           </li>
 
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <NavLink className="nav-link" to="/credits" activeStyle={styles}>
               <i className="fas fa-coins" />
               <span>Manage credits</span>
             </NavLink>
-          </li>
+          </li> */}
         </ul>
       </aside>
     </div>

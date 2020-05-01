@@ -3,9 +3,9 @@ import { isEmpty } from 'lodash';
 
 import Pagination from '../global/Pagination';
 import EmptyState from '../global/EmptyState';
-import SkillsListItem from './SkillsListItem';
+import SkillsListItem from './ProjectsListItem';
 
-const SkillsListing = ({
+const ProjectsListing = ({
   handleFormVisibilty,
   handAddFormToggle,
   getSearchKeyword,
@@ -113,4 +113,4 @@ const SkillsListing = ({
   );
 };
 
-export default SkillsListing;
+export default ProjectsListing;

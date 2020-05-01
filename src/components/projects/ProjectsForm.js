@@ -19,7 +19,7 @@ import {
   skills
 } from '../../store/actions/skillsActions';
 
-const SkillsForm = ({
+const ProjectForm = ({
   handleFormVisibilty,
   handleSubmit,
   handleBlur,
@@ -176,7 +176,7 @@ const SkillsForm = ({
   );
 };
 
-const SkillsFormFormik = withFormik({
+const ProjectFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleSkillData }) => {
     // console.log('singleSkillData', singleSkillData);
@@ -216,7 +216,7 @@ const SkillsFormFormik = withFormik({
   },
 
   displayName: 'SkillsForm' // helps with React DevTools
-})(SkillsForm);
+})(ProjectForm);
 
 const mapStateToProps = state => ({
   data: state.skillsAdd.data,
@@ -235,4 +235,4 @@ export default connect(mapStateToProps, {
   resetAddSkill,
   resetUpdateSkill,
   skills
-})(SkillsFormFormik);
+})(ProjectFormFormik);

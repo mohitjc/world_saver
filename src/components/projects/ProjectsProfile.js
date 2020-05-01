@@ -1,9 +1,8 @@
 import React from 'react';
 
-const SkillsProfile = ({ data }) => {
+const ProjectsProfile = ({ data }) => {
   return (
     <div className="section-body">
-      {/* <h2 className="section-title">Hi, {data && data.firstName}!</h2> */}
       <div className="row mt-sm-4">
         <div className="col-12 col-md-12 col-lg-12">
           <div className="card profile-widget">
@@ -18,4 +17,4 @@ const SkillsProfile = ({ data }) => {
   );
 };
 
-export default SkillsProfile;
+export default ProjectsProfile;

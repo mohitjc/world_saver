@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import dayjs from 'dayjs';
 
-const SkillsListItem = ({
+const ProjectsListItem = ({
   item,
   index,
   handAddFormToggle,
@@ -98,4 +98,4 @@ const SkillsListItem = ({
   );
 };
 
-export default SkillsListItem;
+export default ProjectsListItem;

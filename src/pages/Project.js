@@ -16,8 +16,8 @@ import {
   changeStatus,
   resetStatus
 } from '../store/actions/changeStatusActions';
-import SkillsListing from '../components/skills/SkillsListing';
-import SkillsForm from '../components/skills/SkillsForm';
+import ProjectsListing from '../components/projects/ProjectsListing';
+import ProjectsForm from '../components/projects/ProjectsForm';
 
 const Project = ({
   skills,
@@ -152,7 +152,7 @@ const Project = ({
         <section className="section">
           <SectionHeader title="Projects" />
           {!formVisibility ? (
-            <SkillsListing
+            <ProjectsListing
               handleFormVisibilty={handleFormVisibilty}
               skills={data && data.data && data.data.skill}
               total={data && data.data && data.data.total}
@@ -172,7 +172,7 @@ const Project = ({
               toggleSort={toggleSort}
             />
           ) : (
-            <SkillsForm
+            <ProjectsForm
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
               skillId={skillId}

@@ -33,19 +33,6 @@ const UserListing = ({
       <div className="col-12">
         <div className="card">
           <div className="card-header">
-            <h4>
-              {/* <button
-                className="btn btn-primary"
-                onClick={() => {
-                  handleFormVisibilty();
-                  handAddFormToggle(true);
-                  resetSingleUser();
-                }}
-                type="button"
-              >
-                Add User
-              </button> */}
-            </h4>
             <div className="card-header-form">
               <form>
                 <div className="input-group">

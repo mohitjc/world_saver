@@ -167,10 +167,8 @@ const ArticleForm = ({
 const ArticleFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleBlogData }) => {
-    // console.log('singleBlogData', singleBlogData);
     return {
       title: (singleBlogData && singleBlogData.title) || '',
-      // slug: (singleBlogData && singleBlogData.slug) || '',
       description: (singleBlogData && singleBlogData.description) || ''
     };
   },
@@ -187,7 +185,6 @@ const ArticleFormFormik = withFormik({
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // const { router } = props;
     const token = localStorage.getItem('token');
-    // console.log('state values', values);
     if (props.isAddForm) {
       props.blogAdd(
         {

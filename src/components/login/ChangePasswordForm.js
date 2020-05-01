@@ -94,11 +94,7 @@ const ChangePasswordFormFormik = withFormik({
     };
   },
 
-  // validationSchema: yupObject().shape({
-  //   oldPassword: yupString().email('Email Required ')
-  // }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
-    // console.log('state values123', values);
     props.changePassword({
       oldPassword: values.oldPassword,
       currentPassword: values.currentPassword,
@@ -115,7 +111,6 @@ const mapStateToProps = state => ({
   isSuccess: state.changePassword.isSuccess
 });
 
-export default connect(
-  mapStateToProps,
-  { changePassword }
-)(ChangePasswordFormFormik);
+export default connect(mapStateToProps, { changePassword })(
+  ChangePasswordFormFormik
+);

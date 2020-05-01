@@ -63,21 +63,31 @@ const SkillsForm = ({
       resetUpdateSkill();
       setReloadToggle(!reloadToggle);
     }
-  }, [isSuccess, isError, isUpdateSuccess]);
+  }, [
+    isSuccess,
+    isError,
+    isUpdateSuccess,
+    handleFormVisibilty,
+    resetAddSkill,
+    setReloadToggle,
+    reloadToggle,
+    data,
+    resetUpdateSkill
+  ]);
 
   useEffect(() => {
     if (!isAddForm) {
       singleSkill(skillId, token);
       // swal('New user added!', '', 'success');
     }
-  }, [singleSkill]);
+  }, [isAddForm, singleSkill, skillId, token]);
 
   // console.log('data', data);
 
   return (
     <div className="">
       <button className="btn btn-primary mb-3" onClick={handleFormVisibilty}>
-        View Skills
+        View Projects
       </button>
       <div className="card">
         <form
@@ -86,7 +96,7 @@ const SkillsForm = ({
           noValidate=""
         >
           <div className="card-header">
-            <h4>{isAddForm ? 'Add' : 'Edit'} skills</h4>
+            <h4>{isAddForm ? 'Add' : 'Edit'} Projects</h4>
           </div>
           <div className="card-body">
             <div className="row">
@@ -218,14 +228,11 @@ const mapStateToProps = state => ({
   singleSkillData: state.skill.data
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    skillAdd,
-    skillUpdate,
-    singleSkill,
-    resetAddSkill,
-    resetUpdateSkill,
-    skills
-  }
-)(SkillsFormFormik);
+export default connect(mapStateToProps, {
+  skillAdd,
+  skillUpdate,
+  singleSkill,
+  resetAddSkill,
+  resetUpdateSkill,
+  skills
+})(SkillsFormFormik);

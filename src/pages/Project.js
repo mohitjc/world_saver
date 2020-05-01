@@ -12,11 +12,14 @@ import {
   deleteSkill,
   resetDeleteSkill
 } from '../store/actions/skillsActions';
-import { changeStatus, resetStatus } from '../store/actions/changeStatusActions';
+import {
+  changeStatus,
+  resetStatus
+} from '../store/actions/changeStatusActions';
 import SkillsListing from '../components/skills/SkillsListing';
 import SkillsForm from '../components/skills/SkillsForm';
 
-const Skills = ({
+const Project = ({
   skills,
   data,
   resetSingleSkill,
@@ -52,7 +55,18 @@ const Skills = ({
       sort ? 'asc' : 'desc',
       searchKeyword
     );
-  }, [skills, reloadToggle, page, sort, searchKeyword, isDeleteSuccess]);
+  }, [
+    skills,
+    reloadToggle,
+    page,
+    sort,
+    searchKeyword,
+    isDeleteSuccess,
+    token,
+    type,
+    count,
+    sortType
+  ]);
 
   useEffect(() => {
     if (isDeleteSuccess) {
@@ -69,7 +83,7 @@ const Skills = ({
       });
     }
     resetDeleteSkill();
-  }, [isDeleteSuccess, isDeleteError]);
+  }, [isDeleteSuccess, isDeleteError, resetDeleteSkill]);
 
   useEffect(() => {
     if (isChangeStatusSuccess) {
@@ -93,7 +107,13 @@ const Skills = ({
       });
       resetStatus();
     }
-  }, [isChangeStatusSuccess, isChangeStatusError]);
+  }, [
+    isChangeStatusSuccess,
+    isChangeStatusError,
+    status,
+    reloadToggle,
+    resetStatus
+  ]);
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
@@ -126,11 +146,11 @@ const Skills = ({
 
   // console.log('status', status);
   return (
-    <Layout title="Skills">
+    <Layout title="Projects">
       <MainSidebar />
       <div className="main-content">
         <section className="section">
-          <SectionHeader title="Skills" />
+          <SectionHeader title="Projects" />
           {!formVisibility ? (
             <SkillsListing
               handleFormVisibilty={handleFormVisibilty}
@@ -177,14 +197,11 @@ const mapStateToProps = state => ({
   isChangeStatusError: state.status.isError
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    skills,
-    resetSingleSkill,
-    deleteSkill,
-    resetDeleteSkill,
-    changeStatus,
-    resetStatus
-  }
-)(Skills);
+export default connect(mapStateToProps, {
+  skills,
+  resetSingleSkill,
+  deleteSkill,
+  resetDeleteSkill,
+  changeStatus,
+  resetStatus
+})(Project);

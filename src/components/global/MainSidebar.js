@@ -11,15 +11,7 @@ const MainSidebar = ({ history }) => {
     <div className="main-sidebar" style={{ overflow: 'scroll' }}>
       <aside id="sidebar-wrapper">
         <div className="sidebar-brand">
-          <NavLink to="/dashboard">
-            World Safer
-            {/* <img
-              src="../assets/img/vertical-logo4.png"
-              alt="logo"
-              width="50"
-              className=""
-            /> */}
-          </NavLink>
+          <NavLink to="/dashboard">World Safer</NavLink>
         </div>
 
         <ul className="sidebar-menu">
@@ -49,11 +41,11 @@ const MainSidebar = ({ history }) => {
             </NavLink>
           </li>
 
-          {/* <li className="nav-item dropdown">
-            <NavLink className="nav-link" to="/skills" activeStyle={styles}>
-              <i className="fas fa-walking" /> <span>Manage Skills</span>
+          <li className="nav-item dropdown">
+            <NavLink className="nav-link" to="/projects" activeStyle={styles}>
+              <i className="far fa-folder-open" /> <span>Manage Projects</span>
             </NavLink>
-          </li> */}
+          </li>
 
           <li className="nav-item dropdown">
             <NavLink
@@ -65,13 +57,6 @@ const MainSidebar = ({ history }) => {
               <span>Roles And Permissions</span>
             </NavLink>
           </li>
-
-          {/* <li className="nav-item dropdown">
-            <NavLink className="nav-link" to="/credits" activeStyle={styles}>
-              <i className="fas fa-coins" />
-              <span>Manage credits</span>
-            </NavLink>
-          </li> */}
         </ul>
       </aside>
     </div>

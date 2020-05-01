@@ -10,13 +10,13 @@ import UserProfile from '../components/user/UserProfile';
 import { singleCategory } from '../store/actions/categoryActions';
 import CategoryProfile from '../components/categories/CategoryProfile';
 
-const SkillView = ({ match, data, singleCategory }) => {
+const ProjectView = ({ match, data, singleCategory }) => {
   const { categoryId } = match.params;
   // console.log('data data', data);
   const token = localStorage.getItem('token');
   useEffect(() => {
     singleCategory(categoryId, token);
-  }, [singleCategory]);
+  }, [categoryId, singleCategory, token]);
   return (
     <Layout>
       <MainSidebar />
@@ -37,7 +37,4 @@ const mapStateToProps = state => ({
   isError: state.category.isError
 });
 
-export default connect(
-  mapStateToProps,
-  { singleCategory }
-)(SkillView);
+export default connect(mapStateToProps, { singleCategory })(ProjectView);

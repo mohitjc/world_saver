@@ -26,7 +26,7 @@ const SkillsListing = ({
   const [keyword, setKeyword] = useState('');
   useEffect(() => {
     getSearchKeyword(keyword);
-  }, [keyword]);
+  }, [getSearchKeyword, keyword]);
   // console.log('total', total);
 
   return (
@@ -44,7 +44,7 @@ const SkillsListing = ({
                 }}
                 type="button"
               >
-                Add Skill
+                Add Project
               </button>
             </h4>
             <div className="card-header-form">

@@ -3,10 +3,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Home from './Home';
-import About from './About';
-import Contact from './Contact';
-import Cars from './Cars';
-import Counter from './Counter';
 import Login from './Login';
 import ForgotPassword from './ForgotPassword';
 import ChangePassword from './ChangePassword';
@@ -20,8 +16,8 @@ import CategoryView from './CategoryView';
 import QuestionView from './QuestionView';
 import Blogs from './Blogs';
 import BlogView from './BlogView';
-import Skills from './Skills';
-import SkillView from './SkillView';
+import Project from './Project';
+import SkillView from './ProjectView';
 import SubscriptionNames from './SubscriptionNames';
 import SubscriptionPackages from './SubscriptionPackages';
 import SubscriptionTypes from './SubscriptionTypes';
@@ -46,6 +42,7 @@ const App = ({ authenticated }) => {
         <PrivateRoute component={Users} path="/users" exact />
         <PrivateRoute component={Category} path="/categories" exact />
         <PrivateRoute component={Blogs} path="/blogs" exact />
+        <PrivateRoute component={Project} path="/projects" exact />
         <PrivateRoute
           component={RolesAndPermissions}
           path="/roles-and-permissions"
@@ -83,12 +80,7 @@ const App = ({ authenticated }) => {
 };
 
 const mapStateToProps = state => ({
-  // data: state.authentication.data,
   authenticated: state.auth.authenticated
-  // isSuccess: state.authentication.isRegisterSuccess,
-  // isReset: state.authentication.isRegisterReset,
-  // isError: state.authentication.isRegisterError,
-  // data: state.authentication.data
 });
 
 export default connect(mapStateToProps, null)(App);

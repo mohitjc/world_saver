@@ -71,7 +71,7 @@ export function blogsUpdate(obj, id, token) {
         }
       })
       .catch(error => {
-        console.log('error', error.response);
+        // console.log('error', error.response);
         const errorMessage =
           error.response &&
           error.response.data &&

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 
 import Pagination from '../global/Pagination';
-import BlogListItem from './BlogListItem';
+import BlogListItem from './ArticleListItem';
 import EmptyState from '../global/EmptyState';
 
-const BlogsListing = ({
+const ArticleListing = ({
   handleFormVisibilty,
   handAddFormToggle,
   getSearchKeyword,
@@ -26,7 +26,7 @@ const BlogsListing = ({
   const [keyword, setKeyword] = useState('');
   useEffect(() => {
     getSearchKeyword(keyword);
-  }, [keyword]);
+  }, [getSearchKeyword, keyword]);
   // console.log('total', total);
 
   return (
@@ -44,7 +44,7 @@ const BlogsListing = ({
                 }}
                 type="button"
               >
-                Add Blog
+                Add Article
               </button>
             </h4>
             <div className="card-header-form">
@@ -115,4 +115,4 @@ const BlogsListing = ({
   );
 };
 
-export default BlogsListing;
+export default ArticleListing;

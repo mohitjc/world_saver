@@ -10,22 +10,22 @@ import UserProfile from '../components/user/UserProfile';
 import { singleBlog } from '../store/actions/blogsActions';
 import CategoryProfile from '../components/categories/CategoryProfile';
 import QuestionProfile from '../components/questions/QuestionProfile';
-import BlogProfile from '../components/blogs/BlogProfile';
+import ArticleProfile from '../components/articles/ArticleProfile';
 
-const BlogView = ({ match, data, singleBlog }) => {
+const ArticleView = ({ match, data, singleBlog }) => {
   const { blogId } = match.params;
   // console.log('data data', data);
   const token = localStorage.getItem('token');
   useEffect(() => {
     singleBlog(blogId, token);
-  }, [singleBlog]);
+  }, [blogId, singleBlog, token]);
   return (
     <Layout>
       <MainSidebar />
       <div className="main-content">
         <section className="section">
           <SectionHeader title="Blog" />
-          <BlogProfile data={data} />
+          <ArticleProfile data={data} />
         </section>
       </div>
     </Layout>
@@ -39,7 +39,4 @@ const mapStateToProps = state => ({
   isError: state.blog.isError
 });
 
-export default connect(
-  mapStateToProps,
-  { singleBlog }
-)(BlogView);
+export default connect(mapStateToProps, { singleBlog })(ArticleView);

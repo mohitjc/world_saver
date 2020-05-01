@@ -11,11 +11,14 @@ import {
   deleteBlog,
   resetDeleteBlog
 } from '../store/actions/blogsActions';
-import { changeStatus, resetStatus } from '../store/actions/changeStatusActions';
-import BlogsListing from '../components/blogs/BlogListing';
-import BlogForm from '../components/blogs/BlogForm';
+import {
+  changeStatus,
+  resetStatus
+} from '../store/actions/changeStatusActions';
+import ArticleLsiting from '../components/articles/ArticleListing';
+import ArticleForm from '../components/articles/ArticleForm';
 
-const Blogs = ({
+const Articles = ({
   data,
   blogs,
   resetSingleBlog,
@@ -50,7 +53,18 @@ const Blogs = ({
       sort ? 'asc' : 'desc',
       searchKeyword
     );
-  }, [blogs, reloadToggle, page, sort, searchKeyword, isDeleteSuccess]);
+  }, [
+    blogs,
+    reloadToggle,
+    page,
+    sort,
+    searchKeyword,
+    isDeleteSuccess,
+    token,
+    type,
+    count,
+    sortType
+  ]);
 
   useEffect(() => {
     if (isDeleteSuccess) {
@@ -68,7 +82,7 @@ const Blogs = ({
       });
       resetDeleteBlog();
     }
-  }, [isDeleteSuccess, isDeleteError]);
+  }, [isDeleteSuccess, isDeleteError, resetDeleteBlog]);
 
   useEffect(() => {
     if (isChangeStatusSuccess) {
@@ -92,7 +106,13 @@ const Blogs = ({
       });
       resetStatus();
     }
-  }, [isChangeStatusSuccess, isChangeStatusError]);
+  }, [
+    isChangeStatusSuccess,
+    isChangeStatusError,
+    status,
+    reloadToggle,
+    resetStatus
+  ]);
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
@@ -125,19 +145,18 @@ const Blogs = ({
 
   // console.log('isDeleteError', isDeleteError);
   return (
-    <Layout title="Blogs">
+    <Layout title="Articles">
       <MainSidebar />
       <div className="main-content">
         <section className="section">
-          <SectionHeader title="Blogs" />
+          <SectionHeader title="Articles" />
           {!formVisibility ? (
-            <BlogsListing
+            <ArticleLsiting
               handleFormVisibilty={handleFormVisibilty}
               blogs={data && data.data && data.data.blog}
               total={data && data.data && data.data.total}
               handAddFormToggle={handAddFormToggle}
               getBlogId={getBlogId}
-              // UserListing={UserListing}
               resetSingleBlog={resetSingleBlog}
               deleteBlog={deleteBlog}
               sort={sort}
@@ -151,7 +170,7 @@ const Blogs = ({
               toggleSort={toggleSort}
             />
           ) : (
-            <BlogForm
+            <ArticleForm
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
               blogId={blogId}
@@ -176,14 +195,11 @@ const mapStateToProps = state => ({
   isChangeStatusError: state.status.isError
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    blogs,
-    resetSingleBlog,
-    deleteBlog,
-    resetDeleteBlog,
-    changeStatus,
-    resetStatus
-  }
-)(Blogs);
+export default connect(mapStateToProps, {
+  blogs,
+  resetSingleBlog,
+  deleteBlog,
+  resetDeleteBlog,
+  changeStatus,
+  resetStatus
+})(Articles);

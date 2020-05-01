@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BlogProfile = ({ data }) => {
+const ArticleProfile = ({ data }) => {
   return (
     <div className="section-body">
       <div className="row mt-sm-4">
@@ -17,4 +17,4 @@ const BlogProfile = ({ data }) => {
   );
 };
 
-export default BlogProfile;
+export default ArticleProfile;

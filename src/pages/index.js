@@ -14,8 +14,7 @@ import Category from './Category';
 import Questions from './Questions';
 import CategoryView from './CategoryView';
 import QuestionView from './QuestionView';
-import Blogs from './Blogs';
-import BlogView from './BlogView';
+
 import Project from './Project';
 import SkillView from './ProjectView';
 import SubscriptionNames from './SubscriptionNames';
@@ -24,24 +23,18 @@ import SubscriptionTypes from './SubscriptionTypes';
 import RolesAndPermissions from './RolesAndPermissions';
 import Credits from './Credits';
 import PublicRoute from './PublicRoute';
+import Articles from './Articles';
 
 const App = ({ authenticated }) => {
   // console.log('base', authenticated);
   return (
     <BrowserRouter>
       <Switch>
-        {/* <PrivateRoute
-          exact
-          path="/"
-          component={Login}
-          authenticated={authenticated}
-        /> */}
         <PublicRoute restricted={true} component={Login} path="/" exact />
-
         <PrivateRoute component={Home} path="/dashboard" exact />
         <PrivateRoute component={Users} path="/users" exact />
         <PrivateRoute component={Category} path="/categories" exact />
-        <PrivateRoute component={Blogs} path="/blogs" exact />
+        <PrivateRoute component={Articles} path="/articles" exact />
         <PrivateRoute component={Project} path="/projects" exact />
         <PrivateRoute
           component={RolesAndPermissions}
@@ -54,7 +47,6 @@ const App = ({ authenticated }) => {
           exact
           // authenticated={authenticated}
         />
-
         <PublicRoute
           restricted={true}
           component={ForgotPassword}
@@ -67,12 +59,7 @@ const App = ({ authenticated }) => {
           path="/forgot-password"
           exact
         />
-        <Route
-          path="/change-password"
-          component={ForgotPassword}
-          // authenticated={authenticated}
-        />
-
+        <Route path="/change-password" component={ForgotPassword} />
         <Route path="/change-password" component={ChangePassword} />
       </Switch>
     </BrowserRouter>

@@ -21,7 +21,7 @@ import {
 } from '../../store/actions/blogsActions';
 import ImageUpload from '../global/ImageUpload';
 
-const BlogsForm = ({
+const ArticleForm = ({
   handleFormVisibilty,
   handleSubmit,
   handleBlur,
@@ -66,14 +66,24 @@ const BlogsForm = ({
       resetUpdateBlog();
       setReloadToggle(!reloadToggle);
     }
-  }, [isSuccess, isError, isUpdateSuccess]);
+  }, [
+    isSuccess,
+    isError,
+    isUpdateSuccess,
+    handleFormVisibilty,
+    resetAddBlog,
+    setReloadToggle,
+    reloadToggle,
+    data,
+    resetUpdateBlog
+  ]);
 
   useEffect(() => {
     if (!isAddForm) {
       singleBlog(blogId, token);
       // swal('New user added!', '', 'success');
     }
-  }, [singleBlog]);
+  }, [blogId, isAddForm, singleBlog, token]);
 
   return (
     <div className="">
@@ -82,7 +92,7 @@ const BlogsForm = ({
         className="btn btn-primary mb-3"
         onClick={handleFormVisibilty}
       >
-        View Blogs
+        View Articles
       </button>
       <div className="card">
         <form
@@ -91,7 +101,7 @@ const BlogsForm = ({
           noValidate=""
         >
           <div className="card-header">
-            <h4>{isAddForm ? 'Add' : 'Edit'} blogs</h4>
+            <h4>{isAddForm ? 'Add' : 'Edit'} article</h4>
           </div>
           <div className="card-body">
             <div className="row">
@@ -116,27 +126,6 @@ const BlogsForm = ({
                   </div>
                 )}
               </div>
-              {/* <div className="form-group col-md-4 col-12">
-                <label>slug</label>
-                <input
-                  type="text"
-                  name="slug"
-                  className="form-control"
-                  // value="john"
-
-                  value={values.slug}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-                {errors.slug && touched.slug && (
-                  <div
-                    className="invalid-feedback"
-                    style={{ display: 'block' }}
-                  >
-                    {errors.slug}
-                  </div>
-                )}
-              </div> */}
             </div>
 
             <div className="form-group">
@@ -149,35 +138,6 @@ const BlogsForm = ({
                 onChange={handleChange}
               />
             </div>
-            {/* <ImageUpload uploadImage={uploadImage} /> */}
-
-            {/* <div className="row">
-              <div className="form-group col-12">
-                <label>Bio</label>
-                <textarea className="form-control summernote-simple">
-                  asdkahjs
-                </textarea>
-              </div>
-            </div> */}
-            {/* <div className="row">
-              <div className="form-group mb-0 col-12">
-                <div className="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="custom-control-input"
-                    id="newsletter"
-                  />
-                  <label className="custom-control-label" htmlFor="newsletter">
-                    Subscribe to newsletter
-                  </label>
-                  <div className="text-muted form-text">
-                    You will get new information about products, offers and
-                    promotions
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
           <div className="card-footer d-flex justify-content-between">
             <button
@@ -204,7 +164,7 @@ const BlogsForm = ({
   );
 };
 
-const BlogsFormFormik = withFormik({
+const ArticleFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleBlogData }) => {
     // console.log('singleBlogData', singleBlogData);
@@ -253,7 +213,7 @@ const BlogsFormFormik = withFormik({
   },
 
   displayName: 'BlogForm' // helps with React DevTools
-})(BlogsForm);
+})(ArticleForm);
 
 const mapStateToProps = state => ({
   data: state.blogAdd.data,
@@ -265,15 +225,12 @@ const mapStateToProps = state => ({
   singleBlogData: state.blog.data
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    blogAdd,
-    blogsUpdate,
-    singleBlog,
-    resetAddBlog,
-    resetUpdateBlog,
-    uploadImage,
-    blogs
-  }
-)(BlogsFormFormik);
+export default connect(mapStateToProps, {
+  blogAdd,
+  blogsUpdate,
+  singleBlog,
+  resetAddBlog,
+  resetUpdateBlog,
+  uploadImage,
+  blogs
+})(ArticleFormFormik);

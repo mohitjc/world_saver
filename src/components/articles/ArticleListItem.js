@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { truncate } from 'lodash';
 
-const BlogsListItem = ({
+const ArticleListItem = ({
   item,
   index,
   handAddFormToggle,
@@ -106,4 +106,4 @@ const BlogsListItem = ({
   );
 };
 
-export default BlogsListItem;
+export default ArticleListItem;

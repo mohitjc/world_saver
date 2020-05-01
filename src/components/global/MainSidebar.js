@@ -36,8 +36,8 @@ const MainSidebar = ({ history }) => {
           </li>
 
           <li className="nav-item dropdown">
-            <NavLink className="nav-link" to="/blogs" activeStyle={styles}>
-              <i className="far fa-newspaper" /> <span>Manage Blogs</span>
+            <NavLink className="nav-link" to="/articles" activeStyle={styles}>
+              <i className="far fa-newspaper" /> <span>Manage Articles</span>
             </NavLink>
           </li>
 
@@ -47,7 +47,7 @@ const MainSidebar = ({ history }) => {
             </NavLink>
           </li>
 
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <NavLink
               className="nav-link"
               to="/roles-and-permissions"
@@ -56,7 +56,7 @@ const MainSidebar = ({ history }) => {
               <i className="fas fa-user-lock" />
               <span>Roles And Permissions</span>
             </NavLink>
-          </li>
+          </li> */}
         </ul>
       </aside>
     </div>

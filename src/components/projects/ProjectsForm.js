@@ -53,9 +53,7 @@ const ProjectForm = ({
     }
     if (isError) {
       swal(data && data.data && data.data.message, '', 'warning');
-      // handleFormVisibilty();
       resetUpdateSkill();
-      // setReloadToggle(!reloadToggle);
     }
     if (isUpdateSuccess) {
       swal('Skill updated!', '', 'success');

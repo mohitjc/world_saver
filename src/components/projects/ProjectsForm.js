@@ -120,34 +120,6 @@ const ProjectForm = ({
                 )}
               </div>
             </div>
-
-            {/* <div className="row">
-              <div className="form-group col-12">
-                <label>Bio</label>
-                <textarea className="form-control summernote-simple">
-                  asdkahjs
-                </textarea>
-              </div>
-            </div> */}
-            {/* <div className="row">
-              <div className="form-group mb-0 col-12">
-                <div className="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="custom-control-input"
-                    id="newsletter"
-                  />
-                  <label className="custom-control-label" htmlFor="newsletter">
-                    Subscribe to newsletter
-                  </label>
-                  <div className="text-muted form-text">
-                    You will get new information about products, offers and
-                    promotions
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
           <div className="card-footer d-flex justify-content-between">
             <button

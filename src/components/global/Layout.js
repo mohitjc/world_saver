@@ -9,7 +9,6 @@ export default ({ children, title, noHeader, isHome }) => (
   <div id="app">
     <div className="main-wrapper">
       <div className="navbar-bg" />
-      {/* <Helmet title={`${config.siteName} | ${title}`} /> */}
       <Header isHome={isHome} />
       {children}
     </div>

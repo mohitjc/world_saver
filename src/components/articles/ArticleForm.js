@@ -103,15 +103,11 @@ const ArticleForm = ({
           <div className="card-header">
             <h4>{isAddForm ? 'Add' : 'Edit'} article</h4>
           </div>
+
           <div className="card-body">
-            <label>Image</label>
-            <div className="dropzone image-upload" id="mydropzone">
-              <div className="fallback">
-                <input name="file" type="file" multiple />
-              </div>
-            </div>
+            <ImageUpload />
             <div className="row">
-              <div className="form-group col-md-4 col-12">
+              <div className="form-group col-md-4 col-12 mt-3">
                 <label>Title</label>
                 <input
                   type="text"

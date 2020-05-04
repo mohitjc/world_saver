@@ -2973,9 +2973,16 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 
 
 .image-upload {
-  height: 5rem;
-  width: 25rem;
-  display:flex;
+  width: 18rem;
+  display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.fallback{
+  width: 11rem;
+}
+
+.drag-active{
+  cursor: pointer;
 }

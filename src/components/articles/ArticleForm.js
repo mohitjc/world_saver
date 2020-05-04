@@ -104,6 +104,12 @@ const ArticleForm = ({
             <h4>{isAddForm ? 'Add' : 'Edit'} article</h4>
           </div>
           <div className="card-body">
+            <label>Image</label>
+            <div className="dropzone image-upload" id="mydropzone">
+              <div className="fallback">
+                <input name="file" type="file" multiple />
+              </div>
+            </div>
             <div className="row">
               <div className="form-group col-md-4 col-12">
                 <label>Title</label>

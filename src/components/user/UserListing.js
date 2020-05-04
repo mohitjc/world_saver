@@ -25,7 +25,7 @@ const UserListing = ({
   const [keyword, setKeyword] = useState('');
   useEffect(() => {
     getSearchKeyword(keyword);
-  }, [keyword]);
+  }, [getSearchKeyword, keyword]);
   // console.log('users', users);
 
   return (
@@ -33,6 +33,19 @@ const UserListing = ({
       <div className="col-12">
         <div className="card">
           <div className="card-header">
+            <h4>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  handleFormVisibilty();
+                  handAddFormToggle(true);
+                  // resetSingleCategory();
+                }}
+                type="button"
+              >
+                Add User
+              </button>
+            </h4>
             <div className="card-header-form">
               <form>
                 <div className="input-group">

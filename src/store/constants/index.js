@@ -390,7 +390,7 @@ export const DELETE_SINGLE_PERMISSION = {
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const DEAUTHENTICATE = 'DEAUTHENTICATE';
 
-export const API_SLUG = 'http://192.168.0.69:3001';
+export const API_SLUG = 'http://34.235.127.120:4602';
 
 // export const API_SLUG = 'http://3.18.4.95:1339';
 

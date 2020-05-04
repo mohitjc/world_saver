@@ -5,7 +5,7 @@ import { withFormik } from 'formik';
 import { object as yupObject, string as yupString } from 'yup';
 import swal from 'sweetalert';
 
-import { login } from '../../store/actions/loginActions';
+import { login, resetLogin } from '../../store/actions/loginActions';
 
 const LoginForm = ({
   // login,
@@ -18,17 +18,20 @@ const LoginForm = ({
   isError,
   errors,
   touched,
-  data
+  data,
+  resetLogin
 }) => {
   useEffect(() => {
     if (isSuccess) {
+      resetLogin();
     } else if (isError) {
       swal(data && data.data && data.data.message, {
         buttons: false,
         timer: 1500
       });
+      resetLogin();
     }
-  }, [isSuccess, isError, data]);
+  }, [isSuccess, isError, data, resetLogin]);
   // console.log('data', data);
   return (
     <form onSubmit={handleSubmit} className="needs-validation" noValidate="">
@@ -122,4 +125,4 @@ const mapStateToProps = state => ({
   isError: state.login.isError
 });
 
-export default connect(mapStateToProps, { login })(LoginFormFormik);
+export default connect(mapStateToProps, { login, resetLogin })(LoginFormFormik);

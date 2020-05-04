@@ -22,12 +22,12 @@ const MainSidebar = ({ history }) => {
             </NavLink>
           </li>
 
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <NavLink className="nav-link" to="/users" activeStyle={styles}>
               <i className="far fa-user" />
               <span>Manage Users</span>
             </NavLink>
-          </li>
+          </li> */}
 
           <li className="nav-item dropdown">
             <NavLink className="nav-link" to="/categories" activeStyle={styles}>

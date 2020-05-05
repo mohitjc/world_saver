@@ -47,6 +47,9 @@ const ArticleForm = ({
   uploadImage
 }) => {
   const token = localStorage.getItem('token');
+
+  const [showUrlInput, setShowUrlInput] = useState(false);
+
   useEffect(() => {
     if (isSuccess) {
       swal('New blog added!', '', 'success');
@@ -105,42 +108,107 @@ const ArticleForm = ({
           </div>
 
           <div className="card-body">
-            <ImageUpload />
+            {!showUrlInput && <ImageUpload />}
             <div className="row">
-              <div className="form-group col-md-4 col-12 mt-3">
-                <label>Title</label>
-                <input
-                  type="text"
-                  name="title"
-                  className="form-control"
-                  // value="john"
+              {!showUrlInput && (
+                <div className="form-group col-md-4 col-12 mt-3">
+                  <label>Title</label>
+                  <input
+                    type="text"
+                    name="title"
+                    className="form-control"
+                    // value="john"
 
-                  value={values.title}
+                    value={values.title}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  {errors.title && touched.title && (
+                    <div
+                      className="invalid-feedback"
+                      style={{ display: 'block' }}
+                    >
+                      {errors.title}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="form-group col-md-4 col-12 mt-3">
+                <label>Category</label>
+                <select
+                  name="category"
+                  className="form-control"
+                  value={values.category}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                />
-                {errors.title && touched.title && (
+                >
+                  <option>Select category</option>
+                  <option value="U">Type 1</option>
+                  <option value="A">Type 2</option>
+                </select>
+                {errors.category && touched.category && (
                   <div
                     className="invalid-feedback"
                     style={{ display: 'block' }}
                   >
-                    {errors.title}
+                    Please select category
                   </div>
                 )}
               </div>
-            </div>
 
-            <div className="form-group">
-              <label>Description</label>
-              <textarea
-                className="form-control"
-                name="description"
-                value={values.description}
-                onBlur={handleBlur}
-                onChange={handleChange}
-              />
+              {!showUrlInput && (
+                <div className="form-group col-md-8 col-12">
+                  <label>Description</label>
+                  <textarea
+                    className="form-control"
+                    name="description"
+                    value={values.description}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                </div>
+              )}
+              <div className="form-group col-md-12 col-12">
+                <div className="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    className="custom-control-input"
+                    id="customCheck1"
+                    checked={showUrlInput}
+                    onChange={() => setShowUrlInput(!showUrlInput)}
+                  />
+                  <label className="custom-control-label" for="customCheck1">
+                    Or add your custom link for the blog
+                  </label>
+                </div>
+              </div>
+              {showUrlInput && (
+                <div className="form-group col-md-12 col-12">
+                  <label>URL</label>
+                  <input
+                    type="text"
+                    name="url"
+                    className="form-control"
+                    // value="john"
+
+                    value={values.url}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  {errors.url && touched.url && (
+                    <div
+                      className="invalid-feedback"
+                      style={{ display: 'block' }}
+                    >
+                      {errors.url}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
+
           <div className="card-footer d-flex justify-content-between">
             <button
               type="button"

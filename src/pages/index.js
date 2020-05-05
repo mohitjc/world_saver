@@ -24,6 +24,7 @@ import RolesAndPermissions from './RolesAndPermissions';
 import Credits from './Credits';
 import PublicRoute from './PublicRoute';
 import Articles from './Articles';
+import Types from './Types';
 
 const App = ({ authenticated }) => {
   // console.log('base', authenticated);
@@ -36,6 +37,8 @@ const App = ({ authenticated }) => {
         <PrivateRoute component={Category} path="/categories" exact />
         <PrivateRoute component={Articles} path="/articles" exact />
         <PrivateRoute component={Project} path="/projects" exact />
+        <PrivateRoute component={Types} path="/types" exact />
+
         <PrivateRoute
           component={RolesAndPermissions}
           path="/roles-and-permissions"

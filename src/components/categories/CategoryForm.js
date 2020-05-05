@@ -18,6 +18,7 @@ import {
   resetUpdateCategory,
   categories
 } from '../../store/actions/categoryActions';
+import ImageUpload from '../global/ImageUpload';
 
 const CategoryForm = ({
   handleFormVisibilty,
@@ -63,14 +64,24 @@ const CategoryForm = ({
       resetUpdateCategory();
       setReloadToggle(!reloadToggle);
     }
-  }, [isSuccess, isError, isUpdateSuccess]);
+  }, [
+    isSuccess,
+    isError,
+    isUpdateSuccess,
+    handleFormVisibilty,
+    resetAddCategory,
+    setReloadToggle,
+    reloadToggle,
+    data,
+    resetUpdateCategory
+  ]);
 
   useEffect(() => {
     if (!isAddForm) {
       singleCategory(categoryId, token);
       // swal('New user added!', '', 'success');
     }
-  }, [singleCategory]);
+  }, [categoryId, isAddForm, singleCategory, token]);
 
   // console.log('data', data);
   return (
@@ -88,6 +99,7 @@ const CategoryForm = ({
             <h4>{isAddForm ? 'Add' : 'Edit'} category</h4>
           </div>
           <div className="card-body">
+            <ImageUpload />
             <div className="row">
               <div className="form-group col-md-4 col-12">
                 <label>Name</label>
@@ -111,55 +123,50 @@ const CategoryForm = ({
                 )}
               </div>
               <div className="form-group col-md-4 col-12">
-                <label>Description</label>
-                <input
-                  type="text"
+                <label>Category</label>
+                <select
+                  name="category"
                   className="form-control"
-                  name="description"
-                  // value="Maman"
-                  required=""
-                  value={values.description}
+                  value={values.category}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                />
-                {errors.description && touched.description && (
+                >
+                  <option>Select category</option>
+                  <option value="U">Type 1</option>
+                  <option value="A">Type 2</option>
+                </select>
+                {errors.category && touched.category && (
                   <div
                     className="invalid-feedback"
                     style={{ display: 'block' }}
                   >
-                    {errors.description}
+                    Please select type
+                  </div>
+                )}
+              </div>
+              <div className="form-group col-md-4 col-12">
+                <label>Sub Category</label>
+                <select
+                  name="subCategory"
+                  className="form-control"
+                  value={values.subCategory}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                >
+                  <option>Select Sub Category</option>
+                  <option value="U">Type 1</option>
+                  <option value="A">Type 2</option>
+                </select>
+                {errors.subCategory && touched.subCategory && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: 'block' }}
+                  >
+                    {errors.subCategory}
                   </div>
                 )}
               </div>
             </div>
-
-            {/* <div className="row">
-              <div className="form-group col-12">
-                <label>Bio</label>
-                <textarea className="form-control summernote-simple">
-                  asdkahjs
-                </textarea>
-              </div>
-            </div> */}
-            {/* <div className="row">
-              <div className="form-group mb-0 col-12">
-                <div className="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    className="custom-control-input"
-                    id="newsletter"
-                  />
-                  <label className="custom-control-label" htmlFor="newsletter">
-                    Subscribe to newsletter
-                  </label>
-                  <div className="text-muted form-text">
-                    You will get new information about products, offers and
-                    promotions
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
           <div className="card-footer d-flex justify-content-between">
             <button
@@ -192,7 +199,8 @@ const CatgeoryFormFormik = withFormik({
     // console.log('singleCategoryData', singleCategoryData);
     return {
       name: (singleCategoryData && singleCategoryData.name) || '',
-      description: (singleCategoryData && singleCategoryData.description) || ''
+      subCategory: (singleCategoryData && singleCategoryData.subCategory) || '',
+      category: ''
     };
   },
 
@@ -200,7 +208,8 @@ const CatgeoryFormFormik = withFormik({
     name: yupString()
       .max(15)
       .required(),
-    description: yupString().required()
+    subCategory: yupString().required(),
+    category: yupString().required()
 
     // .required()
     // password: yupString().min(8)
@@ -244,14 +253,11 @@ const mapStateToProps = state => ({
   singleCategoryData: state.category.data
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    categoryAdd,
-    categoryUpdate,
-    singleCategory,
-    resetAddCategory,
-    resetUpdateCategory,
-    categories
-  }
-)(CatgeoryFormFormik);
+export default connect(mapStateToProps, {
+  categoryAdd,
+  categoryUpdate,
+  singleCategory,
+  resetAddCategory,
+  resetUpdateCategory,
+  categories
+})(CatgeoryFormFormik);

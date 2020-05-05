@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { withFormik } from 'formik';
 import Yup, {
   object as yupObject,
@@ -20,6 +20,7 @@ import {
   blogs
 } from '../../store/actions/blogsActions';
 import ImageUpload from '../global/ImageUpload';
+import TagInput from '../global/TagInput';
 
 const ArticleForm = ({
   handleFormVisibilty,
@@ -49,6 +50,10 @@ const ArticleForm = ({
   const token = localStorage.getItem('token');
 
   const [showUrlInput, setShowUrlInput] = useState(false);
+
+  const { data: uploadData } = useSelector(state => state.imageUpload);
+
+  console.log('uploadData', uploadData);
 
   useEffect(() => {
     if (isSuccess) {
@@ -87,6 +92,10 @@ const ArticleForm = ({
       // swal('New user added!', '', 'success');
     }
   }, [blogId, isAddForm, singleBlog, token]);
+
+  const getInput = values => {
+    console.log('values', values);
+  };
 
   return (
     <div className="">
@@ -184,27 +193,30 @@ const ArticleForm = ({
                 </div>
               </div>
               {showUrlInput && (
-                <div className="form-group col-md-12 col-12">
-                  <label>URL</label>
-                  <input
-                    type="text"
-                    name="url"
-                    className="form-control"
-                    // value="john"
+                <>
+                  <div className="form-group col-md-12 col-12">
+                    <label>URL</label>
+                    <input
+                      type="text"
+                      name="url"
+                      className="form-control"
+                      // value="john"
 
-                    value={values.url}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                  />
-                  {errors.url && touched.url && (
-                    <div
-                      className="invalid-feedback"
-                      style={{ display: 'block' }}
-                    >
-                      {errors.url}
-                    </div>
-                  )}
-                </div>
+                      value={values.url}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {errors.url && touched.url && (
+                      <div
+                        className="invalid-feedback"
+                        style={{ display: 'block' }}
+                      >
+                        {errors.url}
+                      </div>
+                    )}
+                  </div>
+                  <TagInput getInput={getInput} />
+                </>
               )}
             </div>
           </div>

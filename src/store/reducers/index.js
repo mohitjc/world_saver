@@ -28,7 +28,7 @@ import blogAdd from './blogAddReducer';
 import blogUpdate from './blogUpdateReducer';
 import blogs from './getBlogsReducer';
 import blog from './singleBlogReducer';
-import imageUpload from './blogImageUploadReducer';
+import imageUpload from './imageUploadReducer';
 import deleteBlog from './deleteBlogReducer';
 
 import skillsAdd from './skillAddReducer';

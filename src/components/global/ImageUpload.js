@@ -1,13 +1,17 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import { isEmpty } from 'lodash';
 import swal from 'sweetalert';
 
-const ImageUpload = ({ uploadImage }) => {
+import { uploadImage } from '../../store/actions/blogsActions';
+
+const ImageUpload = () => {
   const [images, setImages] = useState([]);
+
+  const dispatch = useDispatch();
   useEffect(() => {
     // setImages(values.images);
   }, [images]);
@@ -91,7 +95,8 @@ const ImageUpload = ({ uploadImage }) => {
     reader.readAsDataURL(file);
     reader.onload = function() {
       const token = localStorage.getItem('token');
-      // uploadImage({ type: 'blogs', data: reader.result }, token);
+
+      dispatch(uploadImage({ type: 'category', data: reader.result }, token));
     };
     reader.onerror = function(error) {
       // console.log('Error: ', error);

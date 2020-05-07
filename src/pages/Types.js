@@ -8,11 +8,11 @@ import SectionHeader from '../components/global/SectionHeader';
 import QuestionListing from '../components/questions/QuestionListing';
 import QuestionForm from '../components/questions/QuestionsForm';
 import {
-  questions,
-  resetSingleQuestion,
-  deleteQuestion,
-  resetDeleteQuestion
-} from '../store/actions/questionsActions';
+  types,
+  resetSingleType,
+  deleteType,
+  resetDeleteType
+} from '../store/actions/typeActions';
 import {
   changeStatus,
   resetStatus
@@ -22,16 +22,17 @@ import TypeForm from '../components/types/TypeForm';
 
 const Types = ({
   data,
-  questions,
-  resetSingleQuestion,
-  deleteQuestion,
-  resetDeleteQuestion,
+  types,
+  resetSingleType,
+  deleteType,
+  resetDeleteType,
   isDeleteSuccess,
   isChangeStatusSuccess,
   isChangeStatusError,
   isDeleteError,
   changeStatus,
   resetStatus,
+  isRequesting,
   isSuccess
 }) => {
   const token = localStorage.getItem('token');
@@ -46,7 +47,7 @@ const Types = ({
   // const [currentCount, setCurrentCount] = useState(count);
 
   useEffect(() => {
-    questions(
+    types(
       token,
       type,
       page,
@@ -56,7 +57,6 @@ const Types = ({
       searchKeyword
     );
   }, [
-    questions,
     reloadToggle,
     page,
     sort,
@@ -65,16 +65,17 @@ const Types = ({
     token,
     type,
     count,
-    sortType
+    sortType,
+    types
   ]);
 
   useEffect(() => {
     if (isDeleteSuccess) {
-      swal('Question has been deleted!', {
+      swal('Type has been deleted!', {
         buttons: false,
         timer: 1500
       });
-      resetDeleteQuestion();
+      resetDeleteType();
     }
 
     if (isDeleteError) {
@@ -82,16 +83,16 @@ const Types = ({
         buttons: false,
         timer: 1500
       });
-      resetDeleteQuestion();
+      resetDeleteType();
     }
-  }, [isDeleteSuccess, isDeleteError, resetDeleteQuestion]);
+  }, [isDeleteSuccess, isDeleteError, resetDeleteType]);
 
   useEffect(() => {
     if (isChangeStatusSuccess) {
       swal(
         status === 'active'
-          ? 'Questions has been activated'
-          : 'Questions has been deactivated',
+          ? 'Type has been activated'
+          : 'Type has been deactivated',
         {
           buttons: false,
           timer: 1500
@@ -118,7 +119,7 @@ const Types = ({
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
-  const [questionId, setQuestionId] = useState(null);
+  const [typeId, setTypeId] = useState(null);
 
   const handleFormVisibilty = () => {
     setFormVisibilty(!formVisibility);
@@ -128,8 +129,8 @@ const Types = ({
     setIsAddForm(bool);
   };
 
-  const getQuestionId = id => {
-    setQuestionId(id);
+  const getTypeId = id => {
+    setTypeId(id);
   };
 
   const getSearchKeyword = value => {
@@ -145,7 +146,7 @@ const Types = ({
     setSortType(value);
   };
 
-  // console.log('isDeleteError', isDeleteError);
+  console.log('data', data);
   return (
     <Layout title="Types">
       <MainSidebar />
@@ -155,13 +156,14 @@ const Types = ({
           {!formVisibility ? (
             <TypeListing
               handleFormVisibilty={handleFormVisibilty}
-              questions={data && data.data && data.data.ques}
-              total={data && data.data && data.data.total}
+              questions={data && data.result}
+              total={data && data.total}
               handAddFormToggle={handAddFormToggle}
-              getQuestionId={getQuestionId}
+              getQuestionId={getTypeId}
+              isRequesting={isRequesting}
               // UserListing={UserListing}
-              resetSingleQuestion={resetSingleQuestion}
-              deleteQuestion={deleteQuestion}
+              resetSingleQuestion={resetSingleType}
+              deleteQuestion={deleteType}
               sort={sort}
               setSort={setSort}
               setPage={setPage}
@@ -176,7 +178,7 @@ const Types = ({
             <TypeForm
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
-              questionId={questionId}
+              questionId={typeId}
               setReloadToggle={setReloadToggle}
               reloadToggle={reloadToggle}
             />
@@ -188,21 +190,21 @@ const Types = ({
 };
 
 const mapStateToProps = state => ({
-  data: state.questions.data,
-  isRequesting: state.questions.isRequesting,
-  isSuccess: state.questions.isSuccess,
-  isError: state.questions.isError,
-  isDeleteSuccess: state.deleteQuestion.isSuccess,
-  isDeleteError: state.deleteQuestion.isError,
+  data: state.types.data,
+  isRequesting: state.types.isRequesting,
+  isSuccess: state.types.isSuccess,
+  isError: state.types.isError,
+  isDeleteSuccess: state.deleteType.isSuccess,
+  isDeleteError: state.deleteType.isError,
   isChangeStatusSuccess: state.status.isSuccess,
   isChangeStatusError: state.status.isError
 });
 
 export default connect(mapStateToProps, {
-  questions,
-  resetSingleQuestion,
-  deleteQuestion,
-  resetDeleteQuestion,
+  types,
+  resetSingleType,
+  deleteType,
+  resetDeleteType,
   changeStatus,
   resetStatus
 })(Types);

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useCallback, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,15 +8,23 @@ import * as Yup from 'yup';
 import { isEmpty } from 'lodash';
 import swal from 'sweetalert';
 
+import { SyncLoader } from 'react-spinners';
+
 import { uploadImage } from '../../store/actions/blogsActions';
+import { API_SLUG } from '../../store/constants';
 
-const ImageUpload = () => {
+const ImageUpload = ({ getImage, type, value }) => {
   const [images, setImages] = useState([]);
-
+  const { data, isRequesting, isSuccess } = useSelector(
+    state => state.imageUpload
+  );
   const dispatch = useDispatch();
   useEffect(() => {
+    if (isSuccess) {
+      getImage(data && data.data.fullPath);
+    }
     // setImages(values.images);
-  }, [images]);
+  }, [data, images, isSuccess]);
   const maxSize = 1048576;
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -96,14 +106,13 @@ const ImageUpload = () => {
     reader.onload = function() {
       const token = localStorage.getItem('token');
 
-      dispatch(uploadImage({ type: 'category', data: reader.result }, token));
+      dispatch(uploadImage({ type: type, data: reader.result }, token));
     };
     reader.onerror = function(error) {
       // console.log('Error: ', error);
     };
     // fetch()
   }
-  //   console.log('imagepatheimagesimages', images);
   return (
     <>
       <div className="form-group image-upload">
@@ -111,7 +120,24 @@ const ImageUpload = () => {
           <div className="dz-message text-muted">
             <div {...getRootProps()}>
               <input {...getInputProps()} />
-              {!isDragActive && <div className="drag-active">upload image</div>}
+              {!isDragActive && (
+                <div className="drag-active">
+                  {isRequesting ? (
+                    <SyncLoader color={'#5383ff'} />
+                  ) : !isEmpty(value) ? (
+                    <div style={thumb}>
+                      <div style={thumbInner}>
+                        <img
+                          src={`${API_SLUG}/images/${type}/${value}`}
+                          style={img}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    'upload image'
+                  )}
+                </div>
+              )}
               {isDragActive && !isDragReject && "Drop it like it's hot!"}
               {isDragReject && 'File type not accepted, sorry!'}
               {/* {isFileTooLarge && (
@@ -121,7 +147,17 @@ const ImageUpload = () => {
           </div>
         </form>
       </div>
-      <aside style={thumbsContainer}>{thumbs}</aside>
+      {/* <aside style={thumbsContainer}>
+        {!isEmpty(value) ? (
+          <div style={thumb}>
+            <div style={thumbInner}>
+              <img src={`${API_SLUG}/images/${type}/${value}`} style={img} />
+            </div>
+          </div>
+        ) : (
+          thumbs
+        )}
+      </aside> */}
     </>
   );
 };

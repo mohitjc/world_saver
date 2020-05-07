@@ -17,9 +17,7 @@ import QuestionView from './QuestionView';
 
 import Project from './Project';
 import SkillView from './ProjectView';
-import SubscriptionNames from './SubscriptionNames';
-import SubscriptionPackages from './SubscriptionPackages';
-import SubscriptionTypes from './SubscriptionTypes';
+
 import RolesAndPermissions from './RolesAndPermissions';
 import Credits from './Credits';
 import PublicRoute from './PublicRoute';
@@ -38,7 +36,6 @@ const App = ({ authenticated }) => {
         <PrivateRoute component={Articles} path="/articles" exact />
         <PrivateRoute component={Project} path="/projects" exact />
         <PrivateRoute component={Types} path="/types" exact />
-
         <PrivateRoute
           component={RolesAndPermissions}
           path="/roles-and-permissions"

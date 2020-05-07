@@ -9,7 +9,7 @@ import {
   AXIOS_INSTANCE,
   IMAGE_UPLOAD_API,
   ALL_BLOGS_API,
-  DELETE_BLOG_API,
+  DELETE_API,
   BLOG_API,
   BLOG_ADD,
   BLOG_UPDATE,
@@ -172,7 +172,7 @@ export function singleBlog(id, token) {
 export function deleteBlog(obj, token) {
   return dispatch => {
     dispatch(getRequest(DELETE_SINGLE_BLOG.DELETE_SINGLE_BLOG_REQUEST));
-    const getUrl = `${DELETE_BLOG_API}`;
+    const getUrl = `${DELETE_API}`;
     const config = { headers: { Authorization: `Bearer ${token}` }, data: obj };
     AXIOS_INSTANCE.delete(getUrl, config)
       .then(checkHttpStatus)

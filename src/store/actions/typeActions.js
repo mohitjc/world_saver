@@ -5,15 +5,18 @@
  * @author JC Software Solution PVT. LTD.
  */
 
+import { isUndefined } from 'lodash';
 import {
   AXIOS_INSTANCE,
   TYPE_ADD,
   SUBSCRIPTION_TYPE_API,
   ALL_SUBSCRIPTION_TYPE_API,
+  DELETE_API,
   TYPE_UPDATE,
   GET_TYPES,
   GET_SINGLE_TYPE,
-  DELETE_SINGLE_TYPE
+  DELETE_SINGLE_TYPE,
+  TYPES_API
 } from '../constants';
 import { checkHttpStatus, parseJSON } from '../../utils/helpers';
 import { getRequest, getSuccess, getFailure, reset } from './index';
@@ -23,7 +26,7 @@ import { getRequest, getSuccess, getFailure, reset } from './index';
 export function typeAdd(postObj, token) {
   return dispatch => {
     dispatch(getRequest(TYPE_ADD.TYPE_ADD_REQUEST));
-    const getUrl = SUBSCRIPTION_TYPE_API;
+    const getUrl = TYPES_API;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.post(getUrl, postObj, config)
       .then(checkHttpStatus)
@@ -58,7 +61,7 @@ export function typeAdd(postObj, token) {
 export function typeUpdate(obj, id, token) {
   return dispatch => {
     dispatch(getRequest(TYPE_UPDATE.TYPE_UPDATE_REQUEST));
-    const getUrl = `${SUBSCRIPTION_TYPE_API}/${id}`;
+    const getUrl = `${TYPES_API}/${id}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.put(getUrl, obj, config)
       .then(checkHttpStatus)
@@ -95,7 +98,17 @@ export function typeUpdate(obj, id, token) {
 export function types(token, type, page, count, sortType, sort, search) {
   return dispatch => {
     dispatch(getRequest(GET_TYPES.GET_TYPES_REQUEST));
-    const getUrl = `${ALL_SUBSCRIPTION_TYPE_API}?type=${type}&search=${search}&page=${page}&count=${10}&sortBy=${sortType} ${sort}`;
+
+    let getUrl = `${TYPES_API}?type=${type}&search=${search}&page=${page}&count=${10}&sortBy=${sortType} ${sort}`;
+    if (
+      isUndefined(type) ||
+      isUndefined(page) ||
+      isUndefined(sortType) ||
+      isUndefined(sort) ||
+      isUndefined(search)
+    ) {
+      getUrl = `${TYPES_API}`;
+    }
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.get(getUrl, config)
       .then(checkHttpStatus)
@@ -132,7 +145,7 @@ export function types(token, type, page, count, sortType, sort, search) {
 export function singleType(id, token) {
   return dispatch => {
     dispatch(getRequest(GET_SINGLE_TYPE.GET_SINGLE_TYPE_REQUEST));
-    const getUrl = `${SUBSCRIPTION_TYPE_API}/${id}`;
+    const getUrl = `${TYPES_API}/${id}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.get(getUrl, config)
       .then(checkHttpStatus)
@@ -171,7 +184,7 @@ export function singleType(id, token) {
 export function deleteType(obj, token) {
   return dispatch => {
     dispatch(getRequest(DELETE_SINGLE_TYPE.DELETE_SINGLE_TYPE_REQUEST));
-    const getUrl = `${SUBSCRIPTION_TYPE_API}`;
+    const getUrl = `${DELETE_API}`;
     const config = { headers: { Authorization: `Bearer ${token}` }, data: obj };
     AXIOS_INSTANCE.delete(getUrl, config)
       .then(checkHttpStatus)

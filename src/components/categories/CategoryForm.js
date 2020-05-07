@@ -9,7 +9,7 @@ import Yup, {
 import swal from 'sweetalert';
 import { withRouter } from 'react-router-dom';
 
-import { isNull } from 'lodash';
+import { isNull, isEmpty } from 'lodash';
 import {
   categoryAdd,
   categoryUpdate,
@@ -33,7 +33,7 @@ const CategoryForm = ({
   isError,
   errors,
   touched,
-  categories,
+  setFieldValue,
   data,
   isAddForm,
   reloadToggle,
@@ -42,7 +42,9 @@ const CategoryForm = ({
   singleCategory,
   singleCategoryData,
   resetAddCategory,
-  resetUpdateCategory
+  resetUpdateCategory,
+  allTypes,
+  categories
 }) => {
   const token = localStorage.getItem('token');
   useEffect(() => {
@@ -83,10 +85,20 @@ const CategoryForm = ({
     }
   }, [categoryId, isAddForm, singleCategory, token]);
 
-  // console.log('data', data);
+  const getImage = value => {
+    setFieldValue('image', value);
+  };
+
+  console.log('values', values);
+
   return (
     <div className="">
-      <button className="btn btn-primary mb-3" onClick={handleFormVisibilty}>
+      <button
+        className="btn btn-primary mb-3"
+        onClick={() => {
+          handleFormVisibilty();
+        }}
+      >
         View Categories
       </button>
       <div className="card">
@@ -99,7 +111,11 @@ const CategoryForm = ({
             <h4>{isAddForm ? 'Add' : 'Edit'} category</h4>
           </div>
           <div className="card-body">
-            <ImageUpload />
+            <ImageUpload
+              getImage={getImage}
+              type="category"
+              value={values.image}
+            />
             <div className="row">
               <div className="form-group col-md-4 col-12">
                 <label>Name</label>
@@ -132,8 +148,10 @@ const CategoryForm = ({
                   onChange={handleChange}
                 >
                   <option>Select category</option>
-                  <option value="U">Type 1</option>
-                  <option value="A">Type 2</option>
+                  {allTypes &&
+                    allTypes.result.map(item => (
+                      <option value={item.id}>{item.name}</option>
+                    ))}
                 </select>
                 {errors.category && touched.category && (
                   <div
@@ -144,28 +162,34 @@ const CategoryForm = ({
                   </div>
                 )}
               </div>
-              <div className="form-group col-md-4 col-12">
-                <label>Sub Category</label>
-                <select
-                  name="subCategory"
-                  className="form-control"
-                  value={values.subCategory}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                >
-                  <option>Select Sub Category</option>
-                  <option value="U">Type 1</option>
-                  <option value="A">Type 2</option>
-                </select>
-                {errors.subCategory && touched.subCategory && (
-                  <div
-                    className="invalid-feedback"
-                    style={{ display: 'block' }}
+              {categories && !isEmpty(categories) && (
+                <div className="form-group col-md-4 col-12">
+                  <label>Sub Category</label>
+                  <select
+                    name="subCategory"
+                    className="form-control"
+                    value={values.subCategory}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                   >
-                    {errors.subCategory}
-                  </div>
-                )}
-              </div>
+                    <option>Select Sub Category</option>
+                    {categories &&
+                      categories.map(item => (
+                        <option value={item.id} key={item.id}>
+                          {item.name}
+                        </option>
+                      ))}
+                  </select>
+                  {errors.subCategory && touched.subCategory && (
+                    <div
+                      className="invalid-feedback"
+                      style={{ display: 'block' }}
+                    >
+                      {errors.subCategory}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
           <div className="card-footer d-flex justify-content-between">
@@ -196,11 +220,12 @@ const CategoryForm = ({
 const CatgeoryFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleCategoryData }) => {
-    // console.log('singleCategoryData', singleCategoryData);
+    console.log('singleCategoryData', singleCategoryData);
     return {
       name: (singleCategoryData && singleCategoryData.name) || '',
-      subCategory: (singleCategoryData && singleCategoryData.subCategory) || '',
-      category: ''
+      subCategory: (singleCategoryData && singleCategoryData.parentid) || '',
+      category: (singleCategoryData && singleCategoryData.typeid) || '',
+      image: (singleCategoryData && singleCategoryData.image) || ''
     };
   },
 
@@ -217,20 +242,21 @@ const CatgeoryFormFormik = withFormik({
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // const { router } = props;
     const token = localStorage.getItem('token');
-    // console.log('state values', values);
+    console.log('state values', values);
     if (props.isAddForm) {
       props.categoryAdd(
         {
           name: values.name,
-          description: values.description
+          typeid: values.category,
+          parentid: values.subCategory,
+          image: values.image
         },
         token
       );
     } else {
       props.categoryUpdate(
         {
-          name: values.name,
-          description: values.description
+          name: values.name
         },
         props.categoryId,
         token
@@ -258,6 +284,5 @@ export default connect(mapStateToProps, {
   categoryUpdate,
   singleCategory,
   resetAddCategory,
-  resetUpdateCategory,
-  categories
+  resetUpdateCategory
 })(CatgeoryFormFormik);

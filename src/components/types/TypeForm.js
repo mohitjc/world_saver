@@ -11,13 +11,13 @@ import { withRouter } from 'react-router-dom';
 
 import { isNull } from 'lodash';
 import {
-  questionsAdd,
-  questionsUpdate,
-  singleQuestion,
-  resetAddQuestion,
-  resetUpdateQuestion,
-  questions
-} from '../../store/actions/questionsActions';
+  typeAdd,
+  typeUpdate,
+  singleType,
+  resetAddType,
+  resetUpdateType,
+  types
+} from '../../store/actions/typeActions';
 
 const TypeForm = ({
   handleFormVisibilty,
@@ -38,29 +38,29 @@ const TypeForm = ({
   reloadToggle,
   setReloadToggle,
   questionId,
-  singleQuestion,
-  singleQuestionData,
-  resetAddQuestion,
-  resetUpdateQuestion
+  singleType,
+  singleTypeData,
+  resetAddType,
+  resetUpdateType
 }) => {
   const token = localStorage.getItem('token');
   useEffect(() => {
     if (isSuccess) {
-      swal('New question added!', '', 'success');
+      swal('New Type added!', '', 'success');
       handleFormVisibilty();
-      resetAddQuestion();
+      resetAddType();
       setReloadToggle(!reloadToggle);
     }
     if (isError) {
       swal(data && data.data && data.data.message, '', 'warning');
       // handleFormVisibilty();
-      resetUpdateQuestion();
+      resetUpdateType();
       // setReloadToggle(!reloadToggle);
     }
     if (isUpdateSuccess) {
-      swal('Question updated!', '', 'success');
+      swal('Type updated!', '', 'success');
       handleFormVisibilty();
-      resetUpdateQuestion();
+      resetUpdateType();
       setReloadToggle(!reloadToggle);
     }
   }, [
@@ -68,19 +68,19 @@ const TypeForm = ({
     isError,
     isUpdateSuccess,
     handleFormVisibilty,
-    resetAddQuestion,
     setReloadToggle,
     reloadToggle,
     data,
-    resetUpdateQuestion
+    resetAddType,
+    resetUpdateType
   ]);
 
   useEffect(() => {
     if (!isAddForm) {
-      singleQuestion(questionId, token);
+      singleType(questionId, token);
       // swal('New user added!', '', 'success');
     }
-  }, [isAddForm, questionId, singleQuestion, token]);
+  }, [isAddForm, questionId, singleType, token]);
 
   // console.log('data', data);
 
@@ -104,20 +104,20 @@ const TypeForm = ({
                 <label>Name</label>
                 <input
                   type="text"
-                  name="type"
+                  name="name"
                   className="form-control"
                   // value="john"
 
-                  value={values.type}
+                  value={values.name}
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
-                {errors.type && touched.type && (
+                {errors.name && touched.name && (
                   <div
                     className="invalid-feedback"
                     style={{ display: 'block' }}
                   >
-                    {errors.type}
+                    {errors.name}
                   </div>
                 )}
               </div>
@@ -151,14 +151,14 @@ const TypeForm = ({
 const TypeFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleQuestionData }) => {
-    // console.log('singleQuestionData', singleQuestionData);
+    console.log('singleQuestionData', singleQuestionData);
     return {
-      type: (singleQuestionData && singleQuestionData.ques.type) || ''
+      name: (singleQuestionData && singleQuestionData.name) || ''
     };
   },
 
   validationSchema: yupObject().shape({
-    type: yupString()
+    name: yupString()
       .max(50)
       .required()
   }),
@@ -167,18 +167,16 @@ const TypeFormFormik = withFormik({
     const token = localStorage.getItem('token');
     // console.log('state values', values);
     if (props.isAddForm) {
-      props.questionsAdd(
+      props.typeAdd(
         {
-          question: values.question,
-          type: 'common'
+          name: values.name
         },
         token
       );
     } else {
-      props.questionsUpdate(
+      props.typeUpdate(
         {
-          question: values.question,
-          type: values.type
+          name: values.name
         },
         props.questionId,
         token
@@ -192,20 +190,20 @@ const TypeFormFormik = withFormik({
 })(TypeForm);
 
 const mapStateToProps = state => ({
-  data: state.questionAdd.data,
-  isRequesting: state.questionAdd.isRequesting,
-  isUpdateRequesting: state.questionUpdate.isRequesting,
-  isSuccess: state.questionAdd.isSuccess,
-  isUpdateSuccess: state.questionUpdate.isSuccess,
-  isError: state.questionAdd.isError,
-  singleQuestionData: state.question.data
+  data: state.typeAdd.data,
+  isRequesting: state.typeAdd.isRequesting,
+  isUpdateRequesting: state.typeAdd.isRequesting,
+  isSuccess: state.typeAdd.isSuccess,
+  isUpdateSuccess: state.typeUpdate.isSuccess,
+  isError: state.typeAdd.isError,
+  singleQuestionData: state.type.data
 });
 
 export default connect(mapStateToProps, {
-  questionsAdd,
-  questionsUpdate,
-  singleQuestion,
-  resetAddQuestion,
-  resetUpdateQuestion,
-  questions
+  typeAdd,
+  typeUpdate,
+  singleType,
+  resetAddType,
+  resetUpdateType,
+  types
 })(TypeFormFormik);

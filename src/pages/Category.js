@@ -13,7 +13,12 @@ import {
   deleteCategory,
   resetDeleteCategory
 } from '../store/actions/categoryActions';
-import { changeStatus, resetStatus } from '../store/actions/changeStatusActions';
+import { types } from '../store/actions/typeActions';
+
+import {
+  changeStatus,
+  resetStatus
+} from '../store/actions/changeStatusActions';
 
 const Category = ({
   categories,
@@ -27,7 +32,10 @@ const Category = ({
   resetStatus,
   isChangeStatusSuccess,
   isChangeStatusError,
-  isSuccess
+  isSuccess,
+  isRequesting,
+  allTypes,
+  types
 }) => {
   const token = localStorage.getItem('token');
   const [page, setPage] = useState(1);
@@ -51,7 +59,18 @@ const Category = ({
       sort ? 'asc' : 'desc',
       searchKeyword
     );
-  }, [categories, reloadToggle, page, sort, searchKeyword, isDeleteSuccess]);
+  }, [
+    categories,
+    reloadToggle,
+    page,
+    sort,
+    searchKeyword,
+    isDeleteSuccess,
+    token,
+    type,
+    count,
+    sortType
+  ]);
 
   useEffect(() => {
     if (isDeleteSuccess) {
@@ -68,7 +87,7 @@ const Category = ({
       });
     }
     resetDeleteCategory();
-  }, [isDeleteSuccess, isDeleteError]);
+  }, [isDeleteSuccess, isDeleteError, resetDeleteCategory]);
 
   useEffect(() => {
     if (isChangeStatusSuccess) {
@@ -92,7 +111,17 @@ const Category = ({
       });
       resetStatus();
     }
-  }, [isChangeStatusSuccess, isChangeStatusError]);
+  }, [
+    isChangeStatusSuccess,
+    isChangeStatusError,
+    status,
+    reloadToggle,
+    resetStatus
+  ]);
+
+  useEffect(() => {
+    types(token);
+  }, [token, types]);
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
@@ -123,7 +152,7 @@ const Category = ({
     setSort(!sort);
   };
 
-  // console.log('status', status);
+  console.log('allTypes   s', allTypes);
   return (
     <Layout title="Categories">
       <MainSidebar />
@@ -137,6 +166,7 @@ const Category = ({
               total={data && data.data && data.data.total}
               handAddFormToggle={handAddFormToggle}
               getCategoryId={getCategoryId}
+              isRequesting={isRequesting}
               // UserListing={UserListing}
               resetSingleCategory={resetSingleCategory}
               deleteCategory={deleteCategory}
@@ -152,6 +182,8 @@ const Category = ({
             />
           ) : (
             <CategoryForm
+              allTypes={allTypes}
+              categories={data && data.data && data.data.category}
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
               categoryId={categoryId}
@@ -173,17 +205,16 @@ const mapStateToProps = state => ({
   isDeleteSuccess: state.deleteCategory.isSuccess,
   isDeleteError: state.deleteCategory.isError,
   isChangeStatusSuccess: state.status.isSuccess,
-  isChangeStatusError: state.status.isError
+  isChangeStatusError: state.status.isError,
+  allTypes: state.types.data
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    categories,
-    resetSingleCategory,
-    deleteCategory,
-    resetDeleteCategory,
-    changeStatus,
-    resetStatus
-  }
-)(Category);
+export default connect(mapStateToProps, {
+  categories,
+  resetSingleCategory,
+  deleteCategory,
+  resetDeleteCategory,
+  changeStatus,
+  resetStatus,
+  types
+})(Category);

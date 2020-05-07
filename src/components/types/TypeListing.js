@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash';
 import Pagination from '../global/Pagination';
 import EmptyState from '../global/EmptyState';
 import TypeListItem from './TypeListItem';
+import Loading from '../global/Loader';
 
 const TypeListing = ({
   handleFormVisibilty,
@@ -21,7 +22,8 @@ const TypeListing = ({
   count,
   changeStatus,
   getStatus,
-  toggleSort
+  toggleSort,
+  isRequesting
 }) => {
   const [keyword, setKeyword] = useState('');
   useEffect(() => {
@@ -68,42 +70,46 @@ const TypeListing = ({
               </form>
             </div>
           </div>
-          <div className="card-body p-0">
-            <div className="table-responsive">
-              <table className="table table-striped">
-                <tr>
-                  <th>#</th>
-                  <th
-                    onClick={() => toggleSort('question')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Name
-                    <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
-                  </th>
-                  <th>Created At</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-                {questions &&
-                  questions.map((item, index) => (
-                    <TypeListItem
-                      key={item.id}
-                      item={item}
-                      index={index}
-                      handAddFormToggle={handAddFormToggle}
-                      handleFormVisibilty={handleFormVisibilty}
-                      getQuestionId={getQuestionId}
-                      deleteQuestion={deleteQuestion}
-                      changeStatus={changeStatus}
-                      getStatus={getStatus}
-                      page={page}
-                      count={count}
-                    />
-                  ))}
-              </table>
-              {isEmpty(questions) && <EmptyState />}
+          {isRequesting ? (
+            <Loading />
+          ) : (
+            <div className="card-body p-0">
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <tr>
+                    <th>#</th>
+                    <th
+                      onClick={() => toggleSort('question')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Name
+                      <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
+                    </th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                  {questions &&
+                    questions.map((item, index) => (
+                      <TypeListItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        handAddFormToggle={handAddFormToggle}
+                        handleFormVisibilty={handleFormVisibilty}
+                        getQuestionId={getQuestionId}
+                        deleteQuestion={deleteQuestion}
+                        changeStatus={changeStatus}
+                        getStatus={getStatus}
+                        page={page}
+                        count={count}
+                      />
+                    ))}
+                </table>
+                {isEmpty(questions) && <EmptyState />}
+              </div>
             </div>
-          </div>
+          )}
           {!isEmpty(questions) && (
             <Pagination total={total} setPage={setPage} page={page} />
           )}

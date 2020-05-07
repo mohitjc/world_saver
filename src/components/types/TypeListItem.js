@@ -19,13 +19,13 @@ const TypeListItem = ({
     const token = localStorage.getItem('token');
     swal({
       title: 'Are you sure?',
-      text: 'you want to delete the questions!',
+      text: 'you want to delete the type!',
       icon: 'warning',
       buttons: true,
       dangerMode: true
     }).then(willDelete => {
       if (willDelete) {
-        deleteQuestion({ model: 'questions', id: item && item.id }, token);
+        deleteQuestion({ model: 'type', id: item && item.id }, token);
       } else {
         return null;
       }
@@ -35,7 +35,7 @@ const TypeListItem = ({
   const handleStatus = status => {
     const token = localStorage.getItem('token');
     const obj = {
-      model: 'questions',
+      model: 'type',
       id: item && item.id,
       status
     };
@@ -46,11 +46,7 @@ const TypeListItem = ({
   return (
     <tr>
       <td>{index + page * count - (count - 1)}</td>
-      <td>
-        <Link to={`/question/${item && item.id}`}>
-          {item && item.question ? item.question : '___'}
-        </Link>
-      </td>
+      <td>{item && item.name ? item.name : '___'}</td>
 
       <td>
         {item && item.createdAt

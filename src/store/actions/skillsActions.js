@@ -7,7 +7,7 @@
 
 import {
   AXIOS_INSTANCE,
-  DELETE_BLOG_API,
+  DELETE_API,
   SKILLS_ADD,
   SKILLS_UPDATE,
   GET_SKILLS,
@@ -170,7 +170,7 @@ export function singleSkill(id, token) {
 export function deleteSkill(obj, token) {
   return dispatch => {
     dispatch(getRequest(DELETE_SINGLE_SKILL.DELETE_SINGLE_SKILL_REQUEST));
-    const getUrl = `${DELETE_BLOG_API}`;
+    const getUrl = `${DELETE_API}`;
     const config = { headers: { Authorization: `Bearer ${token}` }, data: obj };
     AXIOS_INSTANCE.delete(getUrl, config)
       .then(checkHttpStatus)

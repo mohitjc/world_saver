@@ -388,6 +388,7 @@ export const DELETE_SINGLE_PERMISSION = {
 };
 
 export const AUTHENTICATE = 'AUTHENTICATE';
+
 export const DEAUTHENTICATE = 'DEAUTHENTICATE';
 
 export const API_SLUG = 'http://34.235.127.120:4602';
@@ -408,7 +409,7 @@ export const QUESTION_API = `${API_SLUG}/question`;
 export const DELETE_QUESTION_API = `${API_SLUG}/delete`;
 export const ALL_BLOGS_API = `${API_SLUG}/blogs`;
 export const BLOG_API = `${API_SLUG}/blogs`;
-export const DELETE_BLOG_API = `${API_SLUG}/delete`;
+export const DELETE_API = `${API_SLUG}/delete`;
 export const IMAGE_UPLOAD_API = `${API_SLUG}/upload`;
 export const CHANGE_STATUS_API = `${API_SLUG}/changestatus`;
 export const TOTAL_COUNT_API = `${API_SLUG}/totalcount`;
@@ -423,3 +424,4 @@ export const USER_DETAIL_API = `${API_SLUG}/getuserdetail`;
 export const SUBSCRIBE_PACKAGE_API = `${API_SLUG}/subscribepackage`;
 export const DELETE_PACKAGE_API = `${API_SLUG}/delete`;
 export const PERMISSION_API = `${API_SLUG}/permission`;
+export const TYPES_API = `${API_SLUG}/type`;

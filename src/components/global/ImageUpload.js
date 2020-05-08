@@ -13,7 +13,7 @@ import { SyncLoader } from 'react-spinners';
 import { uploadImage } from '../../store/actions/blogsActions';
 import { API_SLUG } from '../../store/constants';
 
-const ImageUpload = ({ getImage, type, value, placeholder }) => {
+const ImageUpload = ({ getImage, type, value, placeholder, setImageType }) => {
   const [images, setImages] = useState([]);
   const { data, isRequesting, isSuccess } = useSelector(
     state => state.imageUpload
@@ -21,9 +21,13 @@ const ImageUpload = ({ getImage, type, value, placeholder }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isSuccess && placeholder === 'Add banner') {
+    if (isSuccess) {
       getImage(data && data.data.fullPath);
     }
+
+    // if (isSuccess && placeholder === 'Add banner') {
+
+    // }
 
     // setImages(values.images);
   }, [data, images, isSuccess]);
@@ -31,6 +35,9 @@ const ImageUpload = ({ getImage, type, value, placeholder }) => {
   const maxSize = 1048576;
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+    if (setImageType) {
+      setImageType(placeholder);
+    }
     getBase64(acceptedFiles[0]);
     // console.log('acceptedFiles', acceptedFiles);
     setImages(

@@ -86,21 +86,24 @@ const ProjectForm = ({
 
   // console.log('data', data);
 
+  const [imageType, setImageType] = useState(null);
+
   const getImage = value => {
     console.log('getImage', value);
-    setFieldValue('image', value);
-  };
-
-  const getBanner = value => {
-    console.log('getBanner', value);
-    setFieldValue('banner_img', value);
+    if (imageType === 'Add banner') {
+      setFieldValue('banner_image', value);
+    }
+    if (imageType === 'Add Project image') {
+      setFieldValue('image', value);
+    }
   };
 
   const getAddressDetails = value => {
+    console.log('address', value.latLng);
     setFieldValue('address', value.address);
+    setFieldValue('lat', value.latLng.lat);
+    setFieldValue('lng', value.latLng.lng);
   };
-
-  console.log('values', values);
 
   return (
     <div className="">
@@ -123,13 +126,15 @@ const ProjectForm = ({
                 type="projects"
                 value={values.image}
                 placeholder="Add Project image"
+                setImageType={setImageType}
               />
               <div className="ml-4">
                 <ImageUpload
-                  getImage={getBanner}
+                  getImage={getImage}
                   value={values.banner_image}
                   type="projects"
                   placeholder="Add banner"
+                  setImageType={setImageType}
                 />
               </div>
             </div>
@@ -317,7 +322,7 @@ const ProjectFormFormik = withFormik({
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // const { router } = props;
     const token = localStorage.getItem('token');
-    // console.log('state values', values);
+    console.log('state values', values);
     if (props.isAddForm) {
       props.skillAdd(
         {
@@ -326,7 +331,11 @@ const ProjectFormFormik = withFormik({
           category: values.category,
           address: values.address,
           city: values.city,
-          country: values.country
+          country: values.country,
+          lat: values.lat,
+          lng: values.lng,
+          image: values.image,
+          banner_image: values.banner_image
         },
         token
       );
@@ -339,6 +348,10 @@ const ProjectFormFormik = withFormik({
           address: values.address,
           city: values.city,
           country: values.country,
+          lat: values.lat,
+          lng: values.lng,
+          image: values.image,
+          banner_image: values.banner_image,
           id: props.skillId
         },
 
@@ -346,7 +359,7 @@ const ProjectFormFormik = withFormik({
       );
     }
 
-    // resetForm();
+    resetForm();
   },
 
   displayName: 'ProjectForm' // helps with React DevTools

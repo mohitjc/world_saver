@@ -45,7 +45,8 @@ const ArticleForm = ({
   singleBlogData,
   resetAddBlog,
   resetUpdateBlog,
-  uploadImage
+  uploadImage,
+  setFieldValue
 }) => {
   const token = localStorage.getItem('token');
 
@@ -94,7 +95,11 @@ const ArticleForm = ({
   }, [blogId, isAddForm, singleBlog, token]);
 
   const getInput = values => {
-    console.log('values', values);
+    setFieldValue('tags', values);
+  };
+
+  const getImage = value => {
+    setFieldValue('image', value);
   };
 
   return (
@@ -117,7 +122,13 @@ const ArticleForm = ({
           </div>
 
           <div className="card-body">
-            {!showUrlInput && <ImageUpload />}
+            {!showUrlInput && (
+              <ImageUpload
+                getImage={getImage}
+                type="blogs"
+                value={values.image}
+              />
+            )}
             <div className="row">
               {!showUrlInput && (
                 <div className="form-group col-md-4 col-12 mt-3">
@@ -176,6 +187,14 @@ const ArticleForm = ({
                     onBlur={handleBlur}
                     onChange={handleChange}
                   />
+                  {errors.description && touched.description && (
+                    <div
+                      className="invalid-feedback"
+                      style={{ display: 'block' }}
+                    >
+                      Please select description
+                    </div>
+                  )}
                 </div>
               )}
               <div className="form-group col-md-12 col-12">
@@ -249,9 +268,13 @@ const ArticleForm = ({
 const ArticleFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleBlogData }) => {
+    console.log('singleBlogData', singleBlogData);
     return {
       title: (singleBlogData && singleBlogData.title) || '',
-      description: (singleBlogData && singleBlogData.description) || ''
+      description: (singleBlogData && singleBlogData.description) || '',
+      image: (singleBlogData && singleBlogData.image) || '',
+      category: (singleBlogData && singleBlogData.category) || '',
+      tags: []
     };
   },
 
@@ -259,34 +282,37 @@ const ArticleFormFormik = withFormik({
     title: yupString()
       .max(50)
       .required(),
-    description: yupString().required()
-    // slug: yupString()
-    //   .max(20)
-    //   .required()
+    description: yupString().required(),
+    category: yupString().required()
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
+    console.log('values', values);
     // const { router } = props;
     const token = localStorage.getItem('token');
-    if (props.isAddForm) {
-      props.blogAdd(
-        {
-          title: values.title,
-          // slug: values.slug,
-          description: values.description
-        },
-        token
-      );
-    } else {
-      props.blogsUpdate(
-        {
-          title: values.title,
-          // slug: values.slug,
-          description: values.description
-        },
-        props.blogId,
-        token
-      );
-    }
+    // if (props.isAddForm) {
+    //   props.blogAdd(
+    //     {
+    //       title: values.title,
+    //       category: values.category,
+    //       image: values.image,
+    //       // slug: values.slug,
+    //       description: values.description
+    //     },
+    //     token
+    //   );
+    // } else {
+    //   props.blogsUpdate(
+    //     {
+    //       title: values.title,
+    //       category: values.category,
+    //       image: values.image,
+    //       // slug: values.slug,
+    //       description: values.description
+    //     },
+    //     props.blogId,
+    //     token
+    //   );
+    // }
 
     // resetForm();
   },

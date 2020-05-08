@@ -18,6 +18,9 @@ import {
   resetUpdateSkill,
   skills
 } from '../../store/actions/skillsActions';
+import ImageUpload from '../global/ImageUpload';
+import LocationSearchInput from '../global/LocationSearchInput';
+import BannerImageUpload from '../global/BannerImageUpload';
 
 const ProjectForm = ({
   handleFormVisibilty,
@@ -41,12 +44,13 @@ const ProjectForm = ({
   singleSkill,
   singleSkillData,
   resetAddSkill,
-  resetUpdateSkill
+  resetUpdateSkill,
+  setFieldValue
 }) => {
   const token = localStorage.getItem('token');
   useEffect(() => {
     if (isSuccess) {
-      swal('New skill added!', '', 'success');
+      swal('New Project added!', '', 'success');
       handleFormVisibilty();
       resetAddSkill();
       setReloadToggle(!reloadToggle);
@@ -56,7 +60,7 @@ const ProjectForm = ({
       resetUpdateSkill();
     }
     if (isUpdateSuccess) {
-      swal('Skill updated!', '', 'success');
+      swal('Project updated!', '', 'success');
       handleFormVisibilty();
       resetUpdateSkill();
       setReloadToggle(!reloadToggle);
@@ -82,6 +86,22 @@ const ProjectForm = ({
 
   // console.log('data', data);
 
+  const getImage = value => {
+    console.log('getImage', value);
+    setFieldValue('image', value);
+  };
+
+  const getBanner = value => {
+    console.log('getBanner', value);
+    setFieldValue('banner_img', value);
+  };
+
+  const getAddressDetails = value => {
+    setFieldValue('address', value.address);
+  };
+
+  console.log('values', values);
+
   return (
     <div className="">
       <button className="btn btn-primary mb-3" onClick={handleFormVisibilty}>
@@ -97,6 +117,22 @@ const ProjectForm = ({
             <h4>{isAddForm ? 'Add' : 'Edit'} Projects</h4>
           </div>
           <div className="card-body">
+            <div className="d-flex">
+              <ImageUpload
+                getImage={getImage}
+                type="projects"
+                value={values.image}
+                placeholder="Add Project image"
+              />
+              <div className="ml-4">
+                <ImageUpload
+                  getImage={getBanner}
+                  value={values.banner_image}
+                  type="projects"
+                  placeholder="Add banner"
+                />
+              </div>
+            </div>
             <div className="row">
               <div className="form-group col-md-4 col-12">
                 <label>Name</label>
@@ -116,6 +152,110 @@ const ProjectForm = ({
                     style={{ display: 'block' }}
                   >
                     {errors.name}
+                  </div>
+                )}
+              </div>
+              <div className="form-group col-md-4 col-12">
+                <label>Category</label>
+                <select
+                  name="category"
+                  className="form-control"
+                  value={values.category}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                >
+                  <option>Select category</option>
+                  <option value="test123">Type 1</option>
+                  {/* {allTypes &&
+                    allTypes.result.map(item => (
+                      <option value={item.id}>{item.name}</option>
+                    ))} */}
+                </select>
+                {errors.category && touched.category && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: 'block' }}
+                  >
+                    Please select type
+                  </div>
+                )}
+              </div>
+              <div className="form-group col-md-8 col-12">
+                <label>Description</label>
+                <textarea
+                  className="form-control fit-height"
+                  name="description"
+                  rows="4"
+                  cols="50"
+                  value={values.description}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+                {errors.description && touched.description && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: 'block' }}
+                  >
+                    {errors.description}
+                  </div>
+                )}
+              </div>
+              <div className="form-group col-md-8 col-12">
+                <label>Address</label>
+                <LocationSearchInput
+                  getAddressDetails={getAddressDetails}
+                  value={values.address}
+                />
+                {errors.address && touched.address && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: 'block' }}
+                  >
+                    {errors.address}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="row">
+              <div className="form-group col-md-4 col-12">
+                <label>City</label>
+                <input
+                  type="text"
+                  name="city"
+                  className="form-control"
+                  // value="john"
+
+                  value={values.city}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+                {errors.city && touched.city && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: 'block' }}
+                  >
+                    {errors.city}
+                  </div>
+                )}
+              </div>
+              <div className="form-group col-md-4 col-12">
+                <label>Country</label>
+                <input
+                  type="text"
+                  name="country"
+                  className="form-control"
+                  // value="john"
+
+                  value={values.country}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+                {errors.country && touched.country && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: 'block' }}
+                  >
+                    {errors.country}
                   </div>
                 )}
               </div>
@@ -149,16 +289,30 @@ const ProjectForm = ({
 const ProjectFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleSkillData }) => {
-    // console.log('singleSkillData', singleSkillData);
+    console.log('singleSkillData', singleSkillData);
     return {
-      name: singleSkillData && singleSkillData.skill.name
+      name: (singleSkillData && singleSkillData.name) || '',
+      description: (singleSkillData && singleSkillData.description) || '',
+      category: (singleSkillData && singleSkillData.category) || '',
+      image: (singleSkillData && singleSkillData.image) || '',
+      banner_image: (singleSkillData && singleSkillData.banner_image) || '',
+      address: (singleSkillData && singleSkillData.address) || '',
+      lat: (singleSkillData && singleSkillData.lat) || '',
+      lng: (singleSkillData && singleSkillData.lat) || '',
+      city: (singleSkillData && singleSkillData.city) || '',
+      country: (singleSkillData && singleSkillData.country) || ''
     };
   },
 
   validationSchema: yupObject().shape({
     name: yupString()
       .max(50)
-      .required()
+      .required(),
+    description: yupString().required(),
+    category: yupString().required(),
+    address: yupString().required(),
+    city: yupString().required(),
+    country: yupString().required()
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // const { router } = props;
@@ -167,7 +321,12 @@ const ProjectFormFormik = withFormik({
     if (props.isAddForm) {
       props.skillAdd(
         {
-          name: values.name
+          name: values.name,
+          description: values.description,
+          category: values.category,
+          address: values.address,
+          city: values.city,
+          country: values.country
         },
         token
       );
@@ -175,6 +334,11 @@ const ProjectFormFormik = withFormik({
       props.skillUpdate(
         {
           name: values.name,
+          description: values.description,
+          category: values.category,
+          address: values.address,
+          city: values.city,
+          country: values.country,
           id: props.skillId
         },
 
@@ -185,7 +349,7 @@ const ProjectFormFormik = withFormik({
     // resetForm();
   },
 
-  displayName: 'SkillsForm' // helps with React DevTools
+  displayName: 'ProjectForm' // helps with React DevTools
 })(ProjectForm);
 
 const mapStateToProps = state => ({

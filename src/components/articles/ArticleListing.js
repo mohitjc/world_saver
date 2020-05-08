@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash';
 import Pagination from '../global/Pagination';
 import BlogListItem from './ArticleListItem';
 import EmptyState from '../global/EmptyState';
+import Loading from '../global/Loader';
 
 const ArticleListing = ({
   handleFormVisibilty,
@@ -21,7 +22,8 @@ const ArticleListing = ({
   count,
   changeStatus,
   getStatus,
-  toggleSort
+  toggleSort,
+  isRequesting
 }) => {
   const [keyword, setKeyword] = useState('');
   useEffect(() => {
@@ -68,44 +70,48 @@ const ArticleListing = ({
               </form>
             </div>
           </div>
-          <div className="card-body p-0">
-            <div className="table-responsive">
-              <table className="table table-striped">
-                <tr>
-                  <th>#</th>
-                  <th
-                    onClick={() => toggleSort('title')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Name
-                    <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
-                  </th>
-                  <th>Description</th>
-                  <th>Slug</th>
-                  {/* <th>Created At</th> */}
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-                {blogs &&
-                  blogs.map((item, index) => (
-                    <BlogListItem
-                      key={item.id}
-                      item={item}
-                      index={index}
-                      handAddFormToggle={handAddFormToggle}
-                      handleFormVisibilty={handleFormVisibilty}
-                      getBlogId={getBlogId}
-                      deleteBlog={deleteBlog}
-                      changeStatus={changeStatus}
-                      getStatus={getStatus}
-                      page={page}
-                      count={count}
-                    />
-                  ))}
-              </table>
-              {isEmpty(blogs) && <EmptyState />}
+          {isRequesting ? (
+            <Loading />
+          ) : (
+            <div className="card-body p-0">
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <tr>
+                    <th>#</th>
+                    <th
+                      onClick={() => toggleSort('title')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Name
+                      <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
+                    </th>
+                    <th>Description</th>
+                    <th>Slug</th>
+                    {/* <th>Created At</th> */}
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                  {blogs &&
+                    blogs.map((item, index) => (
+                      <BlogListItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        handAddFormToggle={handAddFormToggle}
+                        handleFormVisibilty={handleFormVisibilty}
+                        getBlogId={getBlogId}
+                        deleteBlog={deleteBlog}
+                        changeStatus={changeStatus}
+                        getStatus={getStatus}
+                        page={page}
+                        count={count}
+                      />
+                    ))}
+                </table>
+                {isEmpty(blogs) && <EmptyState />}
+              </div>
             </div>
-          </div>
+          )}
           {!isEmpty(blogs) && (
             <Pagination total={total} setPage={setPage} page={page} />
           )}

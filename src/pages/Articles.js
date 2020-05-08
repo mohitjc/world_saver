@@ -30,7 +30,8 @@ const Articles = ({
   isDeleteError,
   changeStatus,
   resetStatus,
-  isSuccess
+  isSuccess,
+  isRequesting
 }) => {
   const token = localStorage.getItem('token');
   const [page, setPage] = useState(1);
@@ -162,6 +163,7 @@ const Articles = ({
               sort={sort}
               setSort={setSort}
               setPage={setPage}
+              isRequesting={isRequesting}
               page={page}
               count={count}
               getSearchKeyword={getSearchKeyword}

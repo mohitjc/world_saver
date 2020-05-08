@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useEffect } from 'react';
 
 import { isEmpty } from 'lodash';
@@ -16,9 +18,10 @@ const TagInput = ({
   const [value, setValue] = useState('');
   useEffect(() => {
     getInput(array);
-  }, [array, getInput, value]);
+  }, [array, value]);
 
-  const onSubmit = () => {
+  const onSubmit = e => {
+    e.preventDefault();
     if (!isEmpty(value)) {
       setArray(array.concat(value));
       setValue('');
@@ -31,13 +34,13 @@ const TagInput = ({
     setArray(filteredItems);
   };
 
-  console.log('array', array);
+  // console.log('array', array);
 
   return (
     <>
       <div className="form-group col-md-4 col-12 mt-3">
         <label>Add keyword</label>
-        <div className="d-flex align-items-center">
+        <form className="d-flex align-items-center">
           <input
             type="text"
             name="title"
@@ -49,10 +52,14 @@ const TagInput = ({
               setValue(e.target.value);
             }}
           />
-          <button type="button" class="btn btn-primary ml-3" onClick={onSubmit}>
+          <button
+            type="button submit"
+            class="btn btn-primary ml-3"
+            onClick={onSubmit}
+          >
             Add
           </button>
-        </div>
+        </form>
       </div>
       <div className="form-group col-md-12 col-12 mt-3">
         {array.map((item, index) => (

@@ -9,8 +9,7 @@ import { isUndefined } from 'lodash';
 import {
   AXIOS_INSTANCE,
   TYPE_ADD,
-  SUBSCRIPTION_TYPE_API,
-  ALL_SUBSCRIPTION_TYPE_API,
+  SINGLE_TYPE_API,
   DELETE_API,
   TYPE_UPDATE,
   GET_TYPES,
@@ -145,7 +144,7 @@ export function types(token, type, page, count, sortType, sort, search) {
 export function singleType(id, token) {
   return dispatch => {
     dispatch(getRequest(GET_SINGLE_TYPE.GET_SINGLE_TYPE_REQUEST));
-    const getUrl = `${TYPES_API}/${id}`;
+    const getUrl = `${SINGLE_TYPE_API}/${id}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.get(getUrl, config)
       .then(checkHttpStatus)

@@ -4124,3 +4124,10 @@ body:not(.sidebar-mini)
 #demo-upload {
   width: 20rem !important;
 }
+
+.autocomplete-dropdown-container {
+  position: absolute;
+  z-index: 1000;
+  background-color: #cdd3d8;
+}
+

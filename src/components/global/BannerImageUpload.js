@@ -19,15 +19,12 @@ const ImageUpload = ({ getImage, type, value, placeholder }) => {
     state => state.imageUpload
   );
   const dispatch = useDispatch();
-
   useEffect(() => {
-    if (isSuccess && placeholder === 'Add banner') {
+    if (isSuccess) {
       getImage(data && data.data.fullPath);
     }
-
     // setImages(values.images);
   }, [data, images, isSuccess]);
-
   const maxSize = 1048576;
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -152,6 +149,17 @@ const ImageUpload = ({ getImage, type, value, placeholder }) => {
           </div>
         </form>
       </div>
+      {/* <aside style={thumbsContainer}>
+        {!isEmpty(value) ? (
+          <div style={thumb}>
+            <div style={thumbInner}>
+              <img src={`${API_SLUG}/images/${type}/${value}`} style={img} />
+            </div>
+          </div>
+        ) : (
+          thumbs
+        )}
+      </aside> */}
     </>
   );
 };

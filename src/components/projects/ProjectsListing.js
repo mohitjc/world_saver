@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash';
 import Pagination from '../global/Pagination';
 import EmptyState from '../global/EmptyState';
 import SkillsListItem from './ProjectsListItem';
+import Loading from '../global/Loader';
 
 const ProjectsListing = ({
   handleFormVisibilty,
@@ -21,7 +22,8 @@ const ProjectsListing = ({
   count,
   changeStatus,
   getStatus,
-  toggleSort
+  toggleSort,
+  isRequesting
 }) => {
   const [keyword, setKeyword] = useState('');
   useEffect(() => {
@@ -68,42 +70,46 @@ const ProjectsListing = ({
               </form>
             </div>
           </div>
-          <div className="card-body p-0">
-            <div className="table-responsive">
-              <table className="table table-striped">
-                <tr>
-                  <th>#</th>
-                  <th
-                    onClick={() => toggleSort('name')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Name
-                    <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
-                  </th>
-                  <th>Created At</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-                {skills &&
-                  skills.map((item, index) => (
-                    <SkillsListItem
-                      key={item.id}
-                      item={item}
-                      index={index}
-                      handAddFormToggle={handAddFormToggle}
-                      handleFormVisibilty={handleFormVisibilty}
-                      getSkillId={getSkillId}
-                      deleteSkill={deleteSkill}
-                      changeStatus={changeStatus}
-                      getStatus={getStatus}
-                      page={page}
-                      count={count}
-                    />
-                  ))}
-              </table>
-              {isEmpty(skills) && <EmptyState />}
+          {isRequesting ? (
+            <Loading />
+          ) : (
+            <div className="card-body p-0">
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <tr>
+                    <th>#</th>
+                    <th
+                      onClick={() => toggleSort('name')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Name
+                      <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
+                    </th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                  {skills &&
+                    skills.map((item, index) => (
+                      <SkillsListItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        handAddFormToggle={handAddFormToggle}
+                        handleFormVisibilty={handleFormVisibilty}
+                        getSkillId={getSkillId}
+                        deleteSkill={deleteSkill}
+                        changeStatus={changeStatus}
+                        getStatus={getStatus}
+                        page={page}
+                        count={count}
+                      />
+                    ))}
+                </table>
+                {isEmpty(skills) && <EmptyState />}
+              </div>
             </div>
-          </div>
+          )}
           {skills && !isEmpty(skills) && (
             <Pagination total={total} setPage={setPage} />
           )}

@@ -25,7 +25,7 @@ const ProjectsListItem = ({
       dangerMode: true
     }).then(willDelete => {
       if (willDelete) {
-        deleteSkill({ model: 'skills', id: item && item.id }, token);
+        deleteSkill({ model: 'projects', id: item && item.id }, token);
       } else {
         return null;
       }
@@ -35,7 +35,7 @@ const ProjectsListItem = ({
   const handleStatus = status => {
     const token = localStorage.getItem('token');
     const obj = {
-      model: 'skills',
+      model: 'projects',
       id: item && item.id,
       status
     };

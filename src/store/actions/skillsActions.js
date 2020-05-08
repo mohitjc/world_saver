@@ -14,7 +14,7 @@ import {
   GET_SINGLE_SKILL,
   DELETE_SINGLE_SKILL,
   SKILLS_API,
-  SKILL_API
+  PROJECT_API
 } from '../constants';
 import { checkHttpStatus, parseJSON } from '../../utils/helpers';
 import { getRequest, getSuccess, getFailure, reset } from './index';
@@ -24,7 +24,7 @@ import { getRequest, getSuccess, getFailure, reset } from './index';
 export function skillAdd(postObj, token) {
   return dispatch => {
     dispatch(getRequest(SKILLS_ADD.SKILLS_ADD_REQUEST));
-    const getUrl = SKILL_API;
+    const getUrl = PROJECT_API;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.post(getUrl, postObj, config)
       .then(checkHttpStatus)
@@ -59,7 +59,7 @@ export function skillAdd(postObj, token) {
 export function skillUpdate(obj, token) {
   return dispatch => {
     dispatch(getRequest(SKILLS_UPDATE.SKILLS_UPDATE_REQUEST));
-    const getUrl = `${SKILL_API}`;
+    const getUrl = `${PROJECT_API}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.put(getUrl, obj, config)
       .then(checkHttpStatus)
@@ -94,7 +94,7 @@ export function skillUpdate(obj, token) {
 export function skills(token, type, page, count, sortType, sort, search) {
   return dispatch => {
     dispatch(getRequest(GET_SKILLS.GET_SKILLS_REQUEST));
-    const getUrl = `${SKILLS_API}?type=${type}&search=${search}&page=${page}&count=${10}&sortBy=${sortType} ${sort}`;
+    const getUrl = `${PROJECT_API}?type=${type}&search=${search}&page=${page}&count=${10}&sortBy=${sortType} ${sort}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.get(getUrl, config)
       .then(checkHttpStatus)
@@ -131,7 +131,7 @@ export function skills(token, type, page, count, sortType, sort, search) {
 export function singleSkill(id, token) {
   return dispatch => {
     dispatch(getRequest(GET_SINGLE_SKILL.GET_SINGLE_SKILL_REQUEST));
-    const getUrl = `${SKILL_API}?id=${id}`;
+    const getUrl = `${PROJECT_API}/${id}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.get(getUrl, config)
       .then(checkHttpStatus)

@@ -31,7 +31,8 @@ const Project = ({
   resetStatus,
   isChangeStatusSuccess,
   isChangeStatusError,
-  isSuccess
+  isSuccess,
+  isRequesting
 }) => {
   const token = localStorage.getItem('token');
   const [page, setPage] = useState(1);
@@ -70,7 +71,7 @@ const Project = ({
 
   useEffect(() => {
     if (isDeleteSuccess) {
-      swal('Skill has been deleted!', {
+      swal('Project has been deleted!', {
         buttons: false,
         timer: 1500
       });
@@ -89,8 +90,8 @@ const Project = ({
     if (isChangeStatusSuccess) {
       swal(
         status === 'active'
-          ? 'Skill has been activated'
-          : 'Skill has been deactivated',
+          ? 'Project has been activated'
+          : 'Project has been deactivated',
         {
           buttons: false,
           timer: 1500
@@ -154,10 +155,11 @@ const Project = ({
           {!formVisibility ? (
             <ProjectsListing
               handleFormVisibilty={handleFormVisibilty}
-              skills={data && data.data && data.data.skill}
-              total={data && data.data && data.data.total}
+              skills={data && data.result}
+              total={data && data.total}
               handAddFormToggle={handAddFormToggle}
               getSkillId={getSkillId}
+              isRequesting={isRequesting}
               // UserListing={UserListing}
               resetSingleSkill={resetSingleSkill}
               deleteSkill={deleteSkill}

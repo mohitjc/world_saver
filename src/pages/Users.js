@@ -17,7 +17,10 @@ import {
   resetDeleteUser
 } from '../store/actions/userActions';
 
-import { changeStatus, resetStatus } from '../store/actions/changeStatusActions';
+import {
+  changeStatus,
+  resetStatus
+} from '../store/actions/changeStatusActions';
 
 const Users = ({
   users,
@@ -32,7 +35,8 @@ const Users = ({
   changeStatus,
   resetStatus,
   isSuccess,
-  location
+  location,
+  isRequesting
 }) => {
   const [allUsers, setAllUsers] = useState(null);
   const token = localStorage.getItem('token');
@@ -74,12 +78,16 @@ const Users = ({
   }, [
     users,
     reloadToggle,
-    location.state && location.state.role,
     page,
     sort,
     roles,
     searchKeyword,
-    isDeleteSuccess
+    isDeleteSuccess,
+    location.state,
+    token,
+    type,
+    count,
+    sortType
   ]);
 
   useEffect(() => {
@@ -94,7 +102,7 @@ const Users = ({
       swal('User has been deleted');
     }
     resetDeleteUser();
-  }, [isDeleteSuccess]);
+  }, [isDeleteError, isDeleteSuccess, resetDeleteUser]);
 
   useEffect(() => {
     if (isChangeStatusSuccess) {
@@ -118,7 +126,13 @@ const Users = ({
       });
       resetStatus();
     }
-  }, [isChangeStatusSuccess, isChangeStatusError]);
+  }, [
+    isChangeStatusSuccess,
+    isChangeStatusError,
+    status,
+    reloadToggle,
+    resetStatus
+  ]);
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
@@ -175,6 +189,7 @@ const Users = ({
               total={data && data.data && data.data.total}
               handAddFormToggle={handAddFormToggle}
               getUserId={getUserId}
+              isRequesting={isRequesting}
               // UserListing={UserListing}
               resetSingleUser={resetSingleUser}
               deleteUser={deleteUser}
@@ -214,14 +229,11 @@ const mapStateToProps = state => ({
   isChangeStatusError: state.status.isError
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    users,
-    resetSingleUser,
-    deleteUser,
-    resetDeleteUser,
-    changeStatus,
-    resetStatus
-  }
-)(withRouter(Users));
+export default connect(mapStateToProps, {
+  users,
+  resetSingleUser,
+  deleteUser,
+  resetDeleteUser,
+  changeStatus,
+  resetStatus
+})(withRouter(Users));

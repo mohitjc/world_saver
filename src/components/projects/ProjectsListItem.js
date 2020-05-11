@@ -19,13 +19,13 @@ const ProjectsListItem = ({
     const token = localStorage.getItem('token');
     swal({
       title: 'Are you sure?',
-      text: 'you want to delete the skill!',
+      text: 'you want to delete the project!',
       icon: 'warning',
       buttons: true,
       dangerMode: true
     }).then(willDelete => {
       if (willDelete) {
-        deleteSkill({ model: 'projects', id: item && item.id }, token);
+        deleteSkill({ model: 'project', id: item && item.id }, token);
       } else {
         return null;
       }
@@ -35,7 +35,7 @@ const ProjectsListItem = ({
   const handleStatus = status => {
     const token = localStorage.getItem('token');
     const obj = {
-      model: 'projects',
+      model: 'project',
       id: item && item.id,
       status
     };

@@ -3,6 +3,7 @@ import { isEmpty } from 'lodash';
 import UserListItem from './UserListItem';
 import Pagination from '../global/Pagination';
 import EmptyState from '../global/EmptyState';
+import Loading from '../global/Loader';
 
 const UserListing = ({
   handleFormVisibilty,
@@ -20,7 +21,8 @@ const UserListing = ({
   getStatus,
   toggleSort,
   page,
-  count
+  count,
+  isRequesting
 }) => {
   const [keyword, setKeyword] = useState('');
   useEffect(() => {
@@ -67,49 +69,53 @@ const UserListing = ({
               </form>
             </div>
           </div>
-          <div className="card-body p-0">
-            <div className="table-responsive">
-              <table className="table table-striped">
-                <tr>
-                  <th>#</th>
-                  <th
-                    onClick={() => toggleSort('fullName')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Full Name{' '}
-                    <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
-                  </th>
-                  <th
-                    onClick={() => toggleSort('username')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    Email{' '}
-                    <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
-                  </th>
-                  <th>Mobile</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-                {users &&
-                  users.map((item, index) => (
-                    <UserListItem
-                      key={item.id}
-                      item={item}
-                      index={index}
-                      handAddFormToggle={handAddFormToggle}
-                      handleFormVisibilty={handleFormVisibilty}
-                      getUserId={getUserId}
-                      deleteUser={deleteUser}
-                      changeStatus={changeStatus}
-                      getStatus={getStatus}
-                      page={page}
-                      count={count}
-                    />
-                  ))}
-              </table>
-              {users && isEmpty(users) && <EmptyState />}
+          {isRequesting ? (
+            <Loading />
+          ) : (
+            <div className="card-body p-0">
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <tr>
+                    <th>#</th>
+                    <th
+                      onClick={() => toggleSort('fullName')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Full Name{' '}
+                      <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
+                    </th>
+                    <th
+                      onClick={() => toggleSort('username')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      Email{' '}
+                      <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
+                    </th>
+                    <th>Mobile</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                  {users &&
+                    users.map((item, index) => (
+                      <UserListItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        handAddFormToggle={handAddFormToggle}
+                        handleFormVisibilty={handleFormVisibilty}
+                        getUserId={getUserId}
+                        deleteUser={deleteUser}
+                        changeStatus={changeStatus}
+                        getStatus={getStatus}
+                        page={page}
+                        count={count}
+                      />
+                    ))}
+                </table>
+                {users && isEmpty(users) && <EmptyState />}
+              </div>
             </div>
-          </div>
+          )}
           {users && !isEmpty(users) && (
             <Pagination total={total} setPage={setPage} page={page} />
           )}

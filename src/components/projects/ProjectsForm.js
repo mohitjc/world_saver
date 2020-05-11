@@ -359,7 +359,7 @@ const ProjectFormFormik = withFormik({
           banner_image: values.banner_image,
           id: props.skillId
         },
-
+        props.skillId,
         token
       );
     }

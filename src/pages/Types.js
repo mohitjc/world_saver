@@ -33,7 +33,8 @@ const Types = ({
   changeStatus,
   resetStatus,
   isRequesting,
-  isSuccess
+  isSuccess,
+  changeStatusRequesting
 }) => {
   const token = localStorage.getItem('token');
   const [page, setPage] = useState(1);
@@ -161,6 +162,7 @@ const Types = ({
               handAddFormToggle={handAddFormToggle}
               getQuestionId={getTypeId}
               isRequesting={isRequesting}
+              changeStatusRequesting={changeStatusRequesting}
               // UserListing={UserListing}
               resetSingleQuestion={resetSingleType}
               deleteQuestion={deleteType}
@@ -196,6 +198,7 @@ const mapStateToProps = state => ({
   isError: state.types.isError,
   isDeleteSuccess: state.deleteType.isSuccess,
   isDeleteError: state.deleteType.isError,
+  changeStatusRequesting: state.status.isRequesting,
   isChangeStatusSuccess: state.status.isSuccess,
   isChangeStatusError: state.status.isError
 });

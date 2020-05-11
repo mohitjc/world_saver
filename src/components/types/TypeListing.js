@@ -23,9 +23,11 @@ const TypeListing = ({
   changeStatus,
   getStatus,
   toggleSort,
-  isRequesting
+  isRequesting,
+  changeStatusRequesting
 }) => {
   const [keyword, setKeyword] = useState('');
+  const [currentId, setCurrentId] = useState(null);
   useEffect(() => {
     getSearchKeyword(keyword);
   }, [getSearchKeyword, keyword]);
@@ -103,6 +105,9 @@ const TypeListing = ({
                         getStatus={getStatus}
                         page={page}
                         count={count}
+                        currentId={currentId}
+                        setCurrentId={setCurrentId}
+                        changeStatusRequesting={changeStatusRequesting}
                       />
                     ))}
                 </table>

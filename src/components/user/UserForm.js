@@ -63,14 +63,24 @@ const UserEditForm = ({
       resetUpdateUser();
       setReloadToggle(!reloadToggle);
     }
-  }, [isSuccess, isError, isUpdateSuccess]);
+  }, [
+    isSuccess,
+    isError,
+    isUpdateSuccess,
+    handleFormVisibilty,
+    resetAddUser,
+    setReloadToggle,
+    reloadToggle,
+    data,
+    resetUpdateUser
+  ]);
 
   useEffect(() => {
     if (!isAddForm) {
       singleUser(userId, token);
       // swal('New user added!', '', 'success');
     }
-  }, [singleUser]);
+  }, [isAddForm, singleUser, token, userId]);
 
   // console.log('data', data);
 
@@ -90,28 +100,6 @@ const UserEditForm = ({
           </div>
           <div className="card-body">
             <div className="row">
-              <div className="form-group col-md-4 col-12">
-                <label>Roles</label>
-                <select
-                  name="roles"
-                  className="form-control"
-                  value={values.roles}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                >
-                  <option>Select role</option>
-                  <option value="U">User</option>
-                  <option value="A">Admin</option>
-                </select>
-                {errors.roles && touched.roles && (
-                  <div
-                    className="invalid-feedback"
-                    style={{ display: 'block' }}
-                  >
-                    Please select role
-                  </div>
-                )}
-              </div>
               <div className="form-group col-md-4 col-12">
                 <label>First Name</label>
                 <input
@@ -145,25 +133,30 @@ const UserEditForm = ({
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
-                <div className="invalid-feedback">
-                  Please fill in the last name
-                </div>
+                {errors.lastName && touched.lastName && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: 'block' }}
+                  >
+                    {errors.lastName}
+                  </div>
+                )}
               </div>
             </div>
             <div className="row">
-              <div className="form-group col-md-7 col-12">
+              <div className="form-group col-md-4 col-12">
                 <label>Email</label>
                 <input
                   type="email"
                   className="form-control"
                   // value="ujang@maman.com"
-                  name="username"
+                  name="email"
                   required=""
-                  value={values.username}
+                  value={values.email}
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
-                {errors.username && touched.username && (
+                {errors.email && touched.email && (
                   <div
                     className="invalid-feedback"
                     style={{ display: 'block' }}
@@ -172,7 +165,7 @@ const UserEditForm = ({
                   </div>
                 )}
               </div>
-              <div className="form-group col-md-5 col-12">
+              <div className="form-group col-md-4 col-12">
                 <label>Phone</label>
                 <input
                   type="number"
@@ -253,7 +246,7 @@ const UserEditFormFormik = withFormik({
     return {
       firstName: (singleUserData && singleUserData.firstName) || '',
       lastName: (singleUserData && singleUserData.lastName) || '',
-      username: (singleUserData && singleUserData.username) || '',
+      email: (singleUserData && singleUserData.email) || '',
       mobile: (singleUserData && singleUserData.mobile) || '',
       roles: (singleUserData && singleUserData.roles) || ''
     };
@@ -263,9 +256,16 @@ const UserEditFormFormik = withFormik({
     firstName: yupString()
       .max(15)
       .required(),
-    roles: yupString().required(),
-    username: yupString().required(),
-    mobile: yupString().length(10)
+    lastName: yupString()
+      .max(15)
+      .required(),
+    // roles: yupString().required(),
+    email: yupString()
+      .email()
+      .required(),
+    mobile: yupString()
+      .length(10)
+      .required()
     // .required()
     // password: yupString().min(8)
   }),
@@ -278,9 +278,9 @@ const UserEditFormFormik = withFormik({
         {
           firstName: values.firstName,
           lastName: values.lastName,
-          username: values.username,
+          email: values.email,
           mobile: values.mobile,
-          roles: values.roles
+          roles: 'U'
         },
         token
       );
@@ -291,7 +291,7 @@ const UserEditFormFormik = withFormik({
           lastName: values.lastName,
           username: values.username,
           mobile: values.mobile,
-          roles: values.roles
+          roles: 'U'
         },
         props.userId,
         token
@@ -314,13 +314,10 @@ const mapStateToProps = state => ({
   singleUserData: state.user.data
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    userAdd,
-    userUpdate,
-    singleUser,
-    resetAddUser,
-    resetUpdateUser
-  }
-)(UserEditFormFormik);
+export default connect(mapStateToProps, {
+  userAdd,
+  userUpdate,
+  singleUser,
+  resetAddUser,
+  resetUpdateUser
+})(UserEditFormFormik);

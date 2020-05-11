@@ -13,7 +13,10 @@ const TypeListItem = ({
   changeStatus,
   getStatus,
   page,
-  count
+  count,
+  setCurrentId,
+  currentId,
+  changeStatusRequesting
 }) => {
   const handleDelete = () => {
     const token = localStorage.getItem('token');
@@ -43,6 +46,8 @@ const TypeListItem = ({
     changeStatus(obj, token);
   };
 
+  const loading = currentId === item.id && changeStatusRequesting;
+
   return (
     <tr>
       <td>{index + page * count - (count - 1)}</td>
@@ -58,17 +63,23 @@ const TypeListItem = ({
           <button
             type="button"
             className="badge badge-warning"
-            onClick={() => handleStatus('active')}
+            onClick={() => {
+              handleStatus('active');
+              setCurrentId(item && item.id);
+            }}
           >
-            Deactive
+            {loading ? 'Loading...' : 'Deactive'}
           </button>
         ) : (
           <button
             type="button"
             className="badge badge-success"
-            onClick={() => handleStatus('deactive')}
+            onClick={() => {
+              handleStatus('deactive');
+              setCurrentId(item && item.id);
+            }}
           >
-            Active
+            {loading ? 'Loading...' : 'Active'}
           </button>
         )}
       </td>

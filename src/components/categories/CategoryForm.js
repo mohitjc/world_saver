@@ -256,7 +256,10 @@ const CatgeoryFormFormik = withFormik({
     } else {
       props.categoryUpdate(
         {
-          name: values.name
+          name: values.name,
+          typeid: values.category,
+          parentid: values.subCategory,
+          image: values.image
         },
         props.categoryId,
         token

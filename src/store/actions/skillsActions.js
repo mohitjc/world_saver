@@ -56,10 +56,10 @@ export function skillAdd(postObj, token) {
 
 // update skill
 
-export function skillUpdate(obj, token) {
+export function skillUpdate(obj, id, token) {
   return dispatch => {
     dispatch(getRequest(SKILLS_UPDATE.SKILLS_UPDATE_REQUEST));
-    const getUrl = `${PROJECT_API}`;
+    const getUrl = `${PROJECT_API}/${id}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.put(getUrl, obj, config)
       .then(checkHttpStatus)

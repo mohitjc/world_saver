@@ -46,7 +46,11 @@ const ProjectsListItem = ({
   return (
     <tr>
       <td>{index + page * count - (count - 1)}</td>
-      <td>{item && item.name ? item.name : '___'}</td>
+      <td>
+        <Link to={`/project/${item && item.id}`}>
+          {item && item.name ? item.name : '___'}
+        </Link>
+      </td>
 
       <td>
         {item && item.createdAt

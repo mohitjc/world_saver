@@ -9,20 +9,21 @@ import UserProfile from '../components/user/UserProfile';
 
 import { singleCategory } from '../store/actions/categoryActions';
 import CategoryProfile from '../components/categories/CategoryProfile';
+import { singleSkill, skills } from '../store/actions/skillsActions';
 
-const ProjectView = ({ match, data, singleCategory }) => {
-  const { categoryId } = match.params;
-  // console.log('data data', data);
+const ProjectView = ({ match, data, singleSkill }) => {
+  const { projectId } = match.params;
+  console.log('data data', data);
   const token = localStorage.getItem('token');
   useEffect(() => {
-    singleCategory(categoryId, token);
-  }, [categoryId, singleCategory, token]);
+    singleSkill(projectId, token);
+  }, [projectId, singleSkill, token]);
   return (
     <Layout>
       <MainSidebar />
       <div className="main-content">
         <section className="section">
-          <SectionHeader title="Category" />
+          <SectionHeader title={data && data.name} />
           <CategoryProfile data={data} />
         </section>
       </div>
@@ -31,10 +32,10 @@ const ProjectView = ({ match, data, singleCategory }) => {
 };
 
 const mapStateToProps = state => ({
-  data: state.category.data,
-  isRequesting: state.category.isRequesting,
-  isSuccess: state.category.isSuccess,
-  isError: state.category.isError
+  data: state.skill.data,
+  isRequesting: state.skill.isRequesting,
+  isSuccess: state.skill.isSuccess,
+  isError: state.skill.isError
 });
 
-export default connect(mapStateToProps, { singleCategory })(ProjectView);
+export default connect(mapStateToProps, { singleSkill })(ProjectView);

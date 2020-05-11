@@ -8,7 +8,7 @@ const CategoryProfile = ({ data }) => {
         <div className="col-12 col-md-12 col-lg-12">
           <div className="card profile-widget">
             <div className="profile-widget-description">
-              <div className="profile-widget-name">{data && data.name}</div>
+              {/* <div className="profile-widget-name">{data && data.name}</div> */}
               {data && data.description}
             </div>
           </div>

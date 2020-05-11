@@ -13,7 +13,9 @@ import {
   GET_SINGLE_CATEGORY,
   DELETE_SINGLE_CATEGORY,
   CATEGORY_API,
-  ALL_CATEGORY_API
+  ALL_CATEGORY_API,
+  GET_CATEGORY_BY_TYPE,
+  CATEGORY_BY_TYPE_API
 } from '../constants';
 import { checkHttpStatus, parseJSON } from '../../utils/helpers';
 import { getRequest, getSuccess, getFailure, reset } from './index';
@@ -156,6 +158,46 @@ export function singleCategory(id, token) {
             : 'Something went wrong!';
         dispatch(
           getFailure(GET_SINGLE_CATEGORY.GET_SINGLE_CATEGORY_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+export function getCatByType(id, token) {
+  return dispatch => {
+    dispatch(getRequest(GET_CATEGORY_BY_TYPE.GET_CATEGORY_BY_TYPE_REQUEST));
+    const getUrl = `${CATEGORY_BY_TYPE_API}?typeid=${id}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.get(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        console.log('getCatByType', data);
+        if (data.success) {
+          dispatch(
+            getSuccess(
+              GET_CATEGORY_BY_TYPE.GET_CATEGORY_BY_TYPE_SUCCESS,
+              data.data
+            )
+          );
+        }
+      })
+      .catch(error => {
+        console.log('error', error.response);
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(GET_CATEGORY_BY_TYPE.GET_CATEGORY_BY_TYPE_FAILURE, {
             data: {
               statusCode: 403,
               // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",

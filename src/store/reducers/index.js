@@ -67,6 +67,8 @@ import userCount from './userCountReducer';
 
 import profile from './getProfileReducer';
 
+import catByType from './catByTypeReducer';
+
 const rootReducer = combineReducers({
   auth,
   login,
@@ -121,7 +123,8 @@ const rootReducer = combineReducers({
   status,
   totalCount,
   userCount,
-  profile
+  profile,
+  catByType
 });
 
 export default rootReducer;

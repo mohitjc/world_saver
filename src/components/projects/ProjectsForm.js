@@ -45,7 +45,8 @@ const ProjectForm = ({
   singleSkillData,
   resetAddSkill,
   resetUpdateSkill,
-  setFieldValue
+  setFieldValue,
+  catByTypeData
 }) => {
   const token = localStorage.getItem('token');
   useEffect(() => {
@@ -99,7 +100,7 @@ const ProjectForm = ({
   };
 
   const getAddressDetails = value => {
-    console.log('address', value.latLng);
+    // console.log('address', value.latLng);
     setFieldValue('address', value.address);
     setFieldValue('lat', value.latLng.lat);
     setFieldValue('lng', value.latLng.lng);
@@ -170,7 +171,11 @@ const ProjectForm = ({
                   onChange={handleChange}
                 >
                   <option>Select category</option>
-                  <option value="test123">Type 1</option>
+                  {catByTypeData &&
+                    catByTypeData.map(item => (
+                      <option value={item.id}>{item.name}</option>
+                    ))}
+
                   {/* {allTypes &&
                     allTypes.result.map(item => (
                       <option value={item.id}>{item.name}</option>

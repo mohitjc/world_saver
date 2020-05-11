@@ -16,6 +16,7 @@ import {
   changeStatus,
   resetStatus
 } from '../store/actions/changeStatusActions';
+import { getCatByType } from '../store/actions/categoryActions';
 import ProjectsListing from '../components/projects/ProjectsListing';
 import ProjectsForm from '../components/projects/ProjectsForm';
 
@@ -32,7 +33,9 @@ const Project = ({
   isChangeStatusSuccess,
   isChangeStatusError,
   isSuccess,
-  isRequesting
+  isRequesting,
+  getCatByType,
+  catByTypeData
 }) => {
   const token = localStorage.getItem('token');
   const [page, setPage] = useState(1);
@@ -116,6 +119,10 @@ const Project = ({
     resetStatus
   ]);
 
+  useEffect(() => {
+    getCatByType('5eb4f8b871d9eb3ee7bc97f5', token);
+  }, [getCatByType, token]);
+
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
   const [skillId, setSkillId] = useState(null);
@@ -145,7 +152,7 @@ const Project = ({
     setSort(!sort);
   };
 
-  // console.log('status', status);
+  console.log('catByTypeData', catByTypeData);
   return (
     <Layout title="Projects">
       <MainSidebar />
@@ -180,6 +187,7 @@ const Project = ({
               skillId={skillId}
               setReloadToggle={setReloadToggle}
               reloadToggle={reloadToggle}
+              catByTypeData={catByTypeData}
             />
           )}
         </section>
@@ -196,7 +204,8 @@ const mapStateToProps = state => ({
   isDeleteSuccess: state.deleteSkill.isSuccess,
   isDeleteError: state.deleteSkill.isError,
   isChangeStatusSuccess: state.status.isSuccess,
-  isChangeStatusError: state.status.isError
+  isChangeStatusError: state.status.isError,
+  catByTypeData: state.catByType.data
 });
 
 export default connect(mapStateToProps, {
@@ -205,5 +214,6 @@ export default connect(mapStateToProps, {
   deleteSkill,
   resetDeleteSkill,
   changeStatus,
-  resetStatus
+  resetStatus,
+  getCatByType
 })(Project);

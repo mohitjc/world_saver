@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { isNull } from 'lodash';
 
 import Layout from '../components/global/Layout';
 import MainSidebar from '../components/global/MainSidebar';
@@ -39,7 +40,11 @@ const Home = ({
           <SectionHeader title="Dashboard" />
           <Stats
             totalCount={(data && projectsData.total) || 0}
-            userCount={(userData && userData.data && userData.data.total) || 0}
+            userCount={
+              isNull(userData)
+                ? 0
+                : (userData && userData.data && userData.data.total) || 0
+            }
             blogCount={(blogData && blogData.data.total) || 0}
           />
           <div className="row">

@@ -54,7 +54,7 @@ const ArticleForm = ({
 
   const { data: uploadData } = useSelector(state => state.imageUpload);
 
-  console.log('uploadData', uploadData);
+  // console.log('uploadData', uploadData);
 
   useEffect(() => {
     if (isSuccess) {
@@ -268,7 +268,7 @@ const ArticleForm = ({
 const ArticleFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleBlogData }) => {
-    console.log('singleBlogData', singleBlogData);
+    // console.log('singleBlogData', singleBlogData);
     return {
       title: (singleBlogData && singleBlogData.title) || '',
       description: (singleBlogData && singleBlogData.description) || '',
@@ -286,7 +286,7 @@ const ArticleFormFormik = withFormik({
     category: yupString().required()
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
-    console.log('values', values);
+    // console.log('values', values);
     // const { router } = props;
     const token = localStorage.getItem('token');
     // if (props.isAddForm) {

@@ -89,7 +89,7 @@ const CategoryForm = ({
     setFieldValue('image', value);
   };
 
-  console.log('values', values);
+  // console.log('values', values);
 
   return (
     <div className="">
@@ -220,7 +220,7 @@ const CategoryForm = ({
 const CatgeoryFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleCategoryData }) => {
-    console.log('singleCategoryData', singleCategoryData);
+    // console.log('singleCategoryData', singleCategoryData);
     return {
       name: (singleCategoryData && singleCategoryData.name) || '',
       subCategory: (singleCategoryData && singleCategoryData.parentid) || '',
@@ -242,7 +242,7 @@ const CatgeoryFormFormik = withFormik({
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // const { router } = props;
     const token = localStorage.getItem('token');
-    console.log('state values', values);
+    // console.log('state values', values);
     if (props.isAddForm) {
       props.categoryAdd(
         {

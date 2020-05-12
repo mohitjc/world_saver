@@ -39,7 +39,7 @@ const Home = ({
           <SectionHeader title="Dashboard" />
           <Stats
             totalCount={data && projectsData.total}
-            userCount={userData && userData.data.total}
+            userCount={userData && userData.data && userData.data.total}
             blogCount={blogData && blogData.data.total}
           />
           <div className="row">

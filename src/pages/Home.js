@@ -38,9 +38,9 @@ const Home = ({
         <section className="section">
           <SectionHeader title="Dashboard" />
           <Stats
-            totalCount={data && projectsData.total}
-            userCount={userData && userData.data && userData.data.total}
-            blogCount={blogData && blogData.data.total}
+            totalCount={(data && projectsData.total) || 0}
+            userCount={(userData && userData.data && userData.data.total) || 0}
+            blogCount={(blogData && blogData.data.total) || 0}
           />
           <div className="row">
             <StatsGarph />

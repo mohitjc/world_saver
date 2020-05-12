@@ -45,7 +45,11 @@ const Home = ({
                 ? userData.data.total
                 : 0
             }
-            blogCount={(blogData && blogData.data.total) || 0}
+            blogCount={
+              blogData && blogData.data && !isNull(blogData.data.total)
+                ? blogData.data.total
+                : 0
+            }
           />
           <div className="row">
             <StatsGarph />

@@ -9,15 +9,28 @@ import SectionHeader from '../components/global/SectionHeader';
 
 import { totalCount, userCount } from '../store/actions/totalCountActions';
 import { blogs } from '../store/actions/blogsActions';
+import { skills } from '../store/actions/skillsActions';
+import { users } from '../store/actions/userActions';
 
-const Home = ({ totalCount, userCount, blogs, data, blogData, userData }) => {
+const Home = ({
+  totalCount,
+  userCount,
+  blogs,
+  skills,
+  users,
+  data,
+  blogData,
+  userData,
+  projectsData
+}) => {
   const token = localStorage.getItem('token');
   useEffect(() => {
+    skills(token, 'I', 1, 10, 'createdAt', 'asc', '');
     totalCount(token);
-    userCount(token);
+    users(token, '', 1, 10, 'createdAt', '', 'asc', '');
     blogs(token, 'I', 1, 100, 'createdAt', 'asc', '');
-  }, [totalCount, userCount]);
-  // console.log('data', data, userData, blogData);
+  }, [blogs, token, totalCount, userCount, skills, users]);
+  console.log('userData', userData);
   return (
     <Layout title="Dashboard">
       <MainSidebar />
@@ -25,8 +38,8 @@ const Home = ({ totalCount, userCount, blogs, data, blogData, userData }) => {
         <section className="section">
           <SectionHeader title="Dashboard" />
           <Stats
-            totalCount={data && data.total}
-            userCount={userData && userData.total}
+            totalCount={data && projectsData.total}
+            userCount={userData && userData.data.total}
             blogCount={blogData && blogData.data.total}
           />
           <div className="row">
@@ -40,18 +53,18 @@ const Home = ({ totalCount, userCount, blogs, data, blogData, userData }) => {
 
 const mapStateToProps = state => ({
   data: state.totalCount.data,
-  userData: state.userCount.data,
   blogData: state.blogs.data,
   isRequesting: state.totalCount.isRequesting,
   isSuccess: state.totalCount.isSuccess,
-  isError: state.totalCount.isError
+  isError: state.totalCount.isError,
+  projectsData: state.skills.data,
+  userData: state.users.data
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    totalCount,
-    userCount,
-    blogs
-  }
-)(Home);
+export default connect(mapStateToProps, {
+  totalCount,
+  userCount,
+  blogs,
+  skills,
+  users
+})(Home);

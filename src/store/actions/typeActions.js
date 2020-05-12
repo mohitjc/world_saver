@@ -144,7 +144,7 @@ export function types(token, type, page, count, sortType, sort, search) {
 export function singleType(id, token) {
   return dispatch => {
     dispatch(getRequest(GET_SINGLE_TYPE.GET_SINGLE_TYPE_REQUEST));
-    const getUrl = `${SINGLE_TYPE_API}/${id}`;
+    const getUrl = `${TYPES_API}/${id}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.get(getUrl, config)
       .then(checkHttpStatus)

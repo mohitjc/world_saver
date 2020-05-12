@@ -41,6 +41,7 @@ const App = ({ authenticated }) => {
           path="/project/:projectId"
           exact
         />
+        <PrivateRoute component={User} path="/user/:id" exact />
         <PrivateRoute component={Types} path="/types" exact />
         <PrivateRoute
           component={RolesAndPermissions}

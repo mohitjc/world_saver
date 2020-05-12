@@ -31,12 +31,12 @@ const Home = ({
     users(token, '', 1, 10, 'createdAt', '', 'asc', '');
     blogs(token, 'I', 1, 100, 'createdAt', 'asc', '');
   }, [blogs, token, totalCount, userCount, skills, users]);
-  console.log(
-    'projectsData blogData userData',
-    projectsData,
-    blogData,
-    userData
-  );
+  // console.log(
+  //   'projectsData blogData userData',
+  //   projectsData,
+  //   blogData,
+  //   userData
+  // );
   return (
     <Layout title="Dashboard">
       <MainSidebar />
@@ -45,14 +45,14 @@ const Home = ({
           <SectionHeader title="Dashboard" />
           <Stats
             totalCount={(projectsData && projectsData.total) || 0}
-            userCount={
-              userData && userData.data && !isNull(userData.data.total)
-                ? userData.data.total
-                : 0
-            }
             blogCount={
               blogData && blogData.data && !isNull(blogData.data.total)
                 ? blogData.data.total
+                : 0
+            }
+            userCount={
+              userData && userData.data && !isNull(userData.data.total)
+                ? userData.data.total
                 : 0
             }
           />

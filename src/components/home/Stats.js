@@ -16,7 +16,7 @@ const Stats = ({ history, blogCount, userCount, totalCount }) => {
         <div
           className="card card-statistic-1"
           style={{ cursor: 'pointer' }}
-          onClick={() => handleRedirect('/users', 'A')}
+          // onClick={() => handleRedirect('/users')}
           role=""
         >
           <div className="card-icon bg-primary">
@@ -34,7 +34,7 @@ const Stats = ({ history, blogCount, userCount, totalCount }) => {
         <div
           className="card card-statistic-1"
           style={{ cursor: 'pointer' }}
-          onClick={() => handleRedirect('/articles')}
+          // onClick={() => handleRedirect('/articles')}
         >
           <div className="card-icon bg-danger">
             <i className="far fa-newspaper" />
@@ -52,7 +52,7 @@ const Stats = ({ history, blogCount, userCount, totalCount }) => {
         <div
           className="card card-statistic-1"
           style={{ cursor: 'pointer' }}
-          onClick={() => handleRedirect('/projects')}
+          // onClick={() => handleRedirect('/projects')}
         >
           <div className="card-icon bg-success">
             <i className="fas fa-circle" />

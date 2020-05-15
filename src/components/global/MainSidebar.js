@@ -11,7 +11,13 @@ const MainSidebar = ({ history }) => {
     <div className="main-sidebar" style={{ overflow: 'scroll' }}>
       <aside id="sidebar-wrapper">
         <div className="sidebar-brand">
-          <NavLink to="/dashboard">World Safer</NavLink>
+          <NavLink to="/dashboard">
+            <img
+              src="../assets/img/world-saver-logo.png"
+              className="logo"
+              width="100px"
+            />
+          </NavLink>
         </div>
 
         <ul className="sidebar-menu">

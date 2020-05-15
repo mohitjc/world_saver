@@ -164,8 +164,8 @@ const ArticleForm = ({
                   onChange={handleChange}
                 >
                   <option>Select category</option>
-                  <option value="U">Type 1</option>
-                  <option value="A">Type 2</option>
+                  <option value="Type 1">Type 1</option>
+                  <option value="Type 2">Type 2</option>
                 </select>
                 {errors.category && touched.category && (
                   <div
@@ -289,32 +289,32 @@ const ArticleFormFormik = withFormik({
     // console.log('values', values);
     // const { router } = props;
     const token = localStorage.getItem('token');
-    // if (props.isAddForm) {
-    //   props.blogAdd(
-    //     {
-    //       title: values.title,
-    //       category: values.category,
-    //       image: values.image,
-    //       // slug: values.slug,
-    //       description: values.description
-    //     },
-    //     token
-    //   );
-    // } else {
-    //   props.blogsUpdate(
-    //     {
-    //       title: values.title,
-    //       category: values.category,
-    //       image: values.image,
-    //       // slug: values.slug,
-    //       description: values.description
-    //     },
-    //     props.blogId,
-    //     token
-    //   );
-    // }
+    if (props.isAddForm) {
+      props.blogAdd(
+        {
+          title: values.title,
+          category: values.category,
+          image: values.image,
+          // slug: values.slug,
+          description: values.description
+        },
+        token
+      );
+    } else {
+      props.blogsUpdate(
+        {
+          title: values.title,
+          category: values.category,
+          image: values.image,
+          // slug: values.slug,
+          description: values.description
+        },
+        props.blogId,
+        token
+      );
+    }
 
-    // resetForm();
+    resetForm();
   },
 
   displayName: 'BlogForm' // helps with React DevTools

@@ -21,6 +21,7 @@ import {
 import ImageUpload from '../global/ImageUpload';
 import LocationSearchInput from '../global/LocationSearchInput';
 import BannerImageUpload from '../global/BannerImageUpload';
+import { countryList } from '../../store/constants';
 
 const ProjectForm = ({
   handleFormVisibilty,
@@ -123,6 +124,7 @@ const ProjectForm = ({
           <div className="card-body">
             <div className="d-flex">
               <ImageUpload
+                imageType={imageType}
                 getImage={getImage}
                 type="projects"
                 value={values.image}
@@ -131,6 +133,7 @@ const ProjectForm = ({
               />
               <div className="ml-4">
                 <ImageUpload
+                  imageType={imageType}
                   getImage={getImage}
                   value={values.banner_image}
                   type="projects"
@@ -228,6 +231,32 @@ const ProjectForm = ({
             </div>
             <div className="row">
               <div className="form-group col-md-4 col-12">
+                <label>Country</label>
+                <select
+                  name="country"
+                  className="form-control"
+                  value={values.country}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                >
+                  <option>Select country</option>
+                  {countryList.map(item => (
+                    <option value={item} key={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+
+                {errors.country && touched.country && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: 'block' }}
+                  >
+                    {errors.country}
+                  </div>
+                )}
+              </div>
+              <div className="form-group col-md-4 col-12">
                 <label>City</label>
                 <input
                   type="text"
@@ -245,27 +274,6 @@ const ProjectForm = ({
                     style={{ display: 'block' }}
                   >
                     {errors.city}
-                  </div>
-                )}
-              </div>
-              <div className="form-group col-md-4 col-12">
-                <label>Country</label>
-                <input
-                  type="text"
-                  name="country"
-                  className="form-control"
-                  // value="john"
-
-                  value={values.country}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-                {errors.country && touched.country && (
-                  <div
-                    className="invalid-feedback"
-                    style={{ display: 'block' }}
-                  >
-                    {errors.country}
                   </div>
                 )}
               </div>

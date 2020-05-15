@@ -15,6 +15,7 @@ import {
   changeStatus,
   resetStatus
 } from '../store/actions/changeStatusActions';
+import { getCatByType } from '../store/actions/categoryActions';
 import ArticleLsiting from '../components/articles/ArticleListing';
 import ArticleForm from '../components/articles/ArticleForm';
 
@@ -30,8 +31,10 @@ const Articles = ({
   isDeleteError,
   changeStatus,
   resetStatus,
+  getCatByType,
   isSuccess,
-  isRequesting
+  isRequesting,
+  catByTypeData
 }) => {
   const token = localStorage.getItem('token');
   const [page, setPage] = useState(1);
@@ -115,6 +118,10 @@ const Articles = ({
     resetStatus
   ]);
 
+  useEffect(() => {
+    getCatByType('5eb4f8a671d9eb3ee7bc97f4', token);
+  }, [getCatByType, token]);
+
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
   const [blogId, setBlogId] = useState(null);
@@ -173,6 +180,7 @@ const Articles = ({
             />
           ) : (
             <ArticleForm
+              catByTypeData={catByTypeData}
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
               blogId={blogId}
@@ -194,7 +202,8 @@ const mapStateToProps = state => ({
   isDeleteSuccess: state.deleteBlog.isSuccess,
   isDeleteError: state.deleteBlog.isError,
   isChangeStatusSuccess: state.status.isSuccess,
-  isChangeStatusError: state.status.isError
+  isChangeStatusError: state.status.isError,
+  catByTypeData: state.catByType.data
 });
 
 export default connect(mapStateToProps, {
@@ -203,5 +212,6 @@ export default connect(mapStateToProps, {
   deleteBlog,
   resetDeleteBlog,
   changeStatus,
-  resetStatus
+  resetStatus,
+  getCatByType
 })(Articles);

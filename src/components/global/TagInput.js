@@ -12,13 +12,20 @@ const TagInput = ({
   hasShadow,
   isInverse,
   placeholder,
-  getInput
+  getInput,
+  tags
 }) => {
   const [array, setArray] = useState([]);
   const [value, setValue] = useState('');
   useEffect(() => {
     getInput(array);
   }, [array, value]);
+
+  useEffect(() => {
+    if (!isEmpty(tags)) {
+      setArray(tags);
+    }
+  }, [tags]);
 
   const onSubmit = e => {
     e.preventDefault();

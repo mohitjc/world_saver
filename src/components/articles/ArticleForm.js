@@ -46,7 +46,8 @@ const ArticleForm = ({
   resetAddBlog,
   resetUpdateBlog,
   uploadImage,
-  setFieldValue
+  setFieldValue,
+  catByTypeData
 }) => {
   const token = localStorage.getItem('token');
 
@@ -164,8 +165,12 @@ const ArticleForm = ({
                   onChange={handleChange}
                 >
                   <option>Select category</option>
-                  <option value="Type 1">Type 1</option>
-                  <option value="Type 2">Type 2</option>
+                  {catByTypeData &&
+                    catByTypeData.map(item => (
+                      <option value={item.id} key={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
                 </select>
                 {errors.category && touched.category && (
                   <div
@@ -217,24 +222,24 @@ const ArticleForm = ({
                     <label>URL</label>
                     <input
                       type="text"
-                      name="url"
+                      name="blogUrl"
                       className="form-control"
                       // value="john"
 
-                      value={values.url}
+                      value={values.blogUrl}
                       onBlur={handleBlur}
                       onChange={handleChange}
                     />
-                    {errors.url && touched.url && (
+                    {errors.blogUrl && touched.blogUrl && (
                       <div
                         className="invalid-feedback"
                         style={{ display: 'block' }}
                       >
-                        {errors.url}
+                        {errors.blogUrl}
                       </div>
                     )}
                   </div>
-                  <TagInput getInput={getInput} />
+                  <TagInput getInput={getInput} tags={values.tags} />
                 </>
               )}
             </div>
@@ -273,8 +278,9 @@ const ArticleFormFormik = withFormik({
       title: (singleBlogData && singleBlogData.title) || '',
       description: (singleBlogData && singleBlogData.description) || '',
       image: (singleBlogData && singleBlogData.image) || '',
-      category: (singleBlogData && singleBlogData.category) || '',
-      tags: []
+      category: (singleBlogData && singleBlogData.category.id) || '',
+      blogUrl: (singleBlogData && singleBlogData.blogUrl) || '',
+      tags: (singleBlogData && singleBlogData.tags) || []
     };
   },
 
@@ -295,6 +301,8 @@ const ArticleFormFormik = withFormik({
           title: values.title,
           category: values.category,
           image: values.image,
+          tags: values.tags,
+          blogUrl: values.blogUrl,
           // slug: values.slug,
           description: values.description
         },
@@ -306,6 +314,8 @@ const ArticleFormFormik = withFormik({
           title: values.title,
           category: values.category,
           image: values.image,
+          tags: values.tags,
+          blogUrl: values.blogUrl,
           // slug: values.slug,
           description: values.description
         },

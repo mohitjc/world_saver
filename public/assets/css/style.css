@@ -4131,3 +4131,6 @@ body:not(.sidebar-mini)
   background-color: #cdd3d8;
 }
 
+textarea.form-control {
+  height: 100px !important;
+}

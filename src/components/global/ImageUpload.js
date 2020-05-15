@@ -13,7 +13,14 @@ import { SyncLoader } from 'react-spinners';
 import { uploadImage } from '../../store/actions/blogsActions';
 import { API_SLUG } from '../../store/constants';
 
-const ImageUpload = ({ getImage, type, value, placeholder, setImageType }) => {
+const ImageUpload = ({
+  getImage,
+  type,
+  value,
+  placeholder,
+  setImageType,
+  imageType
+}) => {
   const [images, setImages] = useState([]);
   const { data, isRequesting, isSuccess } = useSelector(
     state => state.imageUpload
@@ -132,7 +139,7 @@ const ImageUpload = ({ getImage, type, value, placeholder, setImageType }) => {
               <input {...getInputProps()} />
               {!isDragActive && (
                 <div className="drag-active">
-                  {isRequesting ? (
+                  {isRequesting && imageType === placeholder ? (
                     <SyncLoader color={'#5383ff'} />
                   ) : !isEmpty(value) ? (
                     <div style={thumb}>

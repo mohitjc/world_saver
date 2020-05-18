@@ -285,10 +285,10 @@ const ArticleFormFormik = withFormik({
   },
 
   validationSchema: yupObject().shape({
-    title: yupString()
-      .max(50)
-      .required(),
-    description: yupString().required(),
+    // title: yupString()
+    //   .max(50)
+    //   .required(),
+    // description: yupString().required(),
     category: yupString().required()
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {

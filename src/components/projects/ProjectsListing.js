@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-
+import { useSelector, useDispatch } from 'react-redux';
 import Pagination from '../global/Pagination';
 import EmptyState from '../global/EmptyState';
 import SkillsListItem from './ProjectsListItem';
 import Loading from '../global/Loader';
 import InviteModal from './InviteModal';
+import { usersList } from './../../store/actions/userActions';
 
 const ProjectsListing = ({
   handleFormVisibilty,
@@ -31,11 +32,14 @@ const ProjectsListing = ({
     getSearchKeyword(keyword);
   }, [getSearchKeyword, keyword]);
   // console.log('total', total);
+  const dispatch = useDispatch();
 
   const [openModal, toggleModal] = useState(false);
+  const userList = useSelector((state) => state.inviteListUser.data);
+  console.log(userList);
   // handle invite modal
   const handleInvite = (project) => {
-    console.log('i am here', project);
+    dispatch(usersList());
     toggleModal(true);
   };
   const handleModal = (status) => {
@@ -127,8 +131,12 @@ const ProjectsListing = ({
           )}
         </div>
       </div>
-      {openModal && (
-        <InviteModal isOpen={openModal} handleModal={handleModal} />
+      {openModal && userList && (
+        <InviteModal
+          isOpen={openModal}
+          handleModal={handleModal}
+          userList={userList}
+        />
       )}
     </div>
   );

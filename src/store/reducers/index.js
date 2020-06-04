@@ -69,6 +69,8 @@ import profile from './getProfileReducer';
 
 import catByType from './catByTypeReducer';
 
+import inviteListUser from './usersForSelect';
+
 const rootReducer = combineReducers({
   auth,
   login,
@@ -124,7 +126,8 @@ const rootReducer = combineReducers({
   totalCount,
   userCount,
   profile,
-  catByType
+  catByType,
+  inviteListUser,
 });
 
 export default rootReducer;

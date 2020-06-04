@@ -13,7 +13,8 @@ const ProjectsListItem = ({
   changeStatus,
   getStatus,
   page,
-  count
+  count,
+  handleInvite,
 }) => {
   const handleDelete = () => {
     const token = localStorage.getItem('token');
@@ -22,8 +23,8 @@ const ProjectsListItem = ({
       text: 'you want to delete the project!',
       icon: 'warning',
       buttons: true,
-      dangerMode: true
-    }).then(willDelete => {
+      dangerMode: true,
+    }).then((willDelete) => {
       if (willDelete) {
         deleteSkill({ model: 'project', id: item && item.id }, token);
       } else {
@@ -32,12 +33,12 @@ const ProjectsListItem = ({
     });
   };
 
-  const handleStatus = status => {
+  const handleStatus = (status) => {
     const token = localStorage.getItem('token');
     const obj = {
       model: 'project',
       id: item && item.id,
-      status
+      status,
     };
     getStatus(status);
     changeStatus(obj, token);
@@ -77,6 +78,16 @@ const ProjectsListItem = ({
         )}
       </td>
       <td>
+        {item && item.status && item.status === 'active' && (
+          <button
+            type="button"
+            className="btn btn-icon btn-info mr-2"
+            onClick={() => handleInvite(item)}
+            // disabled={!!(item && item.type === 'custom')}
+          >
+            <i className="fas fa-envelope" />
+          </button>
+        )}
         <button
           type="button"
           className="btn btn-icon btn-primary mr-2"

@@ -5,6 +5,7 @@ import Pagination from '../global/Pagination';
 import EmptyState from '../global/EmptyState';
 import SkillsListItem from './ProjectsListItem';
 import Loading from '../global/Loader';
+import InviteModal from './InviteModal';
 
 const ProjectsListing = ({
   handleFormVisibilty,
@@ -23,13 +24,23 @@ const ProjectsListing = ({
   changeStatus,
   getStatus,
   toggleSort,
-  isRequesting
+  isRequesting,
 }) => {
   const [keyword, setKeyword] = useState('');
   useEffect(() => {
     getSearchKeyword(keyword);
   }, [getSearchKeyword, keyword]);
   // console.log('total', total);
+
+  const [openModal, toggleModal] = useState(false);
+  // handle invite modal
+  const handleInvite = (project) => {
+    console.log('i am here', project);
+    toggleModal(true);
+  };
+  const handleModal = (status) => {
+    toggleModal(false);
+  };
 
   return (
     <div className="row">
@@ -56,7 +67,7 @@ const ProjectsListing = ({
                     type="text"
                     className="form-control"
                     placeholder="Search"
-                    onChange={e => {
+                    onChange={(e) => {
                       setKeyword(e.target.value);
                       setPage(1);
                     }}
@@ -97,6 +108,7 @@ const ProjectsListing = ({
                         index={index}
                         handAddFormToggle={handAddFormToggle}
                         handleFormVisibilty={handleFormVisibilty}
+                        handleInvite={handleInvite}
                         getSkillId={getSkillId}
                         deleteSkill={deleteSkill}
                         changeStatus={changeStatus}
@@ -115,6 +127,9 @@ const ProjectsListing = ({
           )}
         </div>
       </div>
+      {openModal && (
+        <InviteModal isOpen={openModal} handleModal={handleModal} />
+      )}
     </div>
   );
 };

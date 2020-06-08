@@ -15,6 +15,7 @@ import {
   DELETE_SINGLE_USER,
   GET_USERS_FOR_INVITE,
   GET_USERS_LIST_API,
+  SEND_USERS_INVITATION_API,
 } from '../constants';
 import { checkHttpStatus, parseJSON } from '../../utils/helpers';
 import { getRequest, getSuccess, getFailure, reset } from './index';
@@ -233,6 +234,38 @@ export function usersList() {
             : 'Something went wrong!';
         dispatch(
           getFailure(GET_USERS_FOR_INVITE.FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage,
+            },
+          })
+        );
+      });
+  };
+}
+
+export function sendInvites(postObj, cb) {
+  return (dispatch) => {
+    const getUrl = SEND_USERS_INVITATION_API;
+    const token = localStorage.getItem('token');
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.post(getUrl, postObj, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then((data) => {
+        if (data.success) {
+          return cb(true);
+          // dispatch(getSuccess(USER_ADD.USER_ADD_SUCCESS, data));
+        }
+      })
+      .catch((error) => {
+        const errorMessage =
+          error.response && error.response.data && error.response.data.error
+            ? error.response.data.error.message
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(USER_ADD.USER_ADD_FAILURE, {
             data: {
               statusCode: 403,
               // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",

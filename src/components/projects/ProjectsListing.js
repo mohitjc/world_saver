@@ -35,11 +35,13 @@ const ProjectsListing = ({
   const dispatch = useDispatch();
 
   const [openModal, toggleModal] = useState(false);
+  const [selectedProject, setProject] = useState('');
   const userList = useSelector((state) => state.inviteListUser.data);
-  console.log(userList);
   // handle invite modal
   const handleInvite = (project) => {
+    console.log('project', project);
     dispatch(usersList());
+    setProject(project.id);
     toggleModal(true);
   };
   const handleModal = (status) => {
@@ -136,6 +138,7 @@ const ProjectsListing = ({
           isOpen={openModal}
           handleModal={handleModal}
           userList={userList}
+          selectedProject={selectedProject}
         />
       )}
     </div>

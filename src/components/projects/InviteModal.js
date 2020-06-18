@@ -1,3 +1,4 @@
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
@@ -5,7 +6,9 @@ import Modal from 'react-bootstrap/Modal';
 import Select from 'react-select';
 import swal from 'sweetalert';
 import { sendInvites } from './../../store/actions/userActions';
-
+import { Media, Col } from 'reactstrap';
+import Image from 'react-bootstrap/Image';
+import userImg from './user.png';
 const InviteModal = ({ isOpen, handleModal, userList, selectedProject }) => {
   const dispatch = useDispatch();
   const [emails, set_emails] = useState([]);
@@ -15,7 +18,11 @@ const InviteModal = ({ isOpen, handleModal, userList, selectedProject }) => {
       const list = users.data.users;
       list.map((user) => {
         if (user.email) {
-          arr.push({ id: user.id, value: user.email, label: user.email });
+          arr.push({
+            id: user.id,
+            value: user.email,
+            label: user.fullName,
+          });
         }
       });
     }
@@ -37,6 +44,21 @@ const InviteModal = ({ isOpen, handleModal, userList, selectedProject }) => {
       })
     );
   };
+  const CustomOption = (props) => {
+    const { innerProps, innerRef } = props;
+    return (
+      <Media ref={innerRef} {...innerProps}>
+        <Media left>
+          <Image src={userImg} roundedCircle className="invite-img" />
+        </Media>
+        <Media body>
+          <Media heading> {props.data.label}</Media>
+          {props.data.value}
+        </Media>
+      </Media>
+    );
+  };
+
   return (
     <Modal
       show={isOpen}
@@ -53,6 +75,7 @@ const InviteModal = ({ isOpen, handleModal, userList, selectedProject }) => {
           options={setOptions(userList)}
           isMulti
           onChange={(e) => setEmails(e)}
+          components={{ Option: CustomOption }}
         />
       </Modal.Body>
       <Modal.Footer>

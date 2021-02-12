@@ -54,6 +54,18 @@ const MainSidebar = ({ history }) => {
               <i className="far fa-folder-open" /> <span>Manage Projects</span>
             </NavLink>
           </li>
+
+          <li className="nav-item dropdown">
+            <NavLink className="nav-link" to="/youtube-management" activeStyle={styles}>
+              <i className="far fa-folder-open" /> <span>YouTube Management</span>
+            </NavLink>
+          </li>
+
+          <li className="nav-item dropdown">
+            <NavLink className="nav-link" to="/advertisement" activeStyle={styles}>
+              <i className="far fa-folder-open" /> <span>Advertisement Management</span>
+            </NavLink>
+          </li>
           {/* <li className="nav-item dropdown">
             <NavLink
               className="nav-link"

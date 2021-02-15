@@ -154,11 +154,11 @@ const Advertise = ({
 
   console.log('allTypes   s', allTypes);
   return (
-    <Layout title="Categories">
+    <Layout title="Advertise">
       <MainSidebar />
       <div className="main-content">
         <section className="section">
-          <SectionHeader title="Categories" />
+          <SectionHeader title="Advertise" />
           {!formVisibility ? (
             <Listing
               handleFormVisibilty={handleFormVisibilty}
@@ -200,13 +200,13 @@ const Advertise = ({
 const mapStateToProps = state => ({
   data: state?.items?.data,
   isRequesting: state?.items?.isRequesting,
-  isSuccess: state.items.isSuccess,
-  isError: state.items.isError,
-  isDeleteSuccess: state.Delete.isSuccess,
-  isDeleteError: state.Delete.isError,
-  isChangeStatusSuccess: state.status.isSuccess,
-  isChangeStatusError: state.status.isError,
-  allTypes: state.types.data
+  isSuccess: state?.items?.isSuccess,
+  isError: state?.items?.isError,
+  isDeleteSuccess: state?.Delete?.isSuccess,
+  isDeleteError: state?.Delete?.isError,
+  isChangeStatusSuccess: state?.status?.isSuccess,
+  isChangeStatusError: state?.status?.isError,
+  allTypes: state?.types?.data
 });
 
 export default connect(mapStateToProps, {

@@ -2,13 +2,13 @@ import React from 'react';
 import swal from 'sweetalert';
 import dayjs from 'dayjs';
 
-const CategoryListItem = ({
+const ListItem = ({
   item,
   index,
   handAddFormToggle,
   handleFormVisibilty,
-  deleteCategory,
-  getCategoryId,
+  deleteItem,
+  getId,
   page,
   changeStatus,
   getStatus,
@@ -24,7 +24,7 @@ const CategoryListItem = ({
       dangerMode: true
     }).then(willDelete => {
       if (willDelete) {
-        deleteCategory(item && item.id, token);
+        deleteItem(item && item.id, token);
       } else {
         return null;
       }
@@ -48,19 +48,11 @@ const CategoryListItem = ({
   return (
     <tr>
       <td>{index + page * count - (count - 1)}</td>
-      <td>{item && item.name ? item.name : '___'}</td>
+      <td>{item && item.title ? item.title : '___'}</td>
+      <td>{item && item.description ? item.description : '___'}</td>
+      <td>{item && item.url ? item.url : '___'}</td>
+      
       {/* <td>
-        {truncate(item && item.description ? item.description : '___', {
-          length: 20,
-          separator: ''
-        })}
-      </td> */}
-      <td>
-        {item && item.createdAt
-          ? dayjs(item.createdAt).format('MMM DD YYYY')
-          : '___'}
-      </td>
-      <td>
         {item && item.status === 'deactive' ? (
           <button
             type="button"
@@ -78,7 +70,7 @@ const CategoryListItem = ({
             Active
           </button>
         )}
-      </td>
+      </td> */}
       <td>
         <button
           type="button"
@@ -86,7 +78,7 @@ const CategoryListItem = ({
           onClick={() => {
             handAddFormToggle(false);
             handleFormVisibilty();
-            getCategoryId(item && item.id);
+            getId(item && item.id);
           }}
         >
           <i className="far fa-edit" />
@@ -103,4 +95,4 @@ const CategoryListItem = ({
   );
 };
 
-export default CategoryListItem;
+export default ListItem;

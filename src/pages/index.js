@@ -26,6 +26,7 @@ import Types from './Types';
 import ProjectView from './ProjectView';
 import YouTubeManagement from './youtubemanagement';
 import AdvertisementManagement from './advertisement';
+import Advertise from './Advertise';
 
 const App = ({ authenticated }) => {
   // console.log('base', authenticated);
@@ -37,6 +38,7 @@ const App = ({ authenticated }) => {
         <PrivateRoute component={Users} path="/users" exact />
         <PrivateRoute component={YouTubeManagement} path="/youtube-management" exact />
         <PrivateRoute component={AdvertisementManagement} path="/advertisement" exact />
+        <PrivateRoute component={Advertise} path="/advertise" exact />
         <PrivateRoute component={Category} path="/categories" exact />
         <PrivateRoute component={Articles} path="/articles" exact />
         <PrivateRoute component={Project} path="/projects" exact />

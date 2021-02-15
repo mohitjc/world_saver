@@ -11,16 +11,16 @@ import { withRouter } from 'react-router-dom';
 
 import { isNull, isEmpty } from 'lodash';
 import {
-  categoryAdd,
-  categoryUpdate,
-  singleCategory,
-  resetAddCategory,
-  resetUpdateCategory,
+  Add,
+  Update,
+  single,
+  resetAdd,
+  resetUpdate,
   categories
 } from '../../store/actions/advertiseActions';
 import ImageUpload from '../global/ImageUpload';
 
-const CategoryForm = ({
+const Form = ({
   handleFormVisibilty,
   handleSubmit,
   handleBlur,
@@ -38,32 +38,32 @@ const CategoryForm = ({
   isAddForm,
   reloadToggle,
   setReloadToggle,
-  categoryId,
-  singleCategory,
-  singleCategoryData,
-  resetAddCategory,
-  resetUpdateCategory,
+  Id,
+  single,
+  singleData,
+  resetAdd,
+  resetUpdate,
   allTypes,
   categories
 }) => {
   const token = localStorage.getItem('token');
   useEffect(() => {
     if (isSuccess) {
-      swal('New category added!', '', 'success');
+      swal('New advertise added!', '', 'success');
       handleFormVisibilty();
-      resetAddCategory();
+      resetAdd();
       setReloadToggle(!reloadToggle);
     }
     if (isError) {
       swal(data && data.data && data.data.message, '', 'warning');
       // handleFormVisibilty();
-      resetAddCategory();
+      resetAdd();
       // setReloadToggle(!reloadToggle);
     }
     if (isUpdateSuccess) {
-      swal('Category updated!', '', 'success');
+      swal('Adertise updated!', '', 'success');
       handleFormVisibilty();
-      resetUpdateCategory();
+      resetUpdate();
       setReloadToggle(!reloadToggle);
     }
   }, [
@@ -71,19 +71,19 @@ const CategoryForm = ({
     isError,
     isUpdateSuccess,
     handleFormVisibilty,
-    resetAddCategory,
+    resetAdd,
     setReloadToggle,
     reloadToggle,
     data,
-    resetUpdateCategory
+    resetUpdate
   ]);
 
   useEffect(() => {
     if (!isAddForm) {
-      singleCategory(categoryId, token);
+      single(Id, token);
       // swal('New user added!', '', 'success');
     }
-  }, [categoryId, isAddForm, singleCategory, token]);
+  }, [Id, isAddForm, single, token]);
 
   const getImage = value => {
     setFieldValue('image', value);
@@ -99,7 +99,7 @@ const CategoryForm = ({
           handleFormVisibilty();
         }}
       >
-        View Categories
+        View Advertise
       </button>
       <div className="card">
         <form
@@ -108,88 +108,82 @@ const CategoryForm = ({
           noValidate=""
         >
           <div className="card-header">
-            <h4>{isAddForm ? 'Add' : 'Edit'} category</h4>
+            <h4>{isAddForm ? 'Add' : 'Edit'} Advertise</h4>
           </div>
           <div className="card-body">
             <ImageUpload
               getImage={getImage}
-              type="category"
+              type="advertise"
               value={values.image}
             />
             <div className="row">
-              <div className="form-group col-md-4 col-12">
-                <label>Name</label>
+              <div className="form-group col-md-12 mb-3">
+                <label>Title</label>
                 <input
                   type="text"
-                  name="name"
+                  name="title"
                   className="form-control"
                   // value="john"
 
-                  value={values.name}
+                  value={values.title}
                   onBlur={handleBlur}
                   onChange={handleChange}
                 />
-                {errors.name && touched.name && (
+                {errors.title && touched.title && (
                   <div
                     className="invalid-feedback"
                     style={{ display: 'block' }}
                   >
-                    {errors.name}
+                    {errors.title}
                   </div>
                 )}
               </div>
-              <div className="form-group col-md-4 col-12">
-                <label>Category</label>
-                <select
-                  name="category"
+
+              <div className="form-group col-md-12 mb-3">
+                <label>Description</label>
+                <textarea
+                  type="text"
+                  name="description"
                   className="form-control"
-                  value={values.category}
+                  // value="john"
+
+                  value={values.description}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                >
-                  <option>Select category</option>
-                  {allTypes &&
-                    allTypes.result.map(item => (
-                      <option value={item.id}>{item.name}</option>
-                    ))}
-                </select>
-                {errors.category && touched.category && (
+                />
+                {errors.description && touched.description && (
                   <div
                     className="invalid-feedback"
                     style={{ display: 'block' }}
                   >
-                    Please select type
+                    {errors.description}
                   </div>
                 )}
               </div>
-              {categories && !isEmpty(categories) && (
-                <div className="form-group col-md-4 col-12">
-                  <label>Sub Category</label>
-                  <select
-                    name="subCategory"
-                    className="form-control"
-                    value={values.subCategory}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
+
+              <div className="form-group col-md-12 mb-3">
+                <label>URL</label>
+                <input
+                  type="text"
+                  name="url"
+                  className="form-control"
+                  // value="john"
+
+                  value={values.url}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+                {errors.url && touched.url && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: 'block' }}
                   >
-                    <option>Select Sub Category</option>
-                    {categories &&
-                      categories.map(item => (
-                        <option value={item.id} key={item.id}>
-                          {item.name}
-                        </option>
-                      ))}
-                  </select>
-                  {errors.subCategory && touched.subCategory && (
-                    <div
-                      className="invalid-feedback"
-                      style={{ display: 'block' }}
-                    >
-                      {errors.subCategory}
-                    </div>
-                  )}
-                </div>
-              )}
+                    {errors.url}
+                  </div>
+                )}
+              </div>
+              
+              
             </div>
           </div>
           <div className="card-footer d-flex justify-content-between">
@@ -219,49 +213,45 @@ const CategoryForm = ({
 
 const CatgeoryFormFormik = withFormik({
   enableReinitialize: true,
-  mapPropsToValues: ({ singleCategoryData }) => {
+  mapPropsToValues: ({ singleData }) => {
     // console.log('singleCategoryData', singleCategoryData);
     return {
-      name: (singleCategoryData && singleCategoryData.name) || '',
-      subCategory: (singleCategoryData && singleCategoryData.parentid) || '',
-      category: (singleCategoryData && singleCategoryData.typeid) || '',
-      image: (singleCategoryData && singleCategoryData.image) || ''
+      title: (singleData && singleData.title) || '',
+      image: (singleData && singleData.image) || '',
+      description: (singleData && singleData.description) || '',
+      url: (singleData && singleData.url) || ''
     };
   },
 
   validationSchema: yupObject().shape({
-    name: yupString()
-      .max(15)
-      .required(),
-    subCategory: yupString().required(),
-    category: yupString().required()
-
-    // .required()
-    // password: yupString().min(8)
+    title: yupString().required(),
+    image: yupString().required(),
+    description:yupString().required(),
+    url:yupString().required()
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // const { router } = props;
     const token = localStorage.getItem('token');
     // console.log('state values', values);
     if (props.isAddForm) {
-      props.categoryAdd(
+      props.Add(
         {
-          name: values.name,
-          typeid: values.category,
-          parentid: values.subCategory,
-          image: values.image
+          title: values.title,
+          image:values.image,
+          description: values.description,
+          url:values.url         
         },
         token
       );
     } else {
-      props.categoryUpdate(
+      props.Update(
         {
-          name: values.name,
-          typeid: values.category,
-          parentid: values.subCategory,
-          image: values.image
+          itle: values.title,
+          image:values.image,
+          description: values.description,
+          url:values.url  
         },
-        props.categoryId,
+        props.Id,
         token
       );
     }
@@ -269,23 +259,23 @@ const CatgeoryFormFormik = withFormik({
     // resetForm();
   },
 
-  displayName: 'CategoryForm' // helps with React DevTools
-})(CategoryForm);
+  displayName: 'Form' // helps with React DevTools
+})(Form);
 
 const mapStateToProps = state => ({
-  data: state.categoryAdd.data,
-  isRequesting: state.categoryAdd.isRequesting,
-  isUpdateRequesting: state.categoryUpdate.isRequesting,
-  isSuccess: state.categoryAdd.isSuccess,
-  isUpdateSuccess: state.categoryUpdate.isSuccess,
-  isError: state.categoryAdd.isError,
-  singleCategoryData: state.category.data
+  data: state.Add.data,
+  isRequesting: state.Add.isRequesting,
+  isUpdateRequesting: state.Update.isRequesting,
+  isSuccess: state.Add.isSuccess,
+  isUpdateSuccess: state.Update.isSuccess,
+  isError: state.Add.isError,
+  singleData: state.advertise.data
 });
 
 export default connect(mapStateToProps, {
-  categoryAdd,
-  categoryUpdate,
-  singleCategory,
-  resetAddCategory,
-  resetUpdateCategory
+  Add,
+  Update,
+  single,
+  resetAdd,
+  resetUpdate
 })(CatgeoryFormFormik);

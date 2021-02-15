@@ -101,7 +101,7 @@ export function Update(obj, id, token) {
 
 // get all categories
 
-export function categories(token, type, page, count, sortType, sort, search) {
+export function items(token, type, page, count, sortType, sort, search) {
   return dispatch => {
     dispatch(getRequest(GET_ADVERTISE.GET_ADVERTISE_REQUEST));
     const getUrl = `${ALL_ADVERTISE_API}?type=${type}&search=${search}&page=${page}&count=${10}&sortBy=${sortType} ${sort}`;

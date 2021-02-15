@@ -5,14 +5,14 @@ import swal from 'sweetalert';
 import Layout from '../components/global/Layout';
 import MainSidebar from '../components/global/MainSidebar';
 import SectionHeader from '../components/global/SectionHeader';
-import CategoryListing from '../components/categories/CategoryListing';
-import CategoryForm from '../components/categories/CategoryForm';
+import Listing from '../components/advertisement/Listing';
+import Form from '../components/advertisement/Form';
 import {
-  categories,
-  resetSingleCategory,
-  deleteCategory,
-  resetDeleteCategory
-} from '../store/actions/categoryActions';
+  items,
+  resetSingle,
+  Delete,
+  resetDelete
+} from '../store/actions/advertiseActions';
 import { types } from '../store/actions/typeActions';
 
 import {
@@ -20,12 +20,12 @@ import {
   resetStatus
 } from '../store/actions/changeStatusActions';
 
-const Category = ({
-  categories,
+const Advertise = ({
+  items,
   data,
-  resetSingleCategory,
-  deleteCategory,
-  resetDeleteCategory,
+  resetSingle,
+  Delete,
+  resetDelete,
   isDeleteSuccess,
   isDeleteError,
   changeStatus,
@@ -50,7 +50,7 @@ const Category = ({
   // const [currentCount, setCurrentCount] = useState(count);
 
   useEffect(() => {
-    categories(
+    items(
       token,
       type,
       page,
@@ -60,7 +60,7 @@ const Category = ({
       searchKeyword
     );
   }, [
-    categories,
+    items,
     reloadToggle,
     page,
     sort,
@@ -74,7 +74,7 @@ const Category = ({
 
   useEffect(() => {
     if (isDeleteSuccess) {
-      swal('Category has been deleted!', {
+      swal('Advertise has been deleted!', {
         buttons: false,
         timer: 1500
       });
@@ -86,15 +86,15 @@ const Category = ({
         timer: 1500
       });
     }
-    resetDeleteCategory();
-  }, [isDeleteSuccess, isDeleteError, resetDeleteCategory]);
+    resetDelete();
+  }, [isDeleteSuccess, isDeleteError, resetDelete]);
 
   useEffect(() => {
     if (isChangeStatusSuccess) {
       swal(
         status === 'active'
-          ? 'Category has been activated'
-          : 'Category has been deactivated',
+          ? 'Advertise has been activated'
+          : 'Advertise has been deactivated',
         {
           buttons: false,
           timer: 1500
@@ -125,7 +125,7 @@ const Category = ({
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
-  const [categoryId, setCategoryId] = useState(null);
+  const [Id, setId] = useState(null);
 
   const handleFormVisibilty = () => {
     setFormVisibilty(!formVisibility);
@@ -135,8 +135,8 @@ const Category = ({
     setIsAddForm(bool);
   };
 
-  const getCategoryId = id => {
-    setCategoryId(id);
+  const getId = id => {
+    setId(id);
   };
 
   const getSearchKeyword = value => {
@@ -160,16 +160,16 @@ const Category = ({
         <section className="section">
           <SectionHeader title="Categories" />
           {!formVisibility ? (
-            <CategoryListing
+            <Listing
               handleFormVisibilty={handleFormVisibilty}
-              categories={data && data.data && data.data.category}
+              items={data && data.data && data.data.category}
               total={data && data.data && data.data.total}
               handAddFormToggle={handAddFormToggle}
-              getCategoryId={getCategoryId}
+              getId={getId}
               isRequesting={isRequesting}
               // UserListing={UserListing}
-              resetSingleCategory={resetSingleCategory}
-              deleteCategory={deleteCategory}
+              resetSingle={resetSingle}
+              Delete={Delete}
               sort={sort}
               setSort={setSort}
               setPage={setPage}
@@ -181,12 +181,12 @@ const Category = ({
               toggleSort={toggleSort}
             />
           ) : (
-            <CategoryForm
+            <Form
               allTypes={allTypes}
-              categories={data && data.data && data.data.category}
+              items={data && data.data && data.data.category}
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
-              categoryId={categoryId}
+              Id={Id}
               setReloadToggle={setReloadToggle}
               reloadToggle={reloadToggle}
             />
@@ -198,23 +198,23 @@ const Category = ({
 };
 
 const mapStateToProps = state => ({
-  data: state.categories.data,
-  isRequesting: state.categories.isRequesting,
-  isSuccess: state.categories.isSuccess,
-  isError: state.categories.isError,
-  isDeleteSuccess: state.deleteCategory.isSuccess,
-  isDeleteError: state.deleteCategory.isError,
+  data: state?.items?.data,
+  isRequesting: state?.items?.isRequesting,
+  isSuccess: state.items.isSuccess,
+  isError: state.items.isError,
+  isDeleteSuccess: state.Delete.isSuccess,
+  isDeleteError: state.Delete.isError,
   isChangeStatusSuccess: state.status.isSuccess,
   isChangeStatusError: state.status.isError,
   allTypes: state.types.data
 });
 
 export default connect(mapStateToProps, {
-  categories,
-  resetSingleCategory,
-  deleteCategory,
-  resetDeleteCategory,
+  items,
+  resetSingle,
+  Delete,
+  resetDelete,
   changeStatus,
   resetStatus,
   types
-})(Category);
+})(Advertise);

@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 
 import Pagination from '../global/Pagination';
-import CategoryListItem from './CategoryLisItem';
+import ListItem from './LisItem';
 import EmptyState from '../global/EmptyState';
 import Loading from '../global/Loader';
 
-const CategoryListing = ({
+const Listing = ({
   handleFormVisibilty,
   handAddFormToggle,
   getSearchKeyword,
-  getCategoryId,
-  resetSingleCategory,
-  deleteCategory,
+  getId,
+  resetSingle,
+  deleteItem,
   categories,
+  items,
   sort,
   setSort,
   total,
@@ -42,11 +43,11 @@ const CategoryListing = ({
                 onClick={() => {
                   handleFormVisibilty();
                   handAddFormToggle(true);
-                  resetSingleCategory();
+                  resetSingle();
                 }}
                 type="button"
               >
-                Add Category
+                Add Advertise
               </button>
             </h4>
             <div className="card-header-form">
@@ -82,24 +83,24 @@ const CategoryListing = ({
                       onClick={() => toggleSort('name')}
                       style={{ cursor: 'pointer' }}
                     >
-                      Name{' '}
+                      Title
                       <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
                     </th>
-                    {/* <th style={{ cursor: 'pointer' }}>Description </th> */}
-                    <th>Created At</th>
-                    <th>Status</th>
+                    
+                    <th>Description</th>
+                    <th>Link</th>
                     <th>Action</th>
                   </tr>
-                  {categories &&
-                    categories.map((item, index) => (
-                      <CategoryListItem
+                  {items &&
+                    items.map((item, index) => (
+                      <ListItem
                         key={item.id}
                         item={item}
                         index={index}
                         handAddFormToggle={handAddFormToggle}
                         handleFormVisibilty={handleFormVisibilty}
-                        getCategoryId={getCategoryId}
-                        deleteCategory={deleteCategory}
+                        getId={getId}
+                        deleteItem={deleteItem}
                         changeStatus={changeStatus}
                         getStatus={getStatus}
                         page={page}
@@ -107,11 +108,11 @@ const CategoryListing = ({
                       />
                     ))}
                 </table>
-                {isEmpty(categories) && <EmptyState />}
+                {isEmpty(items) && <EmptyState />}
               </div>
             </div>
           )}
-          {categories && !isEmpty(categories) && (
+          {items && !isEmpty(items) && (
             <Pagination total={total} setPage={setPage} />
           )}
         </div>
@@ -120,4 +121,4 @@ const CategoryListing = ({
   );
 };
 
-export default CategoryListing;
+export default Listing;

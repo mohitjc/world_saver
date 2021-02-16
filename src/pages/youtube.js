@@ -5,14 +5,15 @@ import swal from 'sweetalert';
 import Layout from '../components/global/Layout';
 import MainSidebar from '../components/global/MainSidebar';
 import SectionHeader from '../components/global/SectionHeader';
-import Listing from '../components/advertisement/Listing';
-import Form from '../components/advertisement/Form';
+import Listing from '../components/youtube/Listing';
+import Form from '../components/youtube/Form';
 import {
   items,
   resetSingle,
   Delete,
-  resetDelete
-} from '../store/actions/advertiseActions';
+  resetDelete,
+  Archive
+} from '../store/actions/youtubeActions';
 import { types } from '../store/actions/typeActions';
 
 import {
@@ -20,14 +21,17 @@ import {
   resetStatus
 } from '../store/actions/changeStatusActions';
 
-const Advertise = ({
+const Youtube = ({
   items,
   data,
   resetSingle,
   Delete,
+  Archive,
   resetDelete,
   isDeleteSuccess,
+  isArchiveSuccess,
   isDeleteError,
+  isArchiveError,
   changeStatus,
   resetStatus,
   isChangeStatusSuccess,
@@ -66,6 +70,7 @@ const Advertise = ({
     sort,
     searchKeyword,
     isDeleteSuccess,
+    isArchiveSuccess,
     token,
     type,
     count,
@@ -74,27 +79,35 @@ const Advertise = ({
 
   useEffect(() => {
     if (isDeleteSuccess) {
-      swal('Advertise has been deleted!', {
+      swal('Youtube has been deleted!', {
         buttons: false,
         timer: 1500
       });
     }
 
-    if (isDeleteError) {
+    if (isArchiveSuccess) {
+      swal('Youtube has been archived!', {
+        buttons: false,
+        timer: 1500
+      });
+    }
+
+    if (isDeleteError || isArchiveError) {
       swal('Something went wrong!', {
         buttons: false,
         timer: 1500
       });
     }
+
     resetDelete();
-  }, [isDeleteSuccess, isDeleteError, resetDelete]);
+  }, [isDeleteSuccess,isArchiveSuccess, isDeleteError, isArchiveError, resetDelete]);
 
   useEffect(() => {
     if (isChangeStatusSuccess) {
       swal(
         status === 'active'
-          ? 'Advertise has been activated'
-          : 'Advertise has been deactivated',
+          ? 'Youtube has been activated'
+          : 'Youtube has been deactivated',
         {
           buttons: false,
           timer: 1500
@@ -154,11 +167,11 @@ const Advertise = ({
 
   console.log('allTypes   s', allTypes);
   return (
-    <Layout title="Advertise">
+    <Layout title="Youtube">
       <MainSidebar />
       <div className="main-content">
         <section className="section">
-          <SectionHeader title="Advertise" />
+          <SectionHeader title="Youtube" />
           {!formVisibility ? (
             <Listing
               handleFormVisibilty={handleFormVisibilty}
@@ -170,6 +183,7 @@ const Advertise = ({
               // UserListing={UserListing}
               resetSingle={resetSingle}
               deleteItem={Delete}
+              Archive={Archive}
               sort={sort}
               setSort={setSort}
               setPage={setPage}
@@ -198,12 +212,14 @@ const Advertise = ({
 };
 
 const mapStateToProps = state => ({
-  data: state.advertises.data,
-  isRequesting: state.advertises.isRequesting,
-  isSuccess: state.advertises.isSuccess,
-  isError: state.advertises.isError,
-  isDeleteSuccess: state.deleteAdvertise.isSuccess,
-  isDeleteError: state.deleteAdvertise.isError,
+  data: state.youtubes.data,
+  isRequesting: state.youtubes.isRequesting,
+  isSuccess: state.youtubes.isSuccess,
+  isError: state.youtubes.isError,
+  isDeleteSuccess: state.deleteYoutube.isSuccess,
+  isDeleteError: state.deleteYoutube.isError,
+  isArchiveSuccess: state.youtubeArchive.isSuccess,
+  isArchiveError: state.youtubeArchive?.isError,
   isChangeStatusSuccess: state.status.isSuccess,
   isChangeStatusError: state.status.isError,
   allTypes: state.types.data
@@ -213,8 +229,9 @@ export default connect(mapStateToProps, {
   items,
   resetSingle,
   Delete,
+  Archive,
   resetDelete,
   changeStatus,
   resetStatus,
   types
-})(Advertise);
+})(Youtube);

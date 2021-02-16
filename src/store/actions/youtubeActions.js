@@ -1,5 +1,5 @@
 /**
- * @description :  This file has user CRUD related functions
+ * @description :  This file has category add, edit, delete, blog detail functions
  * @param: CRUD values and access token
  * @return : Boolean and success, error message
  * @author JC Software Solution PVT. LTD.
@@ -7,276 +7,318 @@
 
 import {
   AXIOS_INSTANCE,
-  USER_ADD,
-  USER_API,
+  // YOUTUBE_ADD,
+  YOUTUBE_ADD,
+  // YOUTUBE_UPDATE,
+  YOUTUBE_UPDATE,
+  // GET_CATEGORIES,
+  GET_YOUTUBE,
+  // GET_SINGLE_YOUTUBE,
+  GET_SINGLE_YOUTUBE,
+  // DELETE_SINGLE_YOUTUBE,
+  DELETE_SINGLE_YOUTUBE,
+  // YOUTUBE_API,
   YOUTUBE_API,
   API_SLUG,
-  GET_YOUTUBE,
-  USER_UPDATE,
-  GET_SINGLE_USER,
-  DELETE_SINGLE_USER,
-  GET_USERS_FOR_INVITE,
-  GET_USERS_LIST_API,
-  SEND_USERS_INVITATION_API,
+  // ALL_YOUTUBE_API,
+  ALL_YOUTUBE_API,
+  YOUTUBE_ARCHIVE,
+  // GET_YOUTUBE_BY_TYPE,
+  GET_YOUTUBE_BY_TYPE,
+  // YOUTUBE_BY_TYPE_API,
+  YOUTUBE_BY_TYPE_API
 } from '../constants';
 import { checkHttpStatus, parseJSON } from '../../utils/helpers';
 import { getRequest, getSuccess, getFailure, reset } from './index';
 
+// add the
+
 export function Add(postObj, token) {
-  return (dispatch) => {
-    dispatch(getRequest(USER_ADD.USER_ADD_REQUEST));
+  return dispatch => {
+    dispatch(getRequest(YOUTUBE_ADD.YOUTUBE_ADD_REQUEST));
     const getUrl = YOUTUBE_API;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.post(getUrl, postObj, config)
       .then(checkHttpStatus)
       .then(parseJSON)
-      .then((data) => {
+      .then(data => {
+        // console.log('response', data);
         if (data.success) {
-          dispatch(getSuccess(USER_ADD.USER_ADD_SUCCESS, data));
+          dispatch(getSuccess(YOUTUBE_ADD.YOUTUBE_ADD_SUCCESS, data));
         }
       })
-      .catch((error) => {
+      .catch(error => {
+        // console.log('error', error.response);
         const errorMessage =
           error.response && error.response.data && error.response.data.error
             ? error.response.data.error.message
             : 'Something went wrong!';
         dispatch(
-          getFailure(USER_ADD.USER_ADD_FAILURE, {
+          getFailure(YOUTUBE_ADD.YOUTUBE_ADD_FAILURE, {
             data: {
               statusCode: 403,
               // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
-              message: errorMessage,
-            },
+              message: errorMessage
+            }
           })
         );
       });
   };
 }
 
+// update the
+
 export function Update(obj, id, token) {
-  return (dispatch) => {
-    dispatch(getRequest(USER_UPDATE.USER_UPDATE_REQUEST));
-    const getUrl = `${YOUTUBE_API}/${id}`;
+  return dispatch => {
+    dispatch(getRequest(YOUTUBE_UPDATE.YOUTUBE_UPDATE_REQUEST));
+    const getUrl = `${YOUTUBE_API}/?id=${id}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.put(getUrl, obj, config)
       .then(checkHttpStatus)
       .then(parseJSON)
-      .then((data) => {
+      .then(data => {
+        // console.log('updateUser', data);
         if (data.success) {
-          dispatch(getSuccess(USER_UPDATE.USER_UPDATE_SUCCESS, data));
+          dispatch(getSuccess(YOUTUBE_UPDATE.YOUTUBE_UPDATE_SUCCESS, data));
         }
       })
-      .catch((error) => {
-        const errorMessage =
-          error.response &&
-          error.response.data &&
-          error.response.data.error_description
-            ? error.response.data.error_description
-            : 'Something went wrong!';
-        dispatch(
-          getFailure(USER_UPDATE.USER_UPDATE_FAILURE, {
-            data: {
-              statusCode: 403,
-              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
-              message: errorMessage,
-            },
-          })
-        );
-      });
-  };
-}
-
-export function youtube(token, type, page, count, sortType, roles, sort, search) {
-  return (dispatch) => {
-    dispatch(getRequest(GET_YOUTUBE.GET_YOUTUBE_REQUEST));
-    // const getUrl = `${YOUTUBE_API}?type=${type}&search=${search}&page=${page}&count=${10}&roles=${roles}&sortBy=${sortType} ${sort}`;
-    const getUrl = `${API_SLUG}/allyouTubeLink`;
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-    AXIOS_INSTANCE.get(getUrl, config)
-      .then(checkHttpStatus)
-      .then(parseJSON)
-      .then((data) => {
-        if (data.success) {
-          dispatch(getSuccess(GET_YOUTUBE.GET_YOUTUBE_SUCCESS, data));
-          console.log("yotube data", data)
-        }
-      })
-      .catch((error) => {
-        const errorMessage =
-          error.response &&
-          error.response.data &&
-          error.response.data.error_description
-            ? error.response.data.error_description
-            : 'Something went wrong!';
-        dispatch(
-          getFailure(GET_YOUTUBE.GET_YOUTUBE_RESET, {
-            data: {
-              statusCode: 403,
-              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
-              message: errorMessage,
-            },
-          })
-        );
-      });
-  };
-}
-
-export function singleUser(id, token) {
-  return (dispatch) => {
-    dispatch(getRequest(GET_SINGLE_USER.GET_SINGLE_USER_REQUEST));
-    const getUrl = `${YOUTUBE_API}/${id}`;
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-    AXIOS_INSTANCE.get(getUrl, config)
-      .then(checkHttpStatus)
-      .then(parseJSON)
-      .then((data) => {
-        if (data.success) {
-          dispatch(
-            getSuccess(GET_SINGLE_USER.GET_SINGLE_USER_SUCCESS, data.data)
-          );
-        }
-      })
-      .catch((error) => {
-        const errorMessage =
-          error.response &&
-          error.response.data &&
-          error.response.data.error_description
-            ? error.response.data.error_description
-            : 'Something went wrong!';
-        dispatch(
-          getFailure(GET_SINGLE_USER.GET_SINGLE_USER_RESET, {
-            data: {
-              statusCode: 403,
-              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
-              message: errorMessage,
-            },
-          })
-        );
-      });
-  };
-}
-
-export function deleteUser(id, token) {
-  return (dispatch) => {
-    dispatch(getRequest(DELETE_SINGLE_USER.DELETE_SINGLE_USER_REQUEST));
-    const getUrl = `${YOUTUBE_API}/${id}`;
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-    AXIOS_INSTANCE.delete(getUrl, config)
-      .then(checkHttpStatus)
-      .then(parseJSON)
-      .then((data) => {
-        if (data.success) {
-          dispatch(
-            getSuccess(DELETE_SINGLE_USER.DELETE_SINGLE_USER_SUCCESS, data.data)
-          );
-        }
-      })
-      .catch((error) => {
-        const errorMessage =
-          error.response &&
-          error.response.data &&
-          error.response.data.error_description
-            ? error.response.data.error_description
-            : 'Something went wrong!';
-        dispatch(
-          getFailure(DELETE_SINGLE_USER.DELETE_SINGLE_USER_FAILURE, {
-            data: {
-              statusCode: 403,
-              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
-              message: errorMessage,
-            },
-          })
-        );
-      });
-  };
-}
-
-export function resetDeleteUser() {
-  return (dispatch) => {
-    dispatch(reset(DELETE_SINGLE_USER.DELETE_SINGLE_USER_RESET));
-  };
-}
-
-export function resetAddUser() {
-  return (dispatch) => {
-    dispatch(reset(USER_ADD.USER_ADD_RESET));
-  };
-}
-
-export function resetSingleUser() {
-  return (dispatch) => {
-    dispatch(reset(GET_SINGLE_USER.GET_SINGLE_USER_RESET));
-  };
-}
-
-export function resetUpdateUser() {
-  return (dispatch) => {
-    dispatch(reset(USER_UPDATE.USER_UPDATE_RESET));
-  };
-}
-
-export function List() {
-  return (dispatch) => {
-    dispatch(getRequest(GET_USERS_FOR_INVITE.REQUEST));
-    const getUrl = GET_USERS_LIST_API;
-    const token = localStorage.getItem('token');
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-    AXIOS_INSTANCE.get(getUrl, config)
-      .then(checkHttpStatus)
-      .then(parseJSON)
-      .then((data) => {
-        if (data.success) {
-          dispatch(getSuccess(GET_USERS_FOR_INVITE.SUCCESS, data));
-        }
-      })
-      .catch((error) => {
-        const errorMessage =
-          error.response &&
-          error.response.data &&
-          error.response.data.error_description
-            ? error.response.data.error_description
-            : 'Something went wrong!';
-        dispatch(
-          getFailure(GET_USERS_FOR_INVITE.FAILURE, {
-            data: {
-              statusCode: 403,
-              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
-              message: errorMessage,
-            },
-          })
-        );
-      });
-  };
-}
-
-export function sendInvites(postObj, cb) {
-  return (dispatch) => {
-    const getUrl = SEND_USERS_INVITATION_API;
-    const token = localStorage.getItem('token');
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-    AXIOS_INSTANCE.post(getUrl, postObj, config)
-      .then(checkHttpStatus)
-      .then(parseJSON)
-      .then((data) => {
-        if (data.success) {
-          return cb(true);
-          // dispatch(getSuccess(USER_ADD.USER_ADD_SUCCESS, data));
-        }
-      })
-      .catch((error) => {
+      .catch(error => {
+        // console.log('error', error.response);
         const errorMessage =
           error.response && error.response.data && error.response.data.error
             ? error.response.data.error.message
             : 'Something went wrong!';
         dispatch(
-          getFailure(USER_ADD.USER_ADD_FAILURE, {
+          getFailure(YOUTUBE_UPDATE.YOUTUBE_UPDATE_FAILURE, {
             data: {
               statusCode: 403,
               // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
-              message: errorMessage,
-            },
+              message: errorMessage
+            }
           })
         );
       });
+  };
+}
+
+
+// is Archive start
+export function Archive(obj, id, token) {
+  return dispatch => {
+    dispatch(getRequest(YOUTUBE_ARCHIVE.YOUTUBE_ARCHIVE_REQUEST));
+    const getUrl = `${API_SLUG}/changeArchiveStatus/?id=${id}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.put(getUrl, obj, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('updateUser', data);
+        if (data.success) {
+          dispatch(getSuccess(YOUTUBE_ARCHIVE.YOUTUBE_ARCHIVE_SUCCESS, data));
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response && error.response.data && error.response.data.error
+            ? error.response.data.error.message
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(YOUTUBE_ARCHIVE.YOUTUBE_ARCHIVE_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+// is Archive end
+
+
+// get all categories
+
+export function items(token, type, page, count, sortType, sort, search) {
+  return dispatch => {
+    dispatch(getRequest(GET_YOUTUBE.GET_YOUTUBE_REQUEST));
+    const getUrl = `${ALL_YOUTUBE_API}?type=${type}&search=${search}&page=${page}&count=${10}&sortBy=${sortType} ${sort}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.get(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('response', data);
+        if (data.success) {
+          dispatch(getSuccess(GET_YOUTUBE.GET_YOUTUBE_SUCCESS, data));
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(GET_YOUTUBE.GET_YOUTUBE_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+// get single
+
+export function single(id, token) {
+  return dispatch => {
+    dispatch(getRequest(GET_SINGLE_YOUTUBE.GET_SINGLE_YOUTUBE_REQUEST));
+    const getUrl = `${YOUTUBE_API}/?id=${id}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.get(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('singleCategory', data);
+        if (data.success) {
+          dispatch(
+            getSuccess(
+              GET_SINGLE_YOUTUBE.GET_SINGLE_YOUTUBE_SUCCESS,
+              data.data
+            )
+          );
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(GET_SINGLE_YOUTUBE.GET_SINGLE_YOUTUBE_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+export function getCatByType(id, token) {
+  return dispatch => {
+    dispatch(getRequest(GET_YOUTUBE_BY_TYPE.GET_YOUTUBE_BY_TYPE_REQUEST));
+    const getUrl = `${YOUTUBE_BY_TYPE_API}?typeid=${id}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.get(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        console.log('getCatByType', data);
+        if (data.success) {
+          dispatch(
+            getSuccess(
+              GET_YOUTUBE_BY_TYPE.GET_YOUTUBE_BY_TYPE_SUCCESS,
+              data.data
+            )
+          );
+        }
+      })
+      .catch(error => {
+        console.log('error', error.response);
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(GET_YOUTUBE_BY_TYPE.GET_YOUTUBE_BY_TYPE_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+// delete single
+
+export function Delete(id, token) {
+  return dispatch => {
+    dispatch(getRequest(DELETE_SINGLE_YOUTUBE.DELETE_SINGLE_YOUTUBE_REQUEST));
+    const getUrl = `${YOUTUBE_API}/?id=${id}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.delete(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('deleteUser', data);
+        if (data.success) {
+          dispatch(
+            getSuccess(
+              DELETE_SINGLE_YOUTUBE.DELETE_SINGLE_YOUTUBE_SUCCESS,
+              data.data
+            )
+          );
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(DELETE_SINGLE_YOUTUBE.DELETE_SINGLE_YOUTUBE_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+export function resetDelete() {
+  return dispatch => {
+    dispatch(reset(DELETE_SINGLE_YOUTUBE.DELETE_SINGLE_YOUTUBE_RESET));
+  };
+}
+
+export function resetAdd() {
+  return dispatch => {
+    dispatch(reset(YOUTUBE_ADD.YOUTUBE_ADD_RESET));
+  };
+}
+
+export function resetSingle() {
+  return dispatch => {
+    dispatch(reset(GET_SINGLE_YOUTUBE.GET_SINGLE_YOUTUBE_RESET));
+  };
+}
+
+export function resetUpdate() {
+  return dispatch => {
+    dispatch(reset(YOUTUBE_UPDATE.YOUTUBE_UPDATE_RESET));
   };
 }

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import swal from 'sweetalert';
 import dayjs from 'dayjs';
+import { items } from '../../store/actions/youtubeActions';
 
 const ListItem = ({
   item,
@@ -10,6 +11,7 @@ const ListItem = ({
   deleteItem,
   getId,
   page,
+  Archive,
   changeStatus,
   getStatus,
   count
@@ -34,13 +36,37 @@ const ListItem = ({
   const handleStatus = status => {
     const token = localStorage.getItem('token');
     const obj = {
-      model: 'advertisement',
+      model: 'youtube',
       id: item && item.id,
       status
     };
     getStatus(status);
     changeStatus(obj, token);
   };
+
+
+  const handleArchive = (id, status) =>{
+    const token = localStorage.getItem('token');
+    swal({
+      title: 'Are you sure?',
+      text: status?'you want to Un-Archive the user!':'you want to Archive the user!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true
+    }).then(willArchive => {
+      if (willArchive) {
+        console.log("id: ",id, " status: ",status)
+        Archive({isArchive: !status}, id, token)
+      } else {
+        return null;
+      }
+    });
+
+    
+  }
+
+
+  const [isarchive, satArchive] = useState(false);
 
   // console.log('page * count ', page, count);
   // console.log('page * count ', page * count);
@@ -52,7 +78,7 @@ const ListItem = ({
       <td>{item && item.description ? item.description : '___'}</td>
       <td>{item && item.url ? item.url : '___'}</td>
       
-      <td>
+      {/* <td>
         {item && item.status === 'deactive' ? (
           <button
             type="button"
@@ -70,7 +96,7 @@ const ListItem = ({
             Active
           </button>
         )}
-      </td>
+      </td> */}
       <td>
         <button
           type="button"
@@ -85,10 +111,18 @@ const ListItem = ({
         </button>
         <button
           type="button"
-          className="btn btn-icon btn-danger"
+          className="btn btn-icon btn-danger mr-2"
           onClick={handleDelete}
         >
           <i className="fas fa-trash" />
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-icon btn-secondary"
+          onClick={()=>handleArchive(item && item.id ,item && item.isArchive)}
+        >
+          {item && item.isArchive?'Un-Archive':'Archive'}
         </button>
       </td>
     </tr>

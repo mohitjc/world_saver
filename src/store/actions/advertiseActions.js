@@ -99,6 +99,42 @@ export function Update(obj, id, token) {
   };
 }
 
+
+// is Archive start
+export function Archive(obj, id, token) {
+  return dispatch => {
+    dispatch(getRequest(ADVERTISE_UPDATE.ADVERTISE_UPDATE_REQUEST));
+    const getUrl = `${ADVERTISE_API}/${id}`;
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.put(getUrl, obj, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('updateUser', data);
+        if (data.success) {
+          dispatch(getSuccess(ADVERTISE_UPDATE.ADVERTISE_UPDATE_SUCCESS, data));
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response && error.response.data && error.response.data.error
+            ? error.response.data.error.message
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(ADVERTISE_UPDATE.ADVERTISE_UPDATE_FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+// is Archive end
+
 // get all categories
 
 export function items(token, type, page, count, sortType, sort, search) {

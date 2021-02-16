@@ -18,6 +18,19 @@ import categories from './getCategoriesReducer';
 import category from './singleCategoryReducer';
 import deleteCategory from './deleteCategoryReducer';
 
+import advertiseAdd from './advertiseAddReducer';
+import advertiseUpdate from './advertiseUpdateReducer';
+import advertises from './getAdvertiseReducer';
+import advertise from './singleAdvertiseReducer';
+import deleteAdvertise from './deleteAdvertiseReducer';
+
+import youtubeAdd from './youtubeAddReducer';
+import youtubeUpdate from './youtubeUpdateReducer';
+import youtubes from './getYoutubeReducer';
+import youtube from './singleYoutubeReducer';
+import deleteYoutube from './deleteYoutubeReducer';
+import youtubeArchive from "./youtubeArchiveReducer"
+
 import questionAdd from './questionAddReducer';
 import questionUpdate from './questionUpdateReducer';
 import questions from './getQuestionsReducer';
@@ -86,6 +99,17 @@ const rootReducer = combineReducers({
   categories,
   category,
   deleteCategory,
+  advertiseAdd,
+  advertiseUpdate,
+  advertises,
+  advertise,
+  deleteAdvertise,
+  youtubeAdd,
+  youtubeUpdate,
+  youtubes,
+  youtube,
+  deleteYoutube,
+  youtubeArchive,
   deleteQuestion,
   questionAdd,
   questionUpdate,

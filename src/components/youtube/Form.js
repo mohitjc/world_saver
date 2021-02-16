@@ -17,8 +17,9 @@ import {
   resetAdd,
   resetUpdate,
   categories
-} from '../../store/actions/advertiseActions';
+} from '../../store/actions/youtubeActions';
 import ImageUpload from '../global/ImageUpload';
+import TagInput from '../global/TagInput';
 
 const Form = ({
   handleFormVisibilty,
@@ -49,7 +50,7 @@ const Form = ({
   const token = localStorage.getItem('token');
   useEffect(() => {
     if (isSuccess) {
-      swal('New advertise added!', '', 'success');
+      swal('New youtube added!', '', 'success');
       handleFormVisibilty();
       resetAdd();
       setReloadToggle(!reloadToggle);
@@ -61,7 +62,7 @@ const Form = ({
       // setReloadToggle(!reloadToggle);
     }
     if (isUpdateSuccess) {
-      swal('Adertise updated!', '', 'success');
+      swal('youtube updated!', '', 'success');
       handleFormVisibilty();
       resetUpdate();
       setReloadToggle(!reloadToggle);
@@ -91,6 +92,11 @@ const Form = ({
 
   // console.log('values', values);
 
+
+  const getInput = values => {
+    setFieldValue('tags', values);
+  };
+
   return (
     <div className="">
       <button
@@ -99,7 +105,7 @@ const Form = ({
           handleFormVisibilty();
         }}
       >
-        View Advertise
+        View Youtube
       </button>
       <div className="card">
         <form
@@ -108,12 +114,12 @@ const Form = ({
           noValidate=""
         >
           <div className="card-header">
-            <h4>{isAddForm ? 'Add' : 'Edit'} Advertise</h4>
+            <h4>{isAddForm ? 'Add' : 'Edit'} Youtube</h4>
           </div>
           <div className="card-body">
             <ImageUpload
               getImage={getImage}
-              type="advertise"
+              type="youtube"
               value={values.image}
             />
             <div className="row">
@@ -182,6 +188,20 @@ const Form = ({
                   </div>
                 )}
               </div>
+
+              <div className="form-group col-md-12">
+                    <label>Tags</label>
+                    <TagInput getInput={getInput} tags={values.tags} />
+
+                    {errors.tags && touched.tags && (
+                      <div
+                        className="invalid-feedback"
+                        style={{ display: 'block' }}
+                      >
+                        {errors.tags}
+                      </div>
+                    )}
+                </div>
               
               
             </div>
@@ -219,7 +239,8 @@ const CatgeoryFormFormik = withFormik({
       title: (singleData && singleData.title) || '',
       image: (singleData && singleData.image) || '',
       description: (singleData && singleData.description) || '',
-      url: (singleData && singleData.url) || ''
+      url: (singleData && singleData.url) || '',
+      tags: (singleData && singleData.tags) || '',
     };
   },
 
@@ -239,7 +260,8 @@ const CatgeoryFormFormik = withFormik({
           title: values.title,
           image:values.image,
           description: values.description,
-          url:values.url         
+          url:values.url,
+          tags: values.tags  
         },
         token
       );
@@ -249,7 +271,8 @@ const CatgeoryFormFormik = withFormik({
           itle: values.title,
           image:values.image,
           description: values.description,
-          url:values.url  
+          url:values.url,
+          tags: values.tags
         },
         props.Id,
         token
@@ -263,13 +286,13 @@ const CatgeoryFormFormik = withFormik({
 })(Form);
 
 const mapStateToProps = state => ({
-  data: state.advertiseAdd.data,
-  isRequesting: state.advertiseAdd.isRequesting,
-  isUpdateRequesting: state.advertiseUpdate.isRequesting,
-  isSuccess: state.advertiseAdd.isSuccess,
-  isUpdateSuccess: state.advertiseUpdate.isSuccess,
-  isError: state.advertiseAdd.isError,
-  singleData: state.advertise.data
+  data: state.youtubeAdd.data,
+  isRequesting: state.youtubeAdd.isRequesting,
+  isUpdateRequesting: state.youtubeUpdate.isRequesting,
+  isSuccess: state.youtubeAdd.isSuccess,
+  isUpdateSuccess: state.youtubeUpdate.isSuccess,
+  isError: state.youtubeAdd.isError,
+  singleData: state.youtube.data
 });
 
 export default connect(mapStateToProps, {

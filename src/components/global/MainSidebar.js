@@ -62,7 +62,7 @@ const MainSidebar = ({ history }) => {
           </li>
 
           <li className="nav-item dropdown">
-            <NavLink className="nav-link" to="/advertisement" activeStyle={styles}>
+            <NavLink className="nav-link" to="/advertise" activeStyle={styles}>
               <i className="far fa-folder-open" /> <span>Advertisement Management</span>
             </NavLink>
           </li>

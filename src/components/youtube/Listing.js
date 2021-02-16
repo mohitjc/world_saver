@@ -13,13 +13,13 @@ const Listing = ({
   getId,
   resetSingle,
   deleteItem,
-  categories,
   items,
   sort,
   setSort,
   total,
   setPage,
   page,
+  Archive,
   count,
   changeStatus,
   getStatus,
@@ -47,7 +47,7 @@ const Listing = ({
                 }}
                 type="button"
               >
-                Add Advertise
+                Add Youtube
               </button>
             </h4>
             <div className="card-header-form">
@@ -89,7 +89,7 @@ const Listing = ({
                     
                     <th>Description</th>
                     <th>Link</th>
-                    <th>Status</th>
+                    {/* <th>Status</th> */}
                     <th>Action</th>
                   </tr>
                   {items &&
@@ -101,6 +101,7 @@ const Listing = ({
                         handAddFormToggle={handAddFormToggle}
                         handleFormVisibilty={handleFormVisibilty}
                         getId={getId}
+                        Archive={Archive}
                         deleteItem={deleteItem}
                         changeStatus={changeStatus}
                         getStatus={getStatus}

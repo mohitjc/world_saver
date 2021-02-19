@@ -90,7 +90,7 @@ const Listing = ({
                     <th>Description</th>
                     <th>Link</th>
                     {/* <th>Status</th> */}
-                    <th>Action</th>
+                    <th style={{minWidth:'250px'}}>Action</th>
                   </tr>
                   {items &&
                     items.map((item, index) => (

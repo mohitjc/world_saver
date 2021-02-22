@@ -47,12 +47,9 @@ const ArticleListItem = ({
     <tr>
       <td>{index + page * count - (count - 1)}</td>
       <td>
-        <Link to={`/blog/${item && item.id}`}>
           {item && item.title ? item.title : '___'}
-        </Link>
       </td>
       <td>
-        {' '}
         {truncate(item && item.description ? item.description : '___', {
           length: 20,
           separator: ''

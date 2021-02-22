@@ -103,6 +103,8 @@ const ArticleForm = ({
     setFieldValue('image', value);
   };
 
+  console.log("dfgfdg", values)
+
   return (
     <div className="">
       <button
@@ -156,7 +158,7 @@ const ArticleForm = ({
               )}
 
               <div className="form-group col-md-4 col-12 mt-3">
-                <label>Category</label>
+                <label>Category</label>{values.category.id}
                 <select
                   name="category"
                   className="form-control"
@@ -278,7 +280,7 @@ const ArticleFormFormik = withFormik({
       title: (singleBlogData && singleBlogData.title) || '',
       description: (singleBlogData && singleBlogData.description) || '',
       image: (singleBlogData && singleBlogData.image) || '',
-      category: (singleBlogData && singleBlogData.category.id) || '',
+      category: (singleBlogData && singleBlogData.category?.id) || '',
       blogUrl: (singleBlogData && singleBlogData.blogUrl) || '',
       tags: (singleBlogData && singleBlogData.tags) || []
     };

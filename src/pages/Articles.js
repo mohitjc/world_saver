@@ -161,7 +161,7 @@ const Articles = ({
           {!formVisibility ? (
             <ArticleLsiting
               handleFormVisibilty={handleFormVisibilty}
-              blogs={data && data.data && data.data.blog}
+              blogs={data && data.data && data.data}
               total={data && data.data && data.data.total}
               handAddFormToggle={handAddFormToggle}
               getBlogId={getBlogId}

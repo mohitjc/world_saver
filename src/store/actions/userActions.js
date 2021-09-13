@@ -16,6 +16,9 @@ import {
   GET_USERS_FOR_INVITE,
   GET_USERS_LIST_API,
   SEND_USERS_INVITATION_API,
+  ALL_POST,
+  DELETE_POST,
+  DELETE_SINGLE_BLOG,
 } from '../constants';
 import { checkHttpStatus, parseJSON } from '../../utils/helpers';
 import { getRequest, getSuccess, getFailure, reset } from './index';
@@ -244,6 +247,78 @@ export function usersList() {
       });
   };
 }
+
+export function allPost() {
+  return (dispatch) => {
+    dispatch(getRequest(GET_USERS_FOR_INVITE.REQUEST));
+    const getUrl = `${ALL_POST}/allposts`;
+
+    const token = localStorage.getItem('token');
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    AXIOS_INSTANCE.get(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then((data) => {
+        if (data.success) {
+          dispatch(getSuccess(GET_USERS_FOR_INVITE.SUCCESS, data));
+        }
+      })
+      .catch((error) => {
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(GET_USERS_FOR_INVITE.FAILURE, {
+            data: {
+              statusCode: 403,
+              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+              message: errorMessage,
+            },
+          })
+        );
+      });
+  };
+}
+
+export function deletePost(obj, token) {
+  return dispatch => {
+    dispatch(getRequest(DELETE_SINGLE_BLOG.DELETE_SINGLE_BLOG_REQUEST));
+    const getUrl = `${DELETE_POST}`;
+    const config = { headers: { Authorization: `Bearer ${token}` }, data: obj };
+    AXIOS_INSTANCE.delete(getUrl, config)
+      .then(checkHttpStatus)
+      .then(parseJSON)
+      .then(data => {
+        // console.log('deleteUser', data);
+        if (data.success) {
+          dispatch(
+            getSuccess(DELETE_SINGLE_BLOG.DELETE_SINGLE_BLOG_SUCCESS, data.data)
+          );
+        }
+      })
+      .catch(error => {
+        // console.log('error', error.response);
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        dispatch(
+          getFailure(DELETE_SINGLE_BLOG.DELETE_SINGLE_BLOG_FAILURE, {
+            data: {
+              statusCode: 403,
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
 
 export function sendInvites(postObj, cb) {
   return (dispatch) => {

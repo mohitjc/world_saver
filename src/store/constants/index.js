@@ -444,6 +444,9 @@ export const SINGLE_TYPE_API = `${API_SLUG}/singletype`;
 export const CATEGORY_BY_TYPE_API = `${API_SLUG}/parentcat`;
 export const GET_USERS_LIST_API = `${API_SLUG}/usersForSelect`;
 export const SEND_USERS_INVITATION_API = `${API_SLUG}/sendInvite`;
+export const ALL_POST = `${API_SLUG}/admin`;
+export const DELETE_POST = `${API_SLUG}/delete`;
+
 
 export const countryList = [
   'Afghanistan',

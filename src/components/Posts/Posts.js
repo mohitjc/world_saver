@@ -4,6 +4,7 @@ import MainSidebar from '../global/MainSidebar';
 import SectionHeader from '../global/SectionHeader';
 import Table from 'react-bootstrap/Table'
 import './Posts.css'
+import Pagination from '../global/Pagination'
 
 const Posts = () => {
     return (<>
@@ -18,7 +19,41 @@ const Posts = () => {
 
 
             </div>
+
             <div className="table">
+                <h4>
+                    <button
+                        className="btn btn-primary"
+                        // onClick={() => {
+                        //   handleFormVisibilty();
+                        //   handAddFormToggle(true);
+                        //   resetSingleCategory();
+                        // }}
+                        type="button"
+                    >
+                        Add Posts
+                    </button>
+                    <div className="card-header-form">
+              <form>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search"
+                    // onChange={e => {
+                    //   setKeyword(e.target.value);
+                    //   setPage(1);
+                    // }}
+                  />
+                  <div className="input-group-btn">
+                    <button className="btn btn-primary" type="button">
+                      <i className="fas fa-search" />
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+                </h4>
                 <Table>
                     <thead>
                         <tr>
@@ -57,8 +92,8 @@ const Posts = () => {
                                 <button
                                     type="button"
                                     className="btn btn-icon btn-danger"
-                                    // onClick={handleDelete}
-                                    // disabled={!!(item && item.type === 'custom')}
+                                // onClick={handleDelete}
+                                // disabled={!!(item && item.type === 'custom')}
                                 >
                                     <i className="fas fa-trash" />
                                 </button>
@@ -66,20 +101,21 @@ const Posts = () => {
 
                         </tr>
                         <tr>
-                       
-                     
+
+
 
 
                         </tr>
                         <tr>
-                           
-                     
+
+
 
                         </tr>
                     </tbody>
                 </Table>
             </div>
         </div>
+   <Pagination/>
     </>
 
 

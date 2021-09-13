@@ -32,7 +32,7 @@ const Posts = () => {
                         <tr>
                             <td>1</td>
                             <td>Mark</td>
-                            <td>Otto</td>
+                            <td>Otto</td>git checkpu
                             <button type="button" class="btn btn-info">Edit</button>
                             <button type="button" class="btn btn-danger">Delete</button>
                         

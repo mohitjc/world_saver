@@ -32,22 +32,49 @@ const Posts = () => {
                         <tr>
                             <td>1</td>
                             <td>Mark</td>
-                            <td>Otto</td>git checkpu
-                            <button type="button" class="btn btn-info">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                        
+                            <td>
+                                <button
+                                    type="button"
+                                    className="badge badge-success"
+                                // onClick={() => handleStatus('deactive')}
+                                >
+                                    Active
+                                </button>
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    className="btn btn-icon btn-primary mr-2"
+                                // onClick={() => {
+                                //     handAddFormToggle(false);
+                                //     handleFormVisibilty();
+                                //     getBlogId(item && item.id);
+                                // }}
+                                // disabled={!!(item && item.type === 'custom')}
+                                >
+                                    <i className="far fa-edit" />
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-icon btn-danger"
+                                    // onClick={handleDelete}
+                                    // disabled={!!(item && item.type === 'custom')}
+                                >
+                                    <i className="fas fa-trash" />
+                                </button>
+                            </td>
+
                         </tr>
                         <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            
+                       
+                     
+
+
+                        </tr>
+                        <tr>
                            
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td colSpan="2">Larry the Bird</td>
-                        
+                     
+
                         </tr>
                     </tbody>
                 </Table>

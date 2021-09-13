@@ -45,7 +45,7 @@ const Posts = () => {
                     //   setPage(1);
                     // }}
                   />
-                  <div className="input-group-btn">
+                  <div className="input-group-btn ">
                     <button className="btn btn-primary" type="button">
                       <i className="fas fa-search" />
                     </button>

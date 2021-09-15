@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { truncate } from 'lodash';
+import Posts from '../Posts/Posts';
 
 const ArticleListItem = ({
   item,
@@ -44,6 +45,7 @@ const ArticleListItem = ({
   };
 
   return (
+    <>
     <tr>
       <td>{index + page * count - (count - 1)}</td>
       <td>
@@ -103,6 +105,7 @@ const ArticleListItem = ({
         </button>
       </td>
     </tr>
+    </>
   );
 };
 

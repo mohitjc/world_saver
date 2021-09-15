@@ -10,19 +10,24 @@ import './Posts.css'
 import { allPost, deletePost } from '../../store/actions/userActions';
 import swal from 'sweetalert';
 import { ALL_POST, AXIOS_INSTANCE, DELETE_POST } from '../../store/constants';
-const Posts = () => {
+
+
+const Posts = (props) => {
 const [array, setArray] = useState([])
-const [id, setid] = useState()
+console.log(props, 'aksdhkl');
+const newId =  array && array.map((items, id)=>{
 
+return items._id
 
-console.log(id, 'array');
-let idData = ''
-array && array.map((items, id)=>{
-
-    idData = items._id
 })
-console.log(idData, 'asasa1111');
 
+console.log(newId, 'asasa1111');
+const obj = Object.fromEntries(newId);
+
+
+
+// const idsq = newId&& newId.split("");
+// console.log("split",idsq);
 const dispatch = useDispatch();
 
     useEffect(()=>{
@@ -30,7 +35,7 @@ const dispatch = useDispatch();
     },[])
     const handleDelete = () => {
         const token = localStorage.getItem('token');
-        const payload = { id: idData, model: 'createpost' };
+        const payload = { id: '613ef6871c19dd72e0cee0dc', model: 'createpost' };
         console.log(payload,'asdassasdasdadadadasda');
 
         swal({
@@ -44,7 +49,7 @@ const dispatch = useDispatch();
             // deletePost(payload, token, (res)=>{
             //     console.log(res,'asdass');
             // });
-            const getUrl = `${DELETE_POST}/delete`;
+            const getUrl = `${DELETE_POST}`;
     const config = { headers: { Authorization: `Bearer ${token}`} };
     console.log(config, 'config');
 
@@ -75,7 +80,10 @@ const dispatch = useDispatch();
      
       .then((data) => {
           console.log(data.data.data, 'data');
-          setArray(data.data.data);
+          setArray(data.data.data)
+          var newArray = array.concat(data.data.data);
+
+          console.log(newArray, 'newarr');
        
       })
         // setProject(project.id);

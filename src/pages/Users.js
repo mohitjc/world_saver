@@ -50,6 +50,7 @@ const Users = ({
   const [searchKeyword, setSearchKeyword] = useState('');
   const [status, setStatus] = useState(null);
   // const [currentCount, setCurrentCount] = useState(count);
+  console.log(page, "pagepage");
 
   useEffect(() => {
     if (isNull(location.state && location.state.role)) {
@@ -180,6 +181,7 @@ const Users = ({
     <Layout title="Users">
       <MainSidebar />
       <div className="main-content">
+        
         <section className="section">
           <SectionHeader title={handleTitleChange()} />
           {!formVisibility ? (

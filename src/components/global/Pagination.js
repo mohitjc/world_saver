@@ -3,6 +3,7 @@ import Pagination from 'react-js-pagination';
 
 const BottomPagination = ({ total, setPage, page }) => {
   const [activePage, setActivePage] = useState(1);
+  console.log(activePage, 'activePage');
   const handlePageChange = pageNumber => {
     // console.log(`active page is ${pageNumber}`);
     setActivePage(pageNumber);

@@ -54,9 +54,9 @@ const Posts = (props) => {
     useEffect(() => {
         handleInvite();
     }, [])
-    const handleDelete = () => {
+    const handleDelete = (deletegenerateid) => {
         const token = localStorage.getItem('token');
-        const payload = { id: generateid, model: "createpost" };
+        const payload = { id: deletegenerateid, model: "createpost" };
         console.log(payload, 'asdassasdasdadadadasda');
         swal({
             title: 'Are you sure?',
@@ -74,7 +74,7 @@ const Posts = (props) => {
                 AXIOS_INSTANCE.delete(getUrl, config)
                     .then((result) => {
                         console.log(result, 'result12');
-
+                        handleInvite();
                         if (result.success) {
                             console.log('result');
                         } else {
@@ -183,7 +183,9 @@ const Posts = (props) => {
                                     <button
                                         type="button"
                                         className="btn btn-icon btn-danger"
-                                        onClick={handleDelete}
+                                        onClick={()=>{
+                                            handleDelete(items._id)
+                                        }}
                                     // onClick={handleDelete}
                                     // disabled={!!(item && item.type === 'custom')}
                                     >

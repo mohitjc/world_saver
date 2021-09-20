@@ -92,7 +92,7 @@ console.log('users', total);
                   </tr>
                   {users &&
                     users.map((item, index) => (
-                        console.log(item, 'itms'),
+                        console.log(index, 'itms'),
                       <PostItems
                         key={item.id}
                         item={item}

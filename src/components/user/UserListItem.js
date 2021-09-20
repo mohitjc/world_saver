@@ -16,6 +16,8 @@ const UserListItem = ({
 }) => {
   console.log(page,"pagepage");
   const handleDelete = () => {
+    console.log(item, 'itemitemitem');
+
     const token = localStorage.getItem('token');
     swal({
       title: 'Are you sure?',

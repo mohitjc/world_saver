@@ -25,6 +25,7 @@ import Articles from './Articles';
 import Types from './Types';
 import ProjectView from './ProjectView';
 import Posts from '../components/Posts/Posts';
+import PostData from '../components/Posts/PostData';
 
 const App = ({ authenticated }) => {
   // console.log('base', authenticated);
@@ -35,7 +36,7 @@ const App = ({ authenticated }) => {
         <PrivateRoute component={Home} path="/dashboard" exact />
         <PrivateRoute component={Users} path="/users" exact />
         
-        <PrivateRoute component={Posts} path="/posts" exact />
+        <PrivateRoute component={PostData} path="/posts" exact />
         <PrivateRoute component={Category} path="/categories" exact />
         <PrivateRoute component={Articles} path="/articles" exact />
         <PrivateRoute component={Project} path="/projects" exact />

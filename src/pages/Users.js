@@ -52,7 +52,7 @@ const Users = ({
   const [searchKeyword, setSearchKeyword] = useState('');
   const [status, setStatus] = useState(null);
   // const [currentCount, setCurrentCount] = useState(count);
-  console.log(page, "pagepage");
+  console.log(deleteUser, "pagepage");
 
   useEffect(() => {
     if (isNull(location.state && location.state.role)) {
@@ -183,34 +183,36 @@ const Users = ({
     <Layout title="Users">
       <MainSidebar />
       <div className="main-content">
-        
+
         <section className="section">
           <SectionHeader title={handleTitleChange()} />
-          {!formVisibility ? ( <>
-            <UserListing
-              handleFormVisibilty={handleFormVisibilty}
-              users={data && data.data && data.data.users}
-              total={data && data.data && data.data.total}
-              handAddFormToggle={handAddFormToggle}
-              getUserId={getUserId}
-              isRequesting={isRequesting}
-              // UserListing={UserListing}
-              resetSingleUser={resetSingleUser}
-              deleteUser={deleteUser}
-              sort={sort}
-              setSort={setSort}
-              setPage={setPage}
-              page={page}
-              count={count}
-              getSearchKeyword={getSearchKeyword}
-              changeStatus={changeStatus}
-              getStatus={getStatus}
-              toggleSort={toggleSort}
-            />
- 
-          </>
-          
+          {!formVisibility ? (
+            <>
+              <UserListing
+                handleFormVisibilty={handleFormVisibilty}
+                users={data && data.data && data.data.users}
+                total={data && data.data && data.data.total}
+                handAddFormToggle={handAddFormToggle}
+                getUserId={getUserId}
+                isRequesting={isRequesting}
+                // UserListing={UserListing}
+                resetSingleUser={resetSingleUser}
+                deleteUser={deleteUser}
+                sort={sort}
+                setSort={setSort}
+                setPage={setPage}
+                page={page}
+                count={count}
+                getSearchKeyword={getSearchKeyword}
+                changeStatus={changeStatus}
+                getStatus={getStatus}
+                toggleSort={toggleSort}
+              />
+              
+            </>
           ) : (
+            <>
+          
             <UserForm
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
@@ -218,6 +220,7 @@ const Users = ({
               setReloadToggle={setReloadToggle}
               reloadToggle={reloadToggle}
             />
+            </>
           )}
         </section>
       </div>
@@ -225,7 +228,10 @@ const Users = ({
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => (
+  console.log(state, 'state'),
+  
+  {
   data: state.users.data,
   isRequesting: state.users.isRequesting,
   isSuccess: state.users.isSuccess,

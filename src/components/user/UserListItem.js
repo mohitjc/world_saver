@@ -15,6 +15,8 @@ const UserListItem = ({
   count
 }) => {
   const handleDelete = () => {
+    console.log(item, 'itemitemitem');
+
     const token = localStorage.getItem('token');
     swal({
       title: 'Are you sure?',

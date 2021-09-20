@@ -28,7 +28,7 @@ const UserListing = ({
   useEffect(() => {
     getSearchKeyword(keyword);
   }, [getSearchKeyword, keyword]);
-  // console.log('users', users);
+  console.log('users', total);
 
   return (
     <div className="row">

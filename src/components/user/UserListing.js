@@ -4,6 +4,7 @@ import UserListItem from './UserListItem';
 import Pagination from '../global/Pagination';
 import EmptyState from '../global/EmptyState';
 import Loading from '../global/Loader';
+import Posts from '../Posts/Posts';
 
 const UserListing = ({
   handleFormVisibilty,
@@ -97,20 +98,28 @@ const UserListing = ({
                   </tr>
                   {users &&
                     users.map((item, index) => (
-                      <UserListItem
-                        key={item.id}
-                        item={item}
-                        index={index}
-                        handAddFormToggle={handAddFormToggle}
-                        handleFormVisibilty={handleFormVisibilty}
-                        getUserId={getUserId}
-                        deleteUser={deleteUser}
-                        changeStatus={changeStatus}
-                        getStatus={getStatus}
-                        page={page}
-                        count={count}
-                      />
+                      console.log(item,"usersmap"),
+
+                      <>
+                        <UserListItem
+                          key={item.id}
+                          item={item}
+                          index={index}
+                          handAddFormToggle={handAddFormToggle}
+                          handleFormVisibilty={handleFormVisibilty}
+                          getUserId={getUserId}
+                          deleteUser={deleteUser}
+                          changeStatus={changeStatus}
+                          getStatus={getStatus}
+                          page={page}
+                          count={count}
+                        />
+             
+
+                      </>
+
                     ))}
+               
                 </table>
                 {users && isEmpty(users) && <EmptyState />}
               </div>

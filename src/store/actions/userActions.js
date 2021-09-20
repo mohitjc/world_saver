@@ -248,40 +248,40 @@ export function usersList() {
   };
 }
 
-export function allPost() {
-  return (dispatch) => {
-    dispatch(getRequest(GET_USERS_FOR_INVITE.REQUEST));
-    const getUrl = `${ALL_POST}/allposts`;
+// export function allPost() {
+//   return (dispatch) => {
+//     dispatch(getRequest(GET_USERS_FOR_INVITE.REQUEST));
+//     const getUrl = `${ALL_POST}/allposts`;
 
-    const token = localStorage.getItem('token');
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-    AXIOS_INSTANCE.get(getUrl, config)
-      .then(checkHttpStatus)
-      .then(parseJSON)
-      .then((data) => {
-        if (data.success) {
-          dispatch(getSuccess(GET_USERS_FOR_INVITE.SUCCESS, data));
-        }
-      })
-      .catch((error) => {
-        const errorMessage =
-          error.response &&
-          error.response.data &&
-          error.response.data.error_description
-            ? error.response.data.error_description
-            : 'Something went wrong!';
-        dispatch(
-          getFailure(GET_USERS_FOR_INVITE.FAILURE, {
-            data: {
-              statusCode: 403,
-              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
-              message: errorMessage,
-            },
-          })
-        );
-      });
-  };
-}
+//     const token = localStorage.getItem('token');
+//     const config = { headers: { Authorization: `Bearer ${token}` } };
+//     AXIOS_INSTANCE.get(getUrl, config)
+//       .then(checkHttpStatus)
+//       .then(parseJSON)
+//       .then((data) => {
+//         if (data.success) {
+//           dispatch(getSuccess(GET_USERS_FOR_INVITE.SUCCESS, data));
+//         }
+//       })
+//       .catch((error) => {
+//         const errorMessage =
+//           error.response &&
+//           error.response.data &&
+//           error.response.data.error_description
+//             ? error.response.data.error_description
+//             : 'Something went wrong!';
+//         dispatch(
+//           getFailure(GET_USERS_FOR_INVITE.FAILURE, {
+//             data: {
+//               statusCode: 403,
+//               // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
+//               message: errorMessage,
+//             },
+//           })
+//         );
+//       });
+//   };
+// }
 
 export function deletePost(obj, token) {
   return dispatch => {

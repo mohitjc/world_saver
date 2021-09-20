@@ -14,6 +14,7 @@ const UserListItem = ({
   page,
   count
 }) => {
+  console.log(page,"pagepage");
   const handleDelete = () => {
     const token = localStorage.getItem('token');
     swal({

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Pagination from 'react-js-pagination';
+import Posts from '../Posts/Posts';
 
 const BottomPagination = ({ total, setPage, page }) => {
   const [activePage, setActivePage] = useState(1);
@@ -10,7 +11,7 @@ const BottomPagination = ({ total, setPage, page }) => {
     setPage(pageNumber);
   };
   // console.log('activePage', activePage);
-  return (
+  return (<>
     <div>
       <Pagination
         activePage={page}
@@ -22,7 +23,12 @@ const BottomPagination = ({ total, setPage, page }) => {
         itemClass="page-item"
         linkClass="page-link"
       />
+
     </div>
+
+
+  </>
+
   );
 };
 

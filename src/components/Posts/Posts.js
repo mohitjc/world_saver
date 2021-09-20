@@ -11,22 +11,21 @@ import { allPost, deletePost } from '../../store/actions/userActions';
 import swal from 'sweetalert';
 import { ALL_POST, AXIOS_INSTANCE, DELETE_POST } from '../../store/constants';
 const Posts = (props) => {
-    console.log(props, "props");
+
     const [array, setArray] = useState()
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState();
+    const [keyword, setKeyword] = useState('');
+    const [searchKeyword, setSearchKeyword] = useState('');
 
     const [newiddsf, setNewid] = useState()
     // const [generateid, setgenerateid] = useState([])
 
-    console.log(page, "generateid");
+    const dispatch = useDispatch();
 
 
     console.log(total, "total");
-    // const removeIndex = array.findIndex(item => item._id === item._id);
-    // // remove object
-    // array.splice(removeIndex, 1);
-    // console.log(removeIndex, "removeIndex");
+ 
 
     let iddata = [];
     console.log(iddata, "iddata");
@@ -46,6 +45,9 @@ const Posts = (props) => {
 
 
 
+    const getSearchKeyword = value => {
+        setSearchKeyword(value);
+    };
 
 
 
@@ -53,11 +55,15 @@ const Posts = (props) => {
     // console.log(myArr,"myArr");
 
 
-    const dispatch = useDispatch();
+    useEffect(() => {
+        getSearchKeyword(keyword);
+    }, [getSearchKeyword, keyword]);
+
 
     useEffect(() => {
         handleInvite();
     }, [])
+
     const handleDelete = (deletegenerateid) => {
         const token = localStorage.getItem('token');
         const payload = { id: deletegenerateid, model: "createpost" };
@@ -94,8 +100,9 @@ const Posts = (props) => {
         });
     };
     const handleInvite = async () => {
-        const getUrl = `${ALL_POST}/allposts`;
+        const getUrl = `${ALL_POST}/allposts?page=${page}&count=${5}`;
 
+        //  const getUrl = `${USER_API}?type=${type}&search=${search}&page=${page}&count=${10}&roles=${roles}&sortBy=${sortType} ${sort}`;
         const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
         AXIOS_INSTANCE.get(getUrl, config)
@@ -106,17 +113,12 @@ const Posts = (props) => {
 
             })
     };
-    const [keyword, setKeyword] = useState('');
-  const [searchKeyword, setSearchKeyword] = useState('');
-    
-    const getSearchKeyword = value => {
-        console.log(value, 'ad');
-        setSearchKeyword(value);
-      };
 
-    useEffect(() => {
-      getSearchKeyword(keyword);
-    }, [getSearchKeyword, keyword]);
+
+
+  
+
+  
     return (<>
         <div id="app">
             <div className="main-wrapper">
@@ -144,10 +146,10 @@ const Posts = (props) => {
                                     type="text"
                                     className="form-control"
                                     placeholder="Search"
-                                // onChange={e => {
-                                //   setKeyword(e.target.value);
-                                //   setPage(1);
-                                // }}
+                                    onChange={e => {
+                                        setKeyword(e.target.value);
+                                        setPage(1);
+                                    }}
                                 />
                                 <div className="input-group-btn ">
                                     <button className="btn btn-primary" type="button">
@@ -174,13 +176,13 @@ const Posts = (props) => {
                             <tr>
                                 <td>{id}</td>
                                 <td>{items.user_post}</td>
-                                
+
                                 <td>
-                                  
+
                                     <button
                                         type="button"
                                         className="btn btn-icon btn-danger"
-                                        onClick={()=>{
+                                        onClick={() => {
                                             handleDelete(items._id)
                                         }}
                                     // onClick={handleDelete}
@@ -191,7 +193,7 @@ const Posts = (props) => {
                                 </td>
 
                             </tr>
-                           
+
                         </tbody>
                     ))}
 
@@ -201,7 +203,7 @@ const Posts = (props) => {
                 display: 'flex',
                 justifyContent: 'center'
             }}>
-            <Pagination total={total} setPage={setPage}/>
+                <Pagination  total={total} setPage={setPage} />
 
             </div>
 

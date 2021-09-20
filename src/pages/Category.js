@@ -159,6 +159,11 @@ const Category = ({
       <div className="main-content">
         <section className="section">
           <SectionHeader title="Categories" />
+
+
+          {
+            
+          }
           {!formVisibility ? (
             <>
               <CategoryListing
@@ -181,6 +186,7 @@ const Category = ({
                 getStatus={getStatus}
                 toggleSort={toggleSort}
               />
+      
              
             </>
           ) : (

@@ -16,11 +16,13 @@ import {
   deleteUser,
   resetDeleteUser
 } from '../store/actions/userActions';
+// import { allPost } from '../store/actions/userActions';
 
 import {
   changeStatus,
   resetStatus
 } from '../store/actions/changeStatusActions';
+import Posts from '../components/Posts/Posts';
 
 const Users = ({
   users,
@@ -184,7 +186,7 @@ const Users = ({
         
         <section className="section">
           <SectionHeader title={handleTitleChange()} />
-          {!formVisibility ? (
+          {!formVisibility ? ( <>
             <UserListing
               handleFormVisibilty={handleFormVisibilty}
               users={data && data.data && data.data.users}
@@ -205,6 +207,9 @@ const Users = ({
               getStatus={getStatus}
               toggleSort={toggleSort}
             />
+ 
+          </>
+          
           ) : (
             <UserForm
               handleFormVisibilty={handleFormVisibilty}

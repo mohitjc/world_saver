@@ -38,6 +38,13 @@ const MainSidebar = ({ history }) => {
             <NavLink className="nav-link" to="/categories" activeStyle={styles}>
               <i className="far fa-folder" /> <span>Manage Categories</span>
             </NavLink>
+
+          </li>
+          <li className="nav-item dropdown">
+            <NavLink className="nav-link" to="/posts" activeStyle={styles}>
+              <i className="far fa-folder" /> <span>Manage Posts</span>
+            </NavLink>
+            
           </li>
           <li className="nav-item dropdown">
             <NavLink className="nav-link" to="/types" activeStyle={styles}>

@@ -19,6 +19,7 @@ import {
   changeStatus,
   resetStatus
 } from '../store/actions/changeStatusActions';
+import Posts from '../components/Posts/Posts';
 
 const Category = ({
   categories,
@@ -46,7 +47,6 @@ const Category = ({
   const [reloadToggle, setReloadToggle] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [status, setStatus] = useState(null);
-
   // const [currentCount, setCurrentCount] = useState(count);
 
   useEffect(() => {
@@ -159,27 +159,36 @@ const Category = ({
       <div className="main-content">
         <section className="section">
           <SectionHeader title="Categories" />
+
+
+          {
+            
+          }
           {!formVisibility ? (
-            <CategoryListing
-              handleFormVisibilty={handleFormVisibilty}
-              categories={data && data.data && data.data.category}
-              total={data && data.data && data.data.total}
-              handAddFormToggle={handAddFormToggle}
-              getCategoryId={getCategoryId}
-              isRequesting={isRequesting}
-              // UserListing={UserListing}
-              resetSingleCategory={resetSingleCategory}
-              deleteCategory={deleteCategory}
-              sort={sort}
-              setSort={setSort}
-              setPage={setPage}
-              page={page}
-              count={count}
-              getSearchKeyword={getSearchKeyword}
-              changeStatus={changeStatus}
-              getStatus={getStatus}
-              toggleSort={toggleSort}
-            />
+            <>
+              <CategoryListing
+                handleFormVisibilty={handleFormVisibilty}
+                categories={data && data.data && data.data.category}
+                total={data && data.data && data.data.total}
+                handAddFormToggle={handAddFormToggle}
+                getCategoryId={getCategoryId}
+                isRequesting={isRequesting}
+                // UserListing={UserListing}
+                resetSingleCategory={resetSingleCategory}
+                deleteCategory={deleteCategory}
+                sort={sort}
+                setSort={setSort}
+                setPage={setPage}
+                page={page}
+                count={count}
+                getSearchKeyword={getSearchKeyword}
+                changeStatus={changeStatus}
+                getStatus={getStatus}
+                toggleSort={toggleSort}
+              />
+      
+             
+            </>
           ) : (
             <CategoryForm
               allTypes={allTypes}

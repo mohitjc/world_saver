@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-import UserListItem from './UserListItem';
+// import UserListItem from '../UserListItem';
 import Pagination from '../global/Pagination';
 import EmptyState from '../global/EmptyState';
 import Loading from '../global/Loader';
-import Posts from '../Posts/Posts';
+import PostItems from './PostItems';
 
-const UserListing = ({
+const Posts = ({
   handleFormVisibilty,
   handAddFormToggle,
   getSearchKeyword,
@@ -14,8 +14,10 @@ const UserListing = ({
   resetSingleUser,
   changeStatus,
   deleteUser,
+  deletePost,
   users,
   sort,
+  posts,
   setSort,
   total,
   setPage,
@@ -26,10 +28,11 @@ const UserListing = ({
   isRequesting
 }) => {
   const [keyword, setKeyword] = useState('');
-  useEffect(() => {
-    getSearchKeyword(keyword);
-  }, [getSearchKeyword, keyword]);
-  console.log('users', total);
+//   useEffect(() => {
+//     getSearchKeyword(keyword);
+//   }, [getSearchKeyword, keyword]);
+console.log('users', total);
+
 
   return (
     <div className="row">
@@ -82,44 +85,30 @@ const UserListing = ({
                       onClick={() => toggleSort('fullName')}
                       style={{ cursor: 'pointer' }}
                     >
-                      Full Name{' '}
-                      <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
+                      User_post{' '}
+                      
                     </th>
-                    <th
-                      onClick={() => toggleSort('username')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      Email{' '}
-                      <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
-                    </th>
-                    <th>Mobile</th>
-                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                   {users &&
                     users.map((item, index) => (
-                      console.log(item,"usersmap"),
-
-                      <>
-                        <UserListItem
-                          key={item.id}
-                          item={item}
-                          index={index}
-                          handAddFormToggle={handAddFormToggle}
-                          handleFormVisibilty={handleFormVisibilty}
-                          getUserId={getUserId}
-                          deleteUser={deleteUser}
-                          changeStatus={changeStatus}
-                          getStatus={getStatus}
-                          page={page}
-                          count={count}
-                        />
-             
-
-                      </>
-
+                        console.log(item, 'itms'),
+                      <PostItems
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        handAddFormToggle={handAddFormToggle}
+                        handleFormVisibilty={handleFormVisibilty}
+                        getUserId={getUserId}
+                        deleteUser={deleteUser}
+                        deletePost={deletePost}
+                        changeStatus={changeStatus}
+                        getStatus={getStatus}
+                        page={page}
+                        posts={posts}
+                        count={count}
+                      />
                     ))}
-               
                 </table>
                 {users && isEmpty(users) && <EmptyState />}
               </div>
@@ -134,4 +123,4 @@ const UserListing = ({
   );
 };
 
-export default UserListing;
+export default Posts;

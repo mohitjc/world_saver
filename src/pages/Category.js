@@ -39,6 +39,7 @@ const Category = ({
   types
 }) => {
   const token = localStorage.getItem('token');
+  console.log(allTypes,"dsfsdfd");
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(10);
   const [type, setType] = useState('I');

@@ -22,7 +22,7 @@ import ImageUpload from '../global/ImageUpload';
 
 const CategoryForm = ({
   handleFormVisibilty,
-  handleSubmit,
+   handleSubmit,
   handleBlur,
   handleChange,
   values,
@@ -47,6 +47,8 @@ const CategoryForm = ({
   categories
 }) => {
   const token = localStorage.getItem('token');
+
+ 
   useEffect(() => {
     if (isSuccess) {
       swal('New category added!', '', 'success');
@@ -153,16 +155,16 @@ const CategoryForm = ({
                       <option value={item.id}>{item.name}</option>
                     ))}
                 </select>
-                {errors.category && touched.category && (
+                {/* {errors.category && touched.category && (
                   <div
                     className="invalid-feedback"
                     style={{ display: 'block' }}
                   >
                     Please select type
                   </div>
-                )}
+                )} */}
               </div>
-              {categories && !isEmpty(categories) && (
+              {/* {categories && !isEmpty(categories) && (
                 <div className="form-group col-md-4 col-12">
                   <label>Sub Category</label>
                   <select
@@ -189,7 +191,7 @@ const CategoryForm = ({
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
           <div className="card-footer d-flex justify-content-between">
@@ -202,11 +204,12 @@ const CategoryForm = ({
             </button>
             <button
               type="submit"
-              className={`btn btn-primary   ${
-                isRequesting || isUpdateRequesting
+
+              // onClick={handleSubmit}
+              className={`btn btn-primary   ${isRequesting || isUpdateRequesting
                   ? 'btn-progress disabled'
                   : ''
-              }`}
+                }`}
             >
               Save Changes
             </button>
@@ -239,16 +242,22 @@ const CatgeoryFormFormik = withFormik({
     // .required()
     // password: yupString().min(8)
   }),
-  handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
+   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
+    console.log(values,"ddjfdjkfj");
+
+
+  // const handleSubmit = (values, { props }) => {
+
     // const { router } = props;
     const token = localStorage.getItem('token');
     // console.log('state values', values);
     if (props.isAddForm) {
+      console.log(props.isAddForm, "allTyddddpes");
       props.categoryAdd(
         {
           name: values.name,
           typeid: values.category,
-          parentid: values.subCategory,
+          // parentid: values.subCategory,
           image: values.image
         },
         token
@@ -258,7 +267,7 @@ const CatgeoryFormFormik = withFormik({
         {
           name: values.name,
           typeid: values.category,
-          parentid: values.subCategory,
+          // parentid: values.subCategory,
           image: values.image
         },
         props.categoryId,

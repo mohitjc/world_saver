@@ -1,32 +1,30 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
-import { truncate } from 'lodash';
-import Posts from '../Posts/Posts';
+import dayjs from 'dayjs';
 
-const ArticleListItem = ({
+const ListItem = ({
   item,
   index,
   handAddFormToggle,
   handleFormVisibilty,
-  deleteBlog,
-  getBlogId,
+  deleteItem,
+  getId,
+  page,
   changeStatus,
   getStatus,
-  page,
   count
 }) => {
   const handleDelete = () => {
     const token = localStorage.getItem('token');
     swal({
       title: 'Are you sure?',
-      text: 'you want to delete the blog!',
+      text: 'you want to delete the user!',
       icon: 'warning',
       buttons: true,
       dangerMode: true
     }).then(willDelete => {
       if (willDelete) {
-        deleteBlog({ model: 'blogs', id: item && item.id }, token);
+        deleteItem(item && item.id, token);
       } else {
         return null;
       }
@@ -36,7 +34,7 @@ const ArticleListItem = ({
   const handleStatus = status => {
     const token = localStorage.getItem('token');
     const obj = {
-      model: 'blogs',
+      model: 'advertisement',
       id: item && item.id,
       status
     };
@@ -44,22 +42,16 @@ const ArticleListItem = ({
     changeStatus(obj, token);
   };
 
+  // console.log('page * count ', page, count);
+  // console.log('page * count ', page * count);
+  // console.log('page * count ', page * count - (count - 1));
   return (
-    <>
     <tr>
       <td>{index + page * count - (count - 1)}</td>
-      <td>
-          {item && item.title ? item.title : '___'}
-      </td>
-      <td>
-        {truncate(item && item.description ? item.description : '___', {
-          length: 20,
-          separator: ''
-        })}
-      </td>
-      <td>{item && item.slug ? item.slug : '___'}</td>
-
-      {/* <td>{item && item.createdAt ? item.createdAt : '___'}</td> */}
+      <td>{item && item.title ? item.title : '___'}</td>
+      <td>{item && item.description ? item.description : '___'}</td>
+      <td>{item && item.url ? item.url : '___'}</td>
+      
       <td>
         {item && item.status === 'deactive' ? (
           <button
@@ -86,9 +78,8 @@ const ArticleListItem = ({
           onClick={() => {
             handAddFormToggle(false);
             handleFormVisibilty();
-            getBlogId(item && item.id);
+            getId(item && item.id);
           }}
-          disabled={!!(item && item.type === 'custom')}
         >
           <i className="far fa-edit" />
         </button>
@@ -96,14 +87,12 @@ const ArticleListItem = ({
           type="button"
           className="btn btn-icon btn-danger"
           onClick={handleDelete}
-          disabled={!!(item && item.type === 'custom')}
         >
           <i className="fas fa-trash" />
         </button>
       </td>
     </tr>
-    </>
   );
 };
 
-export default ArticleListItem;
+export default ListItem;

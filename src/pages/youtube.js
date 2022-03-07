@@ -5,36 +5,41 @@ import swal from 'sweetalert';
 import Layout from '../components/global/Layout';
 import MainSidebar from '../components/global/MainSidebar';
 import SectionHeader from '../components/global/SectionHeader';
+import Listing from '../components/youtube/Listing';
+import Form from '../components/youtube/Form';
 import {
-  blogs,
-  resetSingleBlog,
-  deleteBlog,
-  resetDeleteBlog
-} from '../store/actions/blogsActions';
+  items,
+  resetSingle,
+  Delete,
+  resetDelete,
+  Archive
+} from '../store/actions/youtubeActions';
+import { types } from '../store/actions/typeActions';
+
 import {
   changeStatus,
   resetStatus
 } from '../store/actions/changeStatusActions';
-import { getCatByType } from '../store/actions/categoryActions';
-import ArticleLsiting from '../components/articles/ArticleListing';
-import ArticleForm from '../components/articles/ArticleForm';
 
-const Articles = ({
+const Youtube = ({
+  items,
   data,
-  blogs,
-  resetSingleBlog,
-  deleteBlog,
-  resetDeleteBlog,
+  resetSingle,
+  Delete,
+  Archive,
+  resetDelete,
   isDeleteSuccess,
-  isChangeStatusSuccess,
-  isChangeStatusError,
+  isArchiveSuccess,
   isDeleteError,
+  isArchiveError,
   changeStatus,
   resetStatus,
-  getCatByType,
+  isChangeStatusSuccess,
+  isChangeStatusError,
   isSuccess,
   isRequesting,
-  catByTypeData
+  allTypes,
+  types
 }) => {
   const token = localStorage.getItem('token');
   const [page, setPage] = useState(1);
@@ -45,10 +50,11 @@ const Articles = ({
   const [reloadToggle, setReloadToggle] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [status, setStatus] = useState(null);
+
   // const [currentCount, setCurrentCount] = useState(count);
 
   useEffect(() => {
-    blogs(
+    items(
       token,
       type,
       page,
@@ -58,12 +64,13 @@ const Articles = ({
       searchKeyword
     );
   }, [
-    blogs,
+    items,
     reloadToggle,
     page,
     sort,
     searchKeyword,
     isDeleteSuccess,
+    isArchiveSuccess,
     token,
     type,
     count,
@@ -72,28 +79,35 @@ const Articles = ({
 
   useEffect(() => {
     if (isDeleteSuccess) {
-      swal('Blog has been deleted!', {
+      swal('Youtube has been deleted!', {
         buttons: false,
         timer: 1500
       });
-      resetDeleteBlog();
     }
 
-    if (isDeleteError) {
+    if (isArchiveSuccess) {
+      swal('Youtube has been archived!', {
+        buttons: false,
+        timer: 1500
+      });
+    }
+
+    if (isDeleteError || isArchiveError) {
       swal('Something went wrong!', {
         buttons: false,
         timer: 1500
       });
-      resetDeleteBlog();
     }
-  }, [isDeleteSuccess, isDeleteError, resetDeleteBlog]);
+
+    resetDelete();
+  }, [isDeleteSuccess,isArchiveSuccess, isDeleteError, isArchiveError, resetDelete]);
 
   useEffect(() => {
     if (isChangeStatusSuccess) {
       swal(
         status === 'active'
-          ? 'Blog has been activated'
-          : 'Blog has been deactivated',
+          ? 'Youtube has been activated'
+          : 'Youtube has been deactivated',
         {
           buttons: false,
           timer: 1500
@@ -119,12 +133,12 @@ const Articles = ({
   ]);
 
   useEffect(() => {
-    getCatByType('5eb4f8a671d9eb3ee7bc97f4', token);
-  }, [getCatByType, token]);
+    types(token);
+  }, [token, types]);
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
-  const [blogId, setBlogId] = useState(null);
+  const [Id, setId] = useState(null);
 
   const handleFormVisibilty = () => {
     setFormVisibilty(!formVisibility);
@@ -134,8 +148,8 @@ const Articles = ({
     setIsAddForm(bool);
   };
 
-  const getBlogId = id => {
-    setBlogId(id);
+  const getId = id => {
+    setId(id);
   };
 
   const getSearchKeyword = value => {
@@ -147,30 +161,32 @@ const Articles = ({
   };
 
   const toggleSort = value => {
-    setSort(!sort);
     setSortType(value);
+    setSort(!sort);
   };
 
-  // console.log('isDeleteError', isDeleteError);
+  console.log('allTypes   s', allTypes);
   return (
-    <Layout title="Articles">
+    <Layout title="Youtube">
       <MainSidebar />
       <div className="main-content">
         <section className="section">
-          <SectionHeader title="Articles" />
+          <SectionHeader title="Youtube" />
           {!formVisibility ? (
-            <ArticleLsiting
+            <Listing
               handleFormVisibilty={handleFormVisibilty}
-              blogs={data && data.data && data.data}
-              total={data && data.data && data.data.total}
+              items={data && data.data}
+              total={data && data.total}
               handAddFormToggle={handAddFormToggle}
-              getBlogId={getBlogId}
-              resetSingleBlog={resetSingleBlog}
-              deleteBlog={deleteBlog}
+              getId={getId}
+              isRequesting={isRequesting}
+              // UserListing={UserListing}
+              resetSingle={resetSingle}
+              deleteItem={Delete}
+              Archive={Archive}
               sort={sort}
               setSort={setSort}
               setPage={setPage}
-              isRequesting={isRequesting}
               page={page}
               count={count}
               getSearchKeyword={getSearchKeyword}
@@ -179,11 +195,12 @@ const Articles = ({
               toggleSort={toggleSort}
             />
           ) : (
-            <ArticleForm
-              catByTypeData={catByTypeData}
+            <Form
+              allTypes={allTypes}
+              items={data && data.data && data.data.category}
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
-              blogId={blogId}
+              Id={Id}
               setReloadToggle={setReloadToggle}
               reloadToggle={reloadToggle}
             />
@@ -195,23 +212,26 @@ const Articles = ({
 };
 
 const mapStateToProps = state => ({
-  data: state.blogs.data,
-  isRequesting: state.blogs.isRequesting,
-  isSuccess: state.blogs.isSuccess,
-  isError: state.blogs.isError,
-  isDeleteSuccess: state.deleteBlog.isSuccess,
-  isDeleteError: state.deleteBlog.isError,
+  data: state.youtubes.data,
+  isRequesting: state.youtubes.isRequesting,
+  isSuccess: state.youtubes.isSuccess,
+  isError: state.youtubes.isError,
+  isDeleteSuccess: state.deleteYoutube.isSuccess,
+  isDeleteError: state.deleteYoutube.isError,
+  isArchiveSuccess: state.youtubeArchive.isSuccess,
+  isArchiveError: state.youtubeArchive?.isError,
   isChangeStatusSuccess: state.status.isSuccess,
   isChangeStatusError: state.status.isError,
-  catByTypeData: state.catByType.data
+  allTypes: state.types.data
 });
 
 export default connect(mapStateToProps, {
-  blogs,
-  resetSingleBlog,
-  deleteBlog,
-  resetDeleteBlog,
+  items,
+  resetSingle,
+  Delete,
+  Archive,
+  resetDelete,
   changeStatus,
   resetStatus,
-  getCatByType
-})(Articles);
+  types
+})(Youtube);

@@ -19,6 +19,7 @@ import {
   categories
 } from '../../store/actions/categoryActions';
 import ImageUpload from '../global/ImageUpload';
+import ApiClient from '../apiClient';
 
 const CategoryForm = ({
   handleFormVisibilty,
@@ -91,6 +92,31 @@ const CategoryForm = ({
     setFieldValue('image', value);
   };
 
+
+
+ const saveForm = (e) => {
+   e.preventDefault()
+    console.log(values,"ddjfdjkfj");
+    console.log(isAddForm,"ddjfdjkfj");
+
+    let url = '/category';
+    if(isAddForm){
+      ApiClient.post(url, values).then(res => {
+        if (res.status == 200) {
+          
+        }
+      })
+    }else{
+      ApiClient.put(url, values).then(res => {
+        if (res.status == 200) {
+          
+        }
+      })
+    }
+   
+
+  }
+
   // console.log('values', values);
 
   return (
@@ -105,7 +131,7 @@ const CategoryForm = ({
       </button>
       <div className="card">
         <form
-          onSubmit={handleSubmit}
+          onSubmit={saveForm}
           className="needs-validation"
           noValidate=""
         >

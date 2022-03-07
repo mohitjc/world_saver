@@ -5,36 +5,37 @@ import swal from 'sweetalert';
 import Layout from '../components/global/Layout';
 import MainSidebar from '../components/global/MainSidebar';
 import SectionHeader from '../components/global/SectionHeader';
+import Listing from '../components/advertisement/Listing';
+import Form from '../components/advertisement/Form';
 import {
-  blogs,
-  resetSingleBlog,
-  deleteBlog,
-  resetDeleteBlog
-} from '../store/actions/blogsActions';
+  items,
+  resetSingle,
+  Delete,
+  resetDelete
+} from '../store/actions/advertiseActions';
+import { types } from '../store/actions/typeActions';
+
 import {
   changeStatus,
   resetStatus
 } from '../store/actions/changeStatusActions';
-import { getCatByType } from '../store/actions/categoryActions';
-import ArticleLsiting from '../components/articles/ArticleListing';
-import ArticleForm from '../components/articles/ArticleForm';
 
-const Articles = ({
+const Advertise = ({
+  items,
   data,
-  blogs,
-  resetSingleBlog,
-  deleteBlog,
-  resetDeleteBlog,
+  resetSingle,
+  Delete,
+  resetDelete,
   isDeleteSuccess,
-  isChangeStatusSuccess,
-  isChangeStatusError,
   isDeleteError,
   changeStatus,
   resetStatus,
-  getCatByType,
+  isChangeStatusSuccess,
+  isChangeStatusError,
   isSuccess,
   isRequesting,
-  catByTypeData
+  allTypes,
+  types
 }) => {
   const token = localStorage.getItem('token');
   const [page, setPage] = useState(1);
@@ -45,10 +46,11 @@ const Articles = ({
   const [reloadToggle, setReloadToggle] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [status, setStatus] = useState(null);
+
   // const [currentCount, setCurrentCount] = useState(count);
 
   useEffect(() => {
-    blogs(
+    items(
       token,
       type,
       page,
@@ -58,7 +60,7 @@ const Articles = ({
       searchKeyword
     );
   }, [
-    blogs,
+    items,
     reloadToggle,
     page,
     sort,
@@ -72,11 +74,10 @@ const Articles = ({
 
   useEffect(() => {
     if (isDeleteSuccess) {
-      swal('Blog has been deleted!', {
+      swal('Advertise has been deleted!', {
         buttons: false,
         timer: 1500
       });
-      resetDeleteBlog();
     }
 
     if (isDeleteError) {
@@ -84,16 +85,16 @@ const Articles = ({
         buttons: false,
         timer: 1500
       });
-      resetDeleteBlog();
     }
-  }, [isDeleteSuccess, isDeleteError, resetDeleteBlog]);
+    resetDelete();
+  }, [isDeleteSuccess, isDeleteError, resetDelete]);
 
   useEffect(() => {
     if (isChangeStatusSuccess) {
       swal(
         status === 'active'
-          ? 'Blog has been activated'
-          : 'Blog has been deactivated',
+          ? 'Advertise has been activated'
+          : 'Advertise has been deactivated',
         {
           buttons: false,
           timer: 1500
@@ -119,12 +120,12 @@ const Articles = ({
   ]);
 
   useEffect(() => {
-    getCatByType('5eb4f8a671d9eb3ee7bc97f4', token);
-  }, [getCatByType, token]);
+    types(token);
+  }, [token, types]);
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
-  const [blogId, setBlogId] = useState(null);
+  const [Id, setId] = useState(null);
 
   const handleFormVisibilty = () => {
     setFormVisibilty(!formVisibility);
@@ -134,8 +135,8 @@ const Articles = ({
     setIsAddForm(bool);
   };
 
-  const getBlogId = id => {
-    setBlogId(id);
+  const getId = id => {
+    setId(id);
   };
 
   const getSearchKeyword = value => {
@@ -147,30 +148,31 @@ const Articles = ({
   };
 
   const toggleSort = value => {
-    setSort(!sort);
     setSortType(value);
+    setSort(!sort);
   };
 
-  // console.log('isDeleteError', isDeleteError);
+  console.log('allTypes   s', allTypes);
   return (
-    <Layout title="Articles">
+    <Layout title="Advertise">
       <MainSidebar />
       <div className="main-content">
         <section className="section">
-          <SectionHeader title="Articles" />
+          <SectionHeader title="Advertise" />
           {!formVisibility ? (
-            <ArticleLsiting
+            <Listing
               handleFormVisibilty={handleFormVisibilty}
-              blogs={data && data.data && data.data}
-              total={data && data.data && data.data.total}
+              items={data && data.data}
+              total={data && data.total}
               handAddFormToggle={handAddFormToggle}
-              getBlogId={getBlogId}
-              resetSingleBlog={resetSingleBlog}
-              deleteBlog={deleteBlog}
+              getId={getId}
+              isRequesting={isRequesting}
+              // UserListing={UserListing}
+              resetSingle={resetSingle}
+              deleteItem={Delete}
               sort={sort}
               setSort={setSort}
               setPage={setPage}
-              isRequesting={isRequesting}
               page={page}
               count={count}
               getSearchKeyword={getSearchKeyword}
@@ -179,11 +181,12 @@ const Articles = ({
               toggleSort={toggleSort}
             />
           ) : (
-            <ArticleForm
-              catByTypeData={catByTypeData}
+            <Form
+              allTypes={allTypes}
+              items={data && data.data && data.data.category}
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
-              blogId={blogId}
+              Id={Id}
               setReloadToggle={setReloadToggle}
               reloadToggle={reloadToggle}
             />
@@ -195,23 +198,23 @@ const Articles = ({
 };
 
 const mapStateToProps = state => ({
-  data: state.blogs.data,
-  isRequesting: state.blogs.isRequesting,
-  isSuccess: state.blogs.isSuccess,
-  isError: state.blogs.isError,
-  isDeleteSuccess: state.deleteBlog.isSuccess,
-  isDeleteError: state.deleteBlog.isError,
+  data: state.advertises.data,
+  isRequesting: state.advertises.isRequesting,
+  isSuccess: state.advertises.isSuccess,
+  isError: state.advertises.isError,
+  isDeleteSuccess: state.deleteAdvertise.isSuccess,
+  isDeleteError: state.deleteAdvertise.isError,
   isChangeStatusSuccess: state.status.isSuccess,
   isChangeStatusError: state.status.isError,
-  catByTypeData: state.catByType.data
+  allTypes: state.types.data
 });
 
 export default connect(mapStateToProps, {
-  blogs,
-  resetSingleBlog,
-  deleteBlog,
-  resetDeleteBlog,
+  items,
+  resetSingle,
+  Delete,
+  resetDelete,
   changeStatus,
   resetStatus,
-  getCatByType
-})(Articles);
+  types
+})(Advertise);

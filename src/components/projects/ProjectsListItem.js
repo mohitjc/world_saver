@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import dayjs from 'dayjs';
+import Posts from '../Posts/Posts';
 
 const ProjectsListItem = ({
   item,
@@ -16,6 +17,7 @@ const ProjectsListItem = ({
   count,
   handleInvite,
 }) => {
+  console.log(page,"handlepage");
   const handleDelete = () => {
     const token = localStorage.getItem('token');
     swal({
@@ -45,6 +47,8 @@ const ProjectsListItem = ({
   };
 
   return (
+    <>
+
     <tr>
       <td>{index + page * count - (count - 1)}</td>
       <td>
@@ -110,6 +114,10 @@ const ProjectsListItem = ({
         </button>
       </td>
     </tr>
+    <Posts
+    page={page}
+    />
+    </>
   );
 };
 

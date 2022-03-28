@@ -31,7 +31,7 @@ export function categoryAdd(postObj, token) {
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(data => {
-        // console.log('response', data);
+         console.log('response', data);
         if (data.success) {
           dispatch(getSuccess(CATEGORY_ADD.CATEGORY_ADD_SUCCESS, data));
         }

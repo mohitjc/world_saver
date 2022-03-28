@@ -163,6 +163,9 @@ const TypeFormFormik = withFormik({
       .required()
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
+
+
+    console.log(values,"values");
     // const { router } = props;
     const token = localStorage.getItem('token');
     // console.log('state values', values);

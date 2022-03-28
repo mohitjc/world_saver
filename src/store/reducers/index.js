@@ -11,6 +11,14 @@ import userUpdate from './userUpdateReducers';
 import users from './getUsersReducer';
 import user from './singleUserReducer';
 import deleteUser from './deleteUserReducers';
+import deletePost from './deletePostReducers';
+
+
+import postAdd from './postAddReducer';
+import postUpdate from './postUpdateReducers';
+import Posts from './getPostReducer';
+// import user from './singleUserReducer';
+// import deleteUser from './deleteUserReducers';
 
 import categoryAdd from './categoryAddReducer';
 import categoryUpdate from './categoryUpdateReducer';
@@ -90,10 +98,14 @@ const rootReducer = combineReducers({
   forgotPassword,
   changePassword,
   userAdd,
+  postAdd,
+  postUpdate,
+  Posts,
   userUpdate,
   users,
   user,
   deleteUser,
+  deletePost,
   categoryAdd,
   categoryUpdate,
   categories,

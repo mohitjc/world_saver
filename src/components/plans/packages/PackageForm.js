@@ -82,8 +82,6 @@ const PackageForm = ({
     }
   }, [singlePackage]);
 
-  // console.log('allTypes', allTypes && allTypes.data);
-
   return (
     <div className="">
       <button className="btn btn-primary mb-3" onClick={handleFormVisibilty}>

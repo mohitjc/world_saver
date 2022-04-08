@@ -85,7 +85,7 @@ const CategoryListing = ({
                       Name{' '}
                       <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
                     </th>
-                    {/* <th style={{ cursor: 'pointer' }}>Description </th> */}
+                    <th>Category</th>
                     <th>Created At</th>
                     <th>Status</th>
                     <th>Action</th>

@@ -133,7 +133,7 @@ const ImageUpload = ({
   return (
     <>
       <div className="form-group image-upload">
-        <form id="demo-upload" className="dropzone">
+        <div id="demo-upload" className="dropzone">
           <div className="dz-message text-muted">
             <div {...getRootProps()}>
               <input {...getInputProps()} />
@@ -164,7 +164,7 @@ const ImageUpload = ({
             )} */}
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </>
   );

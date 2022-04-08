@@ -7,7 +7,7 @@ import Yup, {
   number as yupNumber
 } from 'yup';
 import swal from 'sweetalert';
-import { withRouter } from 'react-router-dom';
+import { withRouter,useHistory } from 'react-router-dom';
 
 import { isNull, isEmpty } from 'lodash';
 import {
@@ -16,22 +16,19 @@ import {
   singleCategory,
   resetAddCategory,
   resetUpdateCategory,
-  categories
 } from '../../store/actions/categoryActions';
 import ImageUpload from '../global/ImageUpload';
 import ApiClient from '../apiClient';
+import load from '../../methods/load';
+import { Toast } from 'react-bootstrap';
 
 const CategoryForm = ({
   handleFormVisibilty,
-   handleSubmit,
   handleBlur,
   handleChange,
   values,
   isRequesting,
   isUpdateRequesting,
-  isSuccess,
-  isUpdateSuccess,
-  isError,
   errors,
   touched,
   setFieldValue,
@@ -41,50 +38,14 @@ const CategoryForm = ({
   setReloadToggle,
   categoryId,
   singleCategory,
-  singleCategoryData,
-  resetAddCategory,
-  resetUpdateCategory,
   allTypes,
-  categories
+  getCategory
 }) => {
   const token = localStorage.getItem('token');
-
- 
-  useEffect(() => {
-    if (isSuccess) {
-      swal('New category added!', '', 'success');
-      handleFormVisibilty();
-      resetAddCategory();
-      setReloadToggle(!reloadToggle);
-    }
-    if (isError) {
-      swal(data && data.data && data.data.message, '', 'warning');
-      // handleFormVisibilty();
-      resetAddCategory();
-      // setReloadToggle(!reloadToggle);
-    }
-    if (isUpdateSuccess) {
-      swal('Category updated!', '', 'success');
-      handleFormVisibilty();
-      resetUpdateCategory();
-      setReloadToggle(!reloadToggle);
-    }
-  }, [
-    isSuccess,
-    isError,
-    isUpdateSuccess,
-    handleFormVisibilty,
-    resetAddCategory,
-    setReloadToggle,
-    reloadToggle,
-    data,
-    resetUpdateCategory
-  ]);
 
   useEffect(() => {
     if (!isAddForm) {
       singleCategory(categoryId, token);
-      // swal('New user added!', '', 'success');
     }
   }, [categoryId, isAddForm, singleCategory, token]);
 
@@ -93,31 +54,38 @@ const CategoryForm = ({
   };
 
 
-
  const saveForm = (e) => {
    e.preventDefault()
     console.log(values,"ddjfdjkfj");
     console.log(isAddForm,"ddjfdjkfj");
 
     let url = '/category';
+    load(true)
+
     if(isAddForm){
       ApiClient.post(url, values).then(res => {
         if (res.status == 200) {
-          
+          handleFormVisibilty();
+          getCategory()
         }
+      },err=>{
       })
     }else{
       ApiClient.put(url, values).then(res => {
         if (res.status == 200) {
-          
+          handleFormVisibilty();
+          getCategory()
         }
+      },err=>{
       })
     }
-   
-
+  
   }
 
-  // console.log('values', values);
+  const getSingleCategory=()=>{
+    
+  }
+
 
   return (
     <div className="">
@@ -151,8 +119,6 @@ const CategoryForm = ({
                   type="text"
                   name="name"
                   className="form-control"
-                  // value="john"
-
                   value={values.name}
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -175,49 +141,15 @@ const CategoryForm = ({
                   onBlur={handleBlur}
                   onChange={handleChange}
                 >
-                  <option>Select category</option>
+                  <option value="">Select category</option>
                   {allTypes &&
-                    allTypes.result.map(item => (
-                      <option value={item.id}>{item.name}</option>
+                    allTypes.map(item => (
+                      <option value={item.id} key={item.id}>{item.name}</option>
                     ))}
                 </select>
-                {/* {errors.category && touched.category && (
-                  <div
-                    className="invalid-feedback"
-                    style={{ display: 'block' }}
-                  >
-                    Please select type
-                  </div>
-                )} */}
+              
               </div>
-              {/* {categories && !isEmpty(categories) && (
-                <div className="form-group col-md-4 col-12">
-                  <label>Sub Category</label>
-                  <select
-                    name="subCategory"
-                    className="form-control"
-                    value={values.subCategory}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                  >
-                    <option>Select Sub Category</option>
-                    {categories &&
-                      categories.map(item => (
-                        <option value={item.id} key={item.id}>
-                          {item.name}
-                        </option>
-                      ))}
-                  </select>
-                  {errors.subCategory && touched.subCategory && (
-                    <div
-                      className="invalid-feedback"
-                      style={{ display: 'block' }}
-                    >
-                      {errors.subCategory}
-                    </div>
-                  )}
-                </div>
-              )} */}
+              
             </div>
           </div>
           <div className="card-footer d-flex justify-content-between">
@@ -230,8 +162,6 @@ const CategoryForm = ({
             </button>
             <button
               type="submit"
-
-              // onClick={handleSubmit}
               className={`btn btn-primary   ${isRequesting || isUpdateRequesting
                   ? 'btn-progress disabled'
                   : ''
@@ -253,7 +183,7 @@ const CatgeoryFormFormik = withFormik({
     return {
       name: (singleCategoryData && singleCategoryData.name) || '',
       subCategory: (singleCategoryData && singleCategoryData.parentid) || '',
-      category: (singleCategoryData && singleCategoryData.typeid) || '',
+      category: (singleCategoryData && singleCategoryData.category) || '',
       image: (singleCategoryData && singleCategoryData.image) || ''
     };
   },

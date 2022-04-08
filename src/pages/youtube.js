@@ -165,7 +165,7 @@ const Youtube = ({
     setSort(!sort);
   };
 
-  console.log('allTypes   s', allTypes);
+
   return (
     <Layout title="Youtube">
       <MainSidebar />

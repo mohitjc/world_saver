@@ -4,13 +4,11 @@ import Posts from '../Posts/Posts';
 
 const BottomPagination = ({ total, setPage, page }) => {
   const [activePage, setActivePage] = useState(1);
-  console.log(activePage, 'activePage');
   const handlePageChange = pageNumber => {
     // console.log(`active page is ${pageNumber}`);
     setActivePage(pageNumber);
     setPage(pageNumber);
   };
-  // console.log('activePage', activePage);
   return (<>
     <div>
       <Pagination

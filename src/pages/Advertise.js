@@ -152,7 +152,7 @@ const Advertise = ({
     setSort(!sort);
   };
 
-  console.log('allTypes   s', allTypes);
+
   return (
     <Layout title="Advertise">
       <MainSidebar />

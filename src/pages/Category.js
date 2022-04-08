@@ -19,7 +19,7 @@ import {
   changeStatus,
   resetStatus
 } from '../store/actions/changeStatusActions';
-import Posts from '../components/Posts/Posts';
+import categoryModel from '../models/category.model';
 
 const Category = ({
   categories,
@@ -35,11 +35,10 @@ const Category = ({
   isChangeStatusError,
   isSuccess,
   isRequesting,
-  allTypes,
   types
 }) => {
   const token = localStorage.getItem('token');
-  console.log(allTypes,"dsfsdfd");
+  const allTypes=categoryModel.list;
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(10);
   const [type, setType] = useState('I');
@@ -51,15 +50,7 @@ const Category = ({
   // const [currentCount, setCurrentCount] = useState(count);
 
   useEffect(() => {
-    categories(
-      token,
-      type,
-      page,
-      count,
-      sortType,
-      sort ? 'asc' : 'desc',
-      searchKeyword
-    );
+    getCategory()
   }, [
     categories,
     reloadToggle,
@@ -72,6 +63,18 @@ const Category = ({
     count,
     sortType
   ]);
+
+ const getCategory=()=>{
+  categories(
+    token,
+    type,
+    page,
+    count,
+    sortType,
+    sort ? 'asc' : 'desc',
+    searchKeyword
+  );
+  }
 
   useEffect(() => {
     if (isDeleteSuccess) {
@@ -153,7 +156,7 @@ const Category = ({
     setSort(!sort);
   };
 
-  console.log('allTypes   s', allTypes);
+
   return (
     <Layout title="Categories">
       <MainSidebar />
@@ -193,7 +196,7 @@ const Category = ({
           ) : (
             <CategoryForm
               allTypes={allTypes}
-              categories={data && data.data && data.data.category}
+              getCategory={getCategory}
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
               categoryId={categoryId}
@@ -215,8 +218,7 @@ const mapStateToProps = state => ({
   isDeleteSuccess: state.deleteCategory.isSuccess,
   isDeleteError: state.deleteCategory.isError,
   isChangeStatusSuccess: state.status.isSuccess,
-  isChangeStatusError: state.status.isError,
-  allTypes: state.types.data
+  isChangeStatusError: state.status.isError
 });
 
 export default connect(mapStateToProps, {

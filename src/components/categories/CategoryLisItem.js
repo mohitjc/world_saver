@@ -1,7 +1,7 @@
 import React from 'react';
 import swal from 'sweetalert';
 import dayjs from 'dayjs';
-
+import categoryModel from '../../models/category.model'
 const CategoryListItem = ({
   item,
   index,
@@ -40,21 +40,18 @@ const CategoryListItem = ({
     };
     getStatus(status);
     changeStatus(obj, token);
+    
   };
 
-  // console.log('page * count ', page, count);
-  // console.log('page * count ', page * count);
-  // console.log('page * count ', page * count - (count - 1));
+
   return (
     <tr>
       <td>{index + page * count - (count - 1)}</td>
       <td>{item && item.name ? item.name : '___'}</td>
-      {/* <td>
-        {truncate(item && item.description ? item.description : '___', {
-          length: 20,
-          separator: ''
-        })}
-      </td> */}
+    
+      <td>
+        {categoryModel.find(item && item.category)}
+      </td>
       <td>
         {item && item.createdAt
           ? dayjs(item.createdAt).format('MMM DD YYYY')

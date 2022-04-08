@@ -9,6 +9,7 @@ import querystring from 'querystring';
 import { setAuthorizationToken } from './auth';
 // import { ToastsStore } from 'react-toasts';
 import { API_SLUG } from '../store/constants';
+import load from '../methods/load';
 
 var config = {
     headers: { 'Content-Type': 'application/json' },
@@ -38,9 +39,10 @@ class ApiClient {
                 .post(url, JSON.stringify(params), config)
                 .then(function (response) {
                     fulfill(response);
+                    load(false)
                 })
                 .catch(function (error) {
-                    // loader(false)
+                    load(false)
                     if (error && error.response) {
                         let eres = error.response;
                         handleError(eres.status)
@@ -62,9 +64,11 @@ class ApiClient {
                 .put(url, JSON.stringify(params), config)
                 .then(function (response) {
                     fulfill(response);
+                    load(false)
                 })
                 .catch(function (error) {
                     // loader(false)
+                    load(false)
                     if (error && error.response) {
                         let eres = error.response;
                         handleError(eres.status)
@@ -90,9 +94,11 @@ class ApiClient {
                 .get(url, config)
                 .then(function (response) {
                     fulfill(response);
+                    load(false)
                 })
                 .catch(function (error) {
                     // loader(false)
+                    load(false)
                     if (error && error.response) {
                         let eres = error.response;
                         handleError(eres.status)
@@ -114,9 +120,11 @@ class ApiClient {
                 .delete(url, config)
                 .then(function (response) {
                     fulfill(response);
+                    load(false)
                 })
                 .catch(function (error) {
                     // loader(false)
+                    load(false)
                     if (error && error.response) {
                         let eres = error.response;
                         handleError(eres.status)
@@ -142,9 +150,11 @@ class ApiClient {
 
                 .then(function (response) {
                     fulfill({ status: response.status, data: response });
+                    load(false)
                 })
                 .catch(function (error) {
                     // loader(false)
+                    load(false)
                     if (error && error.response) {
                         let eres = error.response;
                         handleError(eres.status)

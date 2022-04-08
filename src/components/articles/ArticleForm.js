@@ -7,9 +7,6 @@ import Yup, {
   number as yupNumber
 } from 'yup';
 import swal from 'sweetalert';
-import { withRouter } from 'react-router-dom';
-
-import { isNull } from 'lodash';
 import {
   blogAdd,
   blogsUpdate,
@@ -35,28 +32,21 @@ const ArticleForm = ({
   isError,
   errors,
   touched,
-  blogs,
   data,
   isAddForm,
   reloadToggle,
   setReloadToggle,
   blogId,
   singleBlog,
-  singleBlogData,
   resetAddBlog,
   resetUpdateBlog,
-  uploadImage,
   setFieldValue,
-  catByTypeData
+  categories
 }) => {
   const token = localStorage.getItem('token');
-
   const [showUrlInput, setShowUrlInput] = useState(false);
 
-  const { data: uploadData } = useSelector(state => state.imageUpload);
-
-  // console.log('uploadData', uploadData);
-
+  console.log("categories",categories)
   useEffect(() => {
     if (isSuccess) {
       swal('New blog added!', '', 'success');
@@ -102,8 +92,6 @@ const ArticleForm = ({
   const getImage = value => {
     setFieldValue('image', value);
   };
-
-  console.log("dfgfdg", values)
 
   return (
     <div className="">
@@ -167,12 +155,14 @@ const ArticleForm = ({
                   onChange={handleChange}
                 >
                   <option>Select category</option>
-                  {catByTypeData &&
-                    catByTypeData.map(item => (
-                      <option value={item.id} key={item.id}>
+                  {categories && categories.data &&
+                    categories.data.category.map(item =>{
+                      if(item.category=='blog'){
+                        return  <option value={item.id} key={item.id}>
                         {item.name}
                       </option>
-                    ))}
+                      }
+                    })}
                 </select>
                 {errors.category && touched.category && (
                   <div

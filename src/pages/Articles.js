@@ -18,9 +18,17 @@ import {
 import { getCatByType } from '../store/actions/categoryActions';
 import ArticleLsiting from '../components/articles/ArticleListing';
 import ArticleForm from '../components/articles/ArticleForm';
+import ApiClient from '../components/apiClient';
+import load from '../methods/load';
+
+import {
+  categories,
+} from '../store/actions/categoryActions';
 
 const Articles = ({
   data,
+  categorData,
+  categories,
   blogs,
   resetSingleBlog,
   deleteBlog,
@@ -32,7 +40,6 @@ const Articles = ({
   changeStatus,
   resetStatus,
   getCatByType,
-  isSuccess,
   isRequesting,
   catByTypeData
 }) => {
@@ -45,7 +52,6 @@ const Articles = ({
   const [reloadToggle, setReloadToggle] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [status, setStatus] = useState(null);
-  // const [currentCount, setCurrentCount] = useState(count);
 
   useEffect(() => {
     blogs(
@@ -118,9 +124,28 @@ const Articles = ({
     resetStatus
   ]);
 
+
   useEffect(() => {
-    getCatByType('5eb4f8a671d9eb3ee7bc97f4', token);
-  }, [getCatByType, token]);
+    getCategory()
+  });
+
+  const getCategory=()=>{
+    let prm={
+      page:1,
+      count:10,
+      type: 'I',
+      sortBy: 'createdAt desc'
+    }
+    // categories(
+    //   token,
+    //   'I',
+    //   1,
+    //   1000,
+    //   '',
+    //   '',
+    //   ''
+    // );
+  }
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
@@ -183,6 +208,7 @@ const Articles = ({
               catByTypeData={catByTypeData}
               handleFormVisibilty={handleFormVisibilty}
               isAddForm={isAddForm}
+              categories={categorData}
               blogId={blogId}
               setReloadToggle={setReloadToggle}
               reloadToggle={reloadToggle}
@@ -196,6 +222,7 @@ const Articles = ({
 
 const mapStateToProps = state => ({
   data: state.blogs.data,
+  categorData: state.categories.data,
   isRequesting: state.blogs.isRequesting,
   isSuccess: state.blogs.isSuccess,
   isError: state.blogs.isError,
@@ -210,6 +237,7 @@ export default connect(mapStateToProps, {
   blogs,
   resetSingleBlog,
   deleteBlog,
+  categories,
   resetDeleteBlog,
   changeStatus,
   resetStatus,

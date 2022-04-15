@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import swal from 'sweetalert';
 import Layout from '../components/global/Layout';
@@ -20,6 +20,7 @@ import {
   changeStatus,
   resetStatus
 } from '../store/actions/changeStatusActions';
+import ApiClient from '../components/apiClient';
 
 const Youtube = ({
   items,
@@ -51,7 +52,7 @@ const Youtube = ({
   const [searchKeyword, setSearchKeyword] = useState('');
   const [status, setStatus] = useState(null);
 
-  // const [currentCount, setCurrentCount] = useState(count);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     items(
@@ -165,6 +166,23 @@ const Youtube = ({
     setSort(!sort);
   };
 
+  const featrued =(id)=>{
+    ApiClient.put(`/youTube/featured?isfeaured=true&id=${id}`,{id:id}).then(res=>{
+      console.log("res",res)
+      if(res.data.success){
+        items(
+          token,
+          type,
+          page,
+          count,
+          sortType,
+          sort ? 'asc' : 'desc',
+          searchKeyword
+        )
+      }
+    })
+  }
+
 
   return (
     <Layout title="Youtube">
@@ -180,7 +198,7 @@ const Youtube = ({
               handAddFormToggle={handAddFormToggle}
               getId={getId}
               isRequesting={isRequesting}
-              // UserListing={UserListing}
+              featrued={featrued}
               resetSingle={resetSingle}
               deleteItem={Delete}
               Archive={Archive}

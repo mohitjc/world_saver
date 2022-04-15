@@ -12,6 +12,7 @@ const ListItem = ({
   getId,
   page,
   Archive,
+  featrued,
   changeStatus,
   getStatus,
   count
@@ -31,17 +32,6 @@ const ListItem = ({
         return null;
       }
     });
-  };
-
-  const handleStatus = status => {
-    const token = localStorage.getItem('token');
-    const obj = {
-      model: 'youtube',
-      id: item && item.id,
-      status
-    };
-    getStatus(status);
-    changeStatus(obj, token);
   };
 
 
@@ -66,37 +56,32 @@ const ListItem = ({
   }
 
 
-  const [isarchive, satArchive] = useState(false);
 
-  // console.log('page * count ', page, count);
-  // console.log('page * count ', page * count);
-  // console.log('page * count ', page * count - (count - 1));
+  const handleFeature = (id) =>{
+    const token = localStorage.getItem('token');
+    swal({
+      title: 'Are you sure?',
+      text: 'you want to Feature this youtube!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true
+    }).then(willArchive => {
+      if (willArchive) {
+        console.log("id: ",id)
+        featrued(id)
+      } else {
+        return null;
+      }
+    });
+  }
+ 
   return (
     <tr>
       <td>{index + page * count - (count - 1)}</td>
       <td>{item && item.title ? item.title : '___'}</td>
       <td>{item && item.description ? item.description : '___'}</td>
       <td>{item && item.url ? item.url : '___'}</td>
-      
-      {/* <td>
-        {item && item.status === 'deactive' ? (
-          <button
-            type="button"
-            className="badge badge-warning"
-            onClick={() => handleStatus('active')}
-          >
-            Deactive
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="badge badge-success"
-            onClick={() => handleStatus('deactive')}
-          >
-            Active
-          </button>
-        )}
-      </td> */}
+    
       <td>
         <button
           type="button"
@@ -119,11 +104,22 @@ const ListItem = ({
 
         <button
           type="button"
-          className="btn btn-icon btn-secondary"
+          className="btn btn-icon btn-secondary m-2"
           onClick={()=>handleArchive(item && item.id ,item && item.isArchive)}
         >
           {item && item.isArchive?'Un-Archive':'Archive'}
         </button>
+
+        {item && item.isFeatured?<a className="badge badge-success text-white">Featrued</a>:<button
+          type="button"
+          className="btn btn-icon btn-secondary"
+          onClick={()=>handleFeature(item && item.id)}
+        >
+          Feature
+        </button>}
+
+        
+       
       </td>
     </tr>
   );

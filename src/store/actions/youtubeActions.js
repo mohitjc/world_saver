@@ -118,7 +118,6 @@ export function Archive(obj, id, token) {
         }
       })
       .catch(error => {
-        // console.log('error', error.response);
         const errorMessage =
           error.response && error.response.data && error.response.data.error
             ? error.response.data.error.message
@@ -127,7 +126,6 @@ export function Archive(obj, id, token) {
           getFailure(YOUTUBE_ARCHIVE.YOUTUBE_ARCHIVE_FAILURE, {
             data: {
               statusCode: 403,
-              // statusText: (error_message.message) ? error_message.message : "Something went wrong. Please try again later.",
               message: errorMessage
             }
           })
@@ -149,7 +147,6 @@ export function items(token, type, page, count, sortType, sort, search) {
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(data => {
-        // console.log('response', data);
         if (data.success) {
           dispatch(getSuccess(GET_YOUTUBE.GET_YOUTUBE_SUCCESS, data));
         }

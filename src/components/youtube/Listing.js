@@ -20,6 +20,7 @@ const Listing = ({
   setPage,
   page,
   Archive,
+  featrued,
   count,
   changeStatus,
   getStatus,
@@ -97,6 +98,7 @@ const Listing = ({
                       <ListItem
                         key={item.id}
                         item={item}
+                        featrued={featrued}
                         index={index}
                         handAddFormToggle={handAddFormToggle}
                         handleFormVisibilty={handleFormVisibilty}

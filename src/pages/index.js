@@ -16,8 +16,6 @@ import CategoryView from './CategoryView';
 import QuestionView from './QuestionView';
 
 import Project from './Project';
-import SkillView from './ProjectView';
-
 import RolesAndPermissions from './RolesAndPermissions';
 import Credits from './Credits';
 import PublicRoute from './PublicRoute';
@@ -26,7 +24,6 @@ import Types from './Types';
 import ProjectView from './ProjectView';
 import Advertise from './Advertise';
 import youtube from './youtube';
-import Posts from '../components/Posts/Posts';
 import PostData from '../components/Posts/PostData';
 
 const App = ({ authenticated }) => {

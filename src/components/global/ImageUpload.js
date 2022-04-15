@@ -29,7 +29,7 @@ const ImageUpload = ({
 
   useEffect(() => {
     if (isSuccess) {
-      getImage(data && data.data.fullPath);
+      getImage(data && data.data.imagePath);
     }
 
     // if (isSuccess && placeholder === 'Add banner') {
@@ -145,7 +145,7 @@ const ImageUpload = ({
                     <div style={thumb}>
                       <div style={thumbInner}>
                         <img
-                          src={`${API_SLUG}/images/${type}/${value}`}
+                          src={`${API_SLUG}/${value}`}
                           style={img}
                         />
                       </div>

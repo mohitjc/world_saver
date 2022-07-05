@@ -57,6 +57,11 @@ const MainSidebar = ({ history }) => {
             </NavLink>
           </li>
           <li className="nav-item dropdown">
+            <NavLink className="nav-link" to="/contents" activeStyle={styles}>
+              <i className="far fa-newspaper" /><span>Manage Contents</span>
+            </NavLink>
+          </li>
+          <li className="nav-item dropdown">
             <NavLink className="nav-link" to="/projects" activeStyle={styles}>
               <i className="far fa-folder-open" /> <span>Manage Projects</span>
             </NavLink>

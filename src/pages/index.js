@@ -11,15 +11,12 @@ import PrivateRoute from './PrivateRoute';
 import Users from './Users';
 import User from './User';
 import Category from './Category';
-import Questions from './Questions';
-import CategoryView from './CategoryView';
-import QuestionView from './QuestionView';
 
 import Project from './Project';
 import RolesAndPermissions from './RolesAndPermissions';
-import Credits from './Credits';
 import PublicRoute from './PublicRoute';
 import Articles from './Articles';
+import Contents from './Contents';
 import Types from './Types';
 import ProjectView from './ProjectView';
 import Advertise from './Advertise';
@@ -39,6 +36,7 @@ const App = ({ authenticated }) => {
         <PrivateRoute component={PostData} path="/posts" exact />
         <PrivateRoute component={Category} path="/categories" exact />
         <PrivateRoute component={Articles} path="/articles" exact />
+        <PrivateRoute component={Contents} path="/contents" exact />
         <PrivateRoute component={Project} path="/projects" exact />
         <PrivateRoute
           component={ProjectView}

@@ -22,6 +22,7 @@ import ImageUpload from '../global/ImageUpload';
 import LocationSearchInput from '../global/LocationSearchInput';
 import BannerImageUpload from '../global/BannerImageUpload';
 import { countryList } from '../../store/constants';
+import ApiClient from '../apiClient';
 
 const ProjectForm = ({
   handleFormVisibilty,
@@ -50,6 +51,8 @@ const ProjectForm = ({
   catByTypeData
 }) => {
   const token = localStorage.getItem('token');
+
+
   useEffect(() => {
     if (isSuccess) {
       swal('New Project added!', '', 'success');
@@ -80,6 +83,7 @@ const ProjectForm = ({
   ]);
 
   useEffect(() => {
+    getCategory()
     if (!isAddForm) {
       singleSkill(skillId, token);
       // swal('New user added!', '', 'success');
@@ -89,6 +93,7 @@ const ProjectForm = ({
   // console.log('data', data);
 
   const [imageType, setImageType] = useState(null);
+  const [category, setCategory] = useState();
 
   const getImage = value => {
     console.log('getImage', value);
@@ -106,6 +111,14 @@ const ProjectForm = ({
     setFieldValue('lat', value.latLng.lat);
     setFieldValue('lng', value.latLng.lng);
   };
+
+  const getCategory=()=>{
+    ApiClient.get('/allcategory',{page:1,count:500}).then(res=>{
+      if(res.data.success){
+        setCategory(res.data.data.category)
+      }
+    })
+  }
 
   return (
     <div className="">
@@ -174,10 +187,13 @@ const ProjectForm = ({
                   onChange={handleChange}
                 >
                   <option>Select category</option>
-                  {catByTypeData &&
-                    catByTypeData.map(item => (
-                      <option value={item.id}>{item.name}</option>
-                    ))}
+                  {category &&
+                    category.map(item => {
+                      if(item.category=='project'){
+                       return <option value={item.id}>{item.name}</option>
+                      }
+                      
+                    })}
 
                   {/* {allTypes &&
                     allTypes.result.map(item => (

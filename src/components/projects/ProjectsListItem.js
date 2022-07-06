@@ -114,9 +114,6 @@ const ProjectsListItem = ({
         </button>
       </td>
     </tr>
-    <Posts
-    page={page}
-    />
     </>
   );
 };

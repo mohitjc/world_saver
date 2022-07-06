@@ -3,6 +3,13 @@ import React from 'react';
 import { API_SLUG } from '../../store/constants';
 
 const CategoryProfile = ({ data }) => {
+
+  const getImg=(img)=>{
+    let value='/assets/img/example-image.jpg'
+    if(img) value=`${API_SLUG}${img}`
+    return value
+  }
+
   return (
     <div className="section-body">
       {/* <h2 className="section-title">Hi, {data && data.firstName}!</h2> */}
@@ -35,10 +42,7 @@ const CategoryProfile = ({ data }) => {
                   <div data-crop-image="285">
                     <img
                       alt="image"
-                      src={
-                        `${API_SLUG}/images/projects/${data && data.image}` ||
-                        '../assets/img/example-image.jpg'
-                      }
+                      src={getImg(data && data.image)}
                       className="img-fluid"
                     />
                   </div>
@@ -65,11 +69,8 @@ const CategoryProfile = ({ data }) => {
                   <div data-crop-image="285">
                     <img
                       alt="image"
-                      src={
-                        `${API_SLUG}/images/projects/${data &&
-                          data.banner_image}` ||
-                        '../assets/img/example-image.jpg'
-                      }
+                      src={getImg(data && data.banner_image)}
+                     
                       className="img-fluid"
                     />
                   </div>

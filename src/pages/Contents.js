@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 
 import swal from 'sweetalert';
 import Layout from '../components/global/Layout';
@@ -12,7 +11,6 @@ import { API_SLUG } from '../store/constants';
 const Contents = () => {
   const token = localStorage.getItem('token');
   const [sort, setSort] = useState(false);
-  const [sortType, setSortType] = useState('createdAt');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [status, setStatus] = useState(null);
   const [data, setData] = useState([]);
@@ -36,8 +34,11 @@ const Contents = () => {
   },[]);
 
 
-  const getData=()=>{
-    ApiClient.get('/pages',{}).then(res=>{
+  const getData=(p='')=>{
+    let filter={
+      search:p.search?p.search:''
+    }
+    ApiClient.get('/pages',filter).then(res=>{
         if(res.data.success){
             setData(res.data.data)
             setTotal(res.data.total)
@@ -49,6 +50,7 @@ const Contents = () => {
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
   const [blogId, setBlogId] = useState(null);
+  const [singleContent, setSingleContent] = useState();
 
   const handleFormVisibilty = () => {
     setFormVisibilty(!formVisibility);
@@ -58,24 +60,15 @@ const Contents = () => {
     setIsAddForm(bool);
   };
 
-  const getBlogId = id => {
-    setBlogId(id);
+  const getBlogId = itm => {
+    setBlogId(itm.slug);
+    setSingleContent(itm);
   };
 
   const getSearchKeyword = value => {
     setSearchKeyword(value);
+    getData({search:value})
   };
-
-  const getStatus = value => {
-    setStatus(value);
-  };
-
-  const toggleSort = value => {
-    setSort(!sort);
-    setSortType(value);
-  };
-
-
 
   // console.log('isDeleteError', isDeleteError);
   return (
@@ -99,7 +92,9 @@ const Contents = () => {
           ) : (
             <ContentForm
             handleFormVisibilty={handleFormVisibilty}
+            singleContent={singleContent}
             blogId={blogId}
+            getData={getData}
             />
           )}
         </section>

@@ -11,7 +11,6 @@ const ContentListing = ({
   handAddFormToggle,
   getSearchKeyword,
   getBlogId,
-  resetSingleBlog,
   deleteBlog,
   data,
   sort,
@@ -26,9 +25,7 @@ const ContentListing = ({
   isRequesting
 }) => {
   const [keyword, setKeyword] = useState('');
-  useEffect(() => {
-    getSearchKeyword(keyword);
-  }, [getSearchKeyword, keyword]);
+
 
   return (
     <div className="row">
@@ -55,7 +52,7 @@ const ContentListing = ({
                     className="form-control"
                     placeholder="Search"
                     onChange={e => {
-                      setKeyword(e.target.value);
+                      getSearchKeyword(e.target.value);
                       setPage(1);
                     }}
                   />

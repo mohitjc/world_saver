@@ -54,25 +54,7 @@ const ContentListItem = ({
       <td dangerouslySetInnerHTML={{ __html: item && item.meta_description}}></td>
       <td>{item && item.slug ? item.slug : '___'}</td>
 
-      {/* <td>
-        {item && item.status === 'deactive' ? (
-          <button
-            type="button"
-            className="badge badge-warning"
-            onClick={() => handleStatus('active')}
-          >
-            Deactive
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="badge badge-success"
-            onClick={() => handleStatus('deactive')}
-          >
-            Active
-          </button>
-        )}
-      </td> */}
+      
       <td>
         <button
           type="button"
@@ -80,7 +62,7 @@ const ContentListItem = ({
           onClick={() => {
             handAddFormToggle(false);
             handleFormVisibilty();
-            getBlogId(item && item.slug);
+            getBlogId(item);
           }}
           disabled={!!(item && item.type === 'custom')}
         >

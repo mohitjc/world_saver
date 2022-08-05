@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import swal from 'sweetalert';
 import Layout from '../components/global/Layout';
@@ -130,6 +130,7 @@ const Category = ({
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);
   const [categoryId, setCategoryId] = useState(null);
+  const dispatch=useDispatch()
 
   const handleFormVisibilty = () => {
     setFormVisibilty(!formVisibility);
@@ -139,8 +140,25 @@ const Category = ({
     setIsAddForm(bool);
   };
 
-  const getCategoryId = id => {
-    setCategoryId(id);
+  const getSuccess=(SUCCESS, data)=> {
+    return {
+      type: SUCCESS,
+      payload: data
+    };
+  }
+
+  const getCategoryId = item => {
+    if(item){
+      setCategoryId(item.id);
+      dispatch(
+        getSuccess(
+          'GET_SINGLE_CATEGORY_SUCCESS',
+          item
+        )
+      );
+    }else{
+      setCategoryId('');
+    }
   };
 
   const getSearchKeyword = value => {
@@ -163,11 +181,6 @@ const Category = ({
       <div className="main-content">
         <section className="section">
           <SectionHeader title="Categories" />
-
-
-          {
-            
-          }
           {!formVisibility ? (
             <>
               <CategoryListing
@@ -190,8 +203,6 @@ const Category = ({
                 getStatus={getStatus}
                 toggleSort={toggleSort}
               />
-      
-             
             </>
           ) : (
             <CategoryForm

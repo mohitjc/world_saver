@@ -83,7 +83,7 @@ const CategoryListItem = ({
           onClick={() => {
             handAddFormToggle(false);
             handleFormVisibilty();
-            getCategoryId(item && item.id);
+            getCategoryId(item);
           }}
         >
           <i className="far fa-edit" />

@@ -15,7 +15,6 @@ const CategoryListing = ({
   deleteCategory,
   categories,
   sort,
-  setSort,
   total,
   setPage,
   page,
@@ -43,6 +42,7 @@ const CategoryListing = ({
                   handleFormVisibilty();
                   handAddFormToggle(true);
                   resetSingleCategory();
+                  getCategoryId('')
                 }}
                 type="button"
               >
@@ -76,6 +76,7 @@ const CategoryListing = ({
             <div className="card-body p-0">
               <div className="table-responsive">
                 <table className="table table-striped">
+                  <thead>
                   <tr>
                     <th>#</th>
                     <th
@@ -90,6 +91,8 @@ const CategoryListing = ({
                     <th>Status</th>
                     <th>Action</th>
                   </tr>
+                  </thead>
+                  <tbody>
                   {categories &&
                     categories.map((item, index) => (
                       <CategoryListItem
@@ -106,6 +109,7 @@ const CategoryListing = ({
                         count={count}
                       />
                     ))}
+                    </tbody>
                 </table>
                 {isEmpty(categories) && <EmptyState />}
               </div>

@@ -138,7 +138,6 @@ export function singleCategory(id, token) {
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(data => {
-        // console.log('singleCategory', data);
         if (data.success) {
           dispatch(
             getSuccess(

@@ -20,7 +20,6 @@ import {
 import ImageUpload from '../global/ImageUpload';
 import ApiClient from '../apiClient';
 import load from '../../methods/load';
-import { Toast } from 'react-bootstrap';
 
 const CategoryForm = ({
   handleFormVisibilty,
@@ -32,10 +31,6 @@ const CategoryForm = ({
   errors,
   touched,
   setFieldValue,
-  data,
-  isAddForm,
-  reloadToggle,
-  setReloadToggle,
   categoryId,
   singleCategory,
   allTypes,
@@ -44,26 +39,28 @@ const CategoryForm = ({
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    if (!isAddForm) {
-      singleCategory(categoryId, token);
+    if (categoryId) {
+      // singleCategory(categoryId, token);
     }
-  }, [categoryId, isAddForm, singleCategory, token]);
+  }, [categoryId]);
 
   const getImage = value => {
     setFieldValue('image', value);
   };
 
-
  const saveForm = (e) => {
    e.preventDefault()
-    console.log(values,"ddjfdjkfj");
-    console.log(isAddForm,"ddjfdjkfj");
 
     let url = '/category';
+    console.log("values",values)
+
+    let value={...values}
+    if(categoryId)  value={...values,id:categoryId}
+
     load(true)
 
-    if(isAddForm){
-      ApiClient.post(url, values).then(res => {
+    if(!categoryId){
+      ApiClient.post(url, value).then(res => {
         if (res.status == 200) {
           handleFormVisibilty();
           getCategory()
@@ -71,7 +68,7 @@ const CategoryForm = ({
       },err=>{
       })
     }else{
-      ApiClient.put(url, values).then(res => {
+      ApiClient.put(url, value).then(res => {
         if (res.status == 200) {
           handleFormVisibilty();
           getCategory()
@@ -79,11 +76,7 @@ const CategoryForm = ({
       },err=>{
       })
     }
-  
-  }
 
-  const getSingleCategory=()=>{
-    
   }
 
 
@@ -104,7 +97,7 @@ const CategoryForm = ({
           noValidate=""
         >
           <div className="card-header">
-            <h4>{isAddForm ? 'Add' : 'Edit'} category</h4>
+            <h4>{!categoryId ? 'Add' : 'Edit'} category</h4>
           </div>
           <div className="card-body">
             <ImageUpload
@@ -179,7 +172,6 @@ const CategoryForm = ({
 const CatgeoryFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleCategoryData }) => {
-    // console.log('singleCategoryData', singleCategoryData);
     return {
       name: (singleCategoryData && singleCategoryData.name) || '',
       subCategory: (singleCategoryData && singleCategoryData.parentid) || '',
@@ -207,8 +199,8 @@ const CatgeoryFormFormik = withFormik({
     // const { router } = props;
     const token = localStorage.getItem('token');
     // console.log('state values', values);
-    if (props.isAddForm) {
-      console.log(props.isAddForm, "allTyddddpes");
+    if (!props.categoryId) {
+      console.log(props.categoryId, "allTyddddpes");
       props.categoryAdd(
         {
           name: values.name,

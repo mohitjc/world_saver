@@ -55,6 +55,23 @@ const Users = ({
   console.log(deleteUser, "pagepage");
 
   useEffect(() => {
+    getAllUser()
+  }, [
+    users,
+    reloadToggle,
+    page,
+    sort,
+    roles,
+    searchKeyword,
+    isDeleteSuccess,
+    location.state,
+    token,
+    type,
+    count,
+    sortType
+  ]);
+
+  const getAllUser=()=>{
     if (isNull(location.state && location.state.role)) {
       users(
         token,
@@ -78,20 +95,7 @@ const Users = ({
         searchKeyword
       );
     }
-  }, [
-    users,
-    reloadToggle,
-    page,
-    sort,
-    roles,
-    searchKeyword,
-    isDeleteSuccess,
-    location.state,
-    token,
-    type,
-    count,
-    sortType
-  ]);
+  }
 
   useEffect(() => {
     if (isDeleteSuccess) {
@@ -195,14 +199,16 @@ const Users = ({
                 handAddFormToggle={handAddFormToggle}
                 getUserId={getUserId}
                 isRequesting={isRequesting}
+                resetStatus={resetStatus}
                 // UserListing={UserListing}
                 resetSingleUser={resetSingleUser}
                 deleteUser={deleteUser}
                 sort={sort}
                 setSort={setSort}
                 setPage={setPage}
-                page={page}
                 count={count}
+                page={page}
+                getAllUser={getAllUser}
                 getSearchKeyword={getSearchKeyword}
                 changeStatus={changeStatus}
                 getStatus={getStatus}

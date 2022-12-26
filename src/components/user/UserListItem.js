@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
+import ApiClient from '../apiClient';
 
 const UserListItem = ({
   item,
@@ -12,6 +13,8 @@ const UserListItem = ({
   changeStatus,
   getStatus,
   page,
+  resetStatus,
+  getAllUser,
   count
 }) => {
   console.log(page,"pagepage");
@@ -45,6 +48,18 @@ const UserListItem = ({
     changeStatus(obj, token);
   };
 
+  // Guide button function
+  const guidestatus = (item) =>{
+    console.log(item);
+    const token = localStorage.getItem('token');
+    const obj = {
+      isGuide: item.isGuide?false:true
+    };
+
+    ApiClient.put('/user/'+item.id,obj).then(res=>{
+      getAllUser()
+    })
+  }
   // console.log('page * count ', page, count);
   // console.log('page * count ', page * count);
   // console.log('page * count ', page * count - (count - 1));
@@ -76,6 +91,14 @@ const UserListItem = ({
             Active
           </button>
         )}
+      </td>
+      {/* Guide Button */}
+      <td>
+        {item.isGuide==true?
+        <button type="button" className="badge badge-success" onClick={() => guidestatus(item)}>Unguide</button>
+        :
+        <button type="button" className="badge badge-warning" onClick={() => guidestatus(item)}>Guide</button>
+        }        
       </td>
       <td>
         <button

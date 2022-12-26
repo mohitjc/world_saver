@@ -23,6 +23,8 @@ const UserListing = ({
   toggleSort,
   page,
   count,
+  getAllUser,
+  resetStatus,
   isRequesting
 }) => {
   const [keyword, setKeyword] = useState('');
@@ -94,6 +96,7 @@ const UserListing = ({
                     </th>
                     <th>Mobile</th>
                     <th>Status</th>
+                    <th>Guide</th>
                     <th>Action</th>
                   </tr>
                   {users &&
@@ -105,6 +108,8 @@ const UserListing = ({
                           key={item.id}
                           item={item}
                           index={index}
+                          resetStatus={resetStatus}
+                          getAllUser={getAllUser}
                           handAddFormToggle={handAddFormToggle}
                           handleFormVisibilty={handleFormVisibilty}
                           getUserId={getUserId}

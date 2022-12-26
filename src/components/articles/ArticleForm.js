@@ -18,6 +18,7 @@ import {
 } from '../../store/actions/blogsActions';
 import ImageUpload from '../global/ImageUpload';
 import TagInput from '../global/TagInput';
+import ApiClient from '../apiClient';
 
 const ArticleForm = ({
   handleFormVisibilty,
@@ -41,12 +42,12 @@ const ArticleForm = ({
   resetAddBlog,
   resetUpdateBlog,
   setFieldValue,
-  categories
+  // categories
 }) => {
   const token = localStorage.getItem('token');
   const [showUrlInput, setShowUrlInput] = useState(false);
-
-  console.log("categories",categories)
+  const [catglist,setcategories]=useState()
+  // console.log("categories",categories)
   useEffect(() => {
     if (isSuccess) {
       swal('New blog added!', '', 'success');
@@ -78,12 +79,31 @@ const ArticleForm = ({
     resetUpdateBlog
   ]);
 
+  useEffect(()=>{
+// console.log(catglist,'here u are ')
+  },[catglist])
+
   useEffect(() => {
+    getCategorylist()
     if (!isAddForm) {
       singleBlog(blogId, token);
+
       // swal('New user added!', '', 'success');
     }
+    // console.log(categories,'checking categories here')
   }, [blogId, isAddForm, singleBlog, token]);
+
+  const getCategorylist=()=>{
+    ApiClient.get('/allcategory',{page:1,count:100}).then(res=>{
+     
+      if(res.data.success){
+        setcategories(res.data.data)
+        console.log(res.data,'am here for u')
+      
+      }
+      
+    })
+  }
 
   const getInput = values => {
     setFieldValue('tags', values);
@@ -121,7 +141,7 @@ const ArticleForm = ({
               />
             )}
             <div className="row">
-              {!showUrlInput && (
+              {/* {!showUrlInput && ( */}
                 <div className="form-group col-md-4 col-12 mt-3">
                   <label>Title</label>
                   <input
@@ -143,7 +163,7 @@ const ArticleForm = ({
                     </div>
                   )}
                 </div>
-              )}
+              {/* )} */}
 
               <div className="form-group col-md-4 col-12 mt-3">
                 <label>Category</label>{values.category.id}
@@ -155,8 +175,8 @@ const ArticleForm = ({
                   onChange={handleChange}
                 >
                   <option>Select category</option>
-                  {categories && categories.data &&
-                    categories.data.category.map(item =>{
+                  {catglist  &&
+                    catglist.category.map(item =>{
                       if(item.category=='blog'){
                         return  <option value={item.id} key={item.id}>
                         {item.name}

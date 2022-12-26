@@ -550,7 +550,7 @@ export const DEAUTHENTICATE = 'DEAUTHENTICATE';
 
 // export const API_SLUG = 'http://localhost:1337';
 // export const API_SLUG = 'http://198.251.65.146:4502';
-export const API_SLUG = 'http://74.208.206.18:4502';
+export const API_SLUG = 'https://endpoint.crowdsavetheworld.com';
 
 // export const API_SLUG = 'http://3.18.4.95:1339';
 

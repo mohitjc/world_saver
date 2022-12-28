@@ -25,6 +25,9 @@ const handleError = (status) => {
         // ToastsStore.error('Error');
     } else if (status == 404) {
         // ToastsStore.error('Server Error');
+    }else if(status === 401){
+        localStorage.clear()
+        window.location.assign('/login')
     }
 }
 
@@ -97,11 +100,14 @@ class ApiClient {
                     load(false)
                 })
                 .catch(function (error) {
+                    console.log(error,'checking error here')
                     // loader(false)
                     load(false)
                     if (error && error.response) {
                         let eres = error.response;
-                        handleError(eres.status)
+                        console.log(eres,'here is my error check....')
+                        handleError(eres.error.code)
+                        
                         fulfill(eres);
                     } else {
                         // ToastsStore.error('Network Error');

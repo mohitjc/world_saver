@@ -25,6 +25,8 @@ const ContentForm = ({
     
   }, [blogId, isAddForm, singleContent]);
 
+  
+
   const handleValofEditor=(e)=>{
     e.preventDefault()
     setSubmitted(true)

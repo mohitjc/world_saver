@@ -40,7 +40,7 @@ console.log('users', total);
         <div className="card">
           <div className="card-header">
             <h4>
-              <button
+              {/* <button
                 className="btn btn-primary"
                 onClick={() => {
                   handleFormVisibilty();
@@ -50,7 +50,7 @@ console.log('users', total);
                 type="button"
               >
                 Add User
-              </button>
+              </button> */}
             </h4>
             <div className="card-header-form">
               <form>

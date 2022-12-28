@@ -27,7 +27,7 @@ const handleError = (status) => {
         // ToastsStore.error('Server Error');
     }else if(status === 401){
         localStorage.clear()
-        window.location.assign('/login')
+        window.location.assign('/')
     }
 }
 

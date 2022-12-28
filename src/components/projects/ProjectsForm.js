@@ -144,7 +144,6 @@ const ProjectForm = ({
                 placeholder="Add Project image"
                 setImageType={setImageType}
               />
-              
               <div className="ml-4">
                 <ImageUpload
                   imageType={imageType}

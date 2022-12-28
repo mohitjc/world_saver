@@ -29,7 +29,7 @@ export default function getProfile(token) {
         console.log('error', error.response.data.error.code);
         if(error.response.data.error.code===401){
           localStorage.clear()
-          window.location.assign('/login')
+          window.location.assign('/')
         }
         const errorMessage =
           error.response &&

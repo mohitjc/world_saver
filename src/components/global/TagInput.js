@@ -60,9 +60,10 @@ const TagInput = ({
             }}
           />
           <button
-            type="button submit"
+            type="button"
             class="btn btn-primary ml-3"
             onClick={onSubmit}
+            
           >
             Add
           </button>
@@ -74,6 +75,7 @@ const TagInput = ({
             className="btn btn-secondary mr-2"
             onClick={() => removeTag(item)}
             key={index}
+            type="button"
           >
             {item}
           </button>

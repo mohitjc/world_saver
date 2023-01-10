@@ -46,7 +46,7 @@ const ArticleForm = ({
 }) => {
   const token = localStorage.getItem('token');
   const [catglist,setcategories]=useState()
-  // console.log("categories",categories)
+  const [form,setform]=useState({title:'',category:'',isCustom:false,blogUrl:'',tags:'',image:''})
   useEffect(() => {
     if (isSuccess) {
       swal('New blog added!', '', 'success');
@@ -94,7 +94,6 @@ const ArticleForm = ({
 
   const getCategorylist=()=>{
     ApiClient.get('/allcategory',{page:1,count:100}).then(res=>{
-     
       if(res.data.success){
         setcategories(res.data.data)
         console.log(res.data,'am here for u')

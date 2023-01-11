@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { connect, useSelector } from 'react-redux';
-import { withFormik } from 'formik';
+import React, { useEffect, useState } from "react";
+import { connect, useSelector } from "react-redux";
+import { withFormik } from "formik";
 import Yup, {
   object as yupObject,
   string as yupString,
-  number as yupNumber
-} from 'yup';
-import swal from 'sweetalert';
+  number as yupNumber,
+} from "yup";
+import swal from "sweetalert";
 import {
   blogAdd,
   blogsUpdate,
@@ -14,17 +14,17 @@ import {
   resetAddBlog,
   resetUpdateBlog,
   uploadImage,
-  blogs
-} from '../../store/actions/blogsActions';
-import ImageUpload from '../global/ImageUpload';
-import TagInput from '../global/TagInput';
-import ApiClient from '../apiClient';
+  blogs,
+} from "../../store/actions/blogsActions";
+import ImageUpload from "../global/ImageUpload";
+import TagInput from "../global/TagInput";
+import ApiClient from "../apiClient";
 
 const ArticleForm = ({
   handleFormVisibilty,
   handleSubmit,
   handleBlur,
-  handleChange,
+  // handleChange,
   values,
   isRequesting,
   isUpdateRequesting,
@@ -44,24 +44,31 @@ const ArticleForm = ({
   setFieldValue,
   // categories
 }) => {
-  const token = localStorage.getItem('token');
-  const [catglist,setcategories]=useState()
-  const [form,setform]=useState({title:'',category:'',isCustom:false,blogUrl:'',tags:'',image:''})
+  const token = localStorage.getItem("token");
+  const [catglist, setcategories] = useState();
+  const [form, setform] = useState({
+    title: "",
+    category: "",
+    isCustom: false,
+    blogUrl: "",
+    tags: "",
+    image: "",
+  });
   useEffect(() => {
     if (isSuccess) {
-      swal('New blog added!', '', 'success');
+      swal("New blog added!", "", "success");
       handleFormVisibilty();
       resetAddBlog();
       setReloadToggle(!reloadToggle);
     }
     if (isError) {
-      swal(data && data.data && data.data.message, '', 'warning');
+      swal(data && data.data && data.data.message, "", "warning");
       // handleFormVisibilty();
       resetUpdateBlog();
       // setReloadToggle(!reloadToggle);
     }
     if (isUpdateSuccess) {
-      swal('Blog updated!', '', 'success');
+      swal("Blog updated!", "", "success");
       handleFormVisibilty();
       resetUpdateBlog();
       setReloadToggle(!reloadToggle);
@@ -75,15 +82,15 @@ const ArticleForm = ({
     setReloadToggle,
     reloadToggle,
     data,
-    resetUpdateBlog
+    resetUpdateBlog,
   ]);
 
-  useEffect(()=>{
-// console.log(catglist,'here u are ')
-  },[catglist])
+  useEffect(() => {
+    // console.log(catglist,'here u are ')
+  }, [catglist]);
 
   useEffect(() => {
-    getCategorylist()
+    getCategorylist();
     if (!isAddForm) {
       singleBlog(blogId, token);
 
@@ -92,23 +99,54 @@ const ArticleForm = ({
     // console.log(categories,'checking categories here')
   }, [blogId, isAddForm, singleBlog, token]);
 
-  const getCategorylist=()=>{
-    ApiClient.get('/allcategory',{page:1,count:100}).then(res=>{
-      if(res.data.success){
-        setcategories(res.data.data)
-        console.log(res.data,'am here for u')
-      
+  const getCategorylist = () => {
+    ApiClient.get("/allcategory", { page: 1, count: 100 }).then((res) => {
+      if (res.data.success) {
+        setcategories(res.data.data);
+        console.log(res.data, "am here for u");
       }
-      
-    })
-  }
-
-  const getInput = values => {
-    setFieldValue('tags', values);
+    });
   };
 
-  const getImage = value => {
-    setFieldValue('image', value);
+  const getInput = (values) => {
+    setFieldValue("tags", values);
+  };
+
+  const getImage = (value) => {
+    setFieldValue("image", value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("form", form);
+    let method = "post";
+    let url = "/blogs";
+    let payload = {
+      blogUrl: "",
+      category: "62ecba89a6394a3ec34e5ca2",
+      description: "sddd",
+      image: "",
+      isCustom: false,
+      tags: [],
+      title: "awd",
+    };
+    if (!isAddForm) {
+      method = "put";
+      payload.id = Id;
+      url = "/blogs/" + Id;
+    }
+    ApiClient.allApi(url, payload, method).then((res) => {
+      if (res.data.success) {
+        let message = "Adertise added!";
+        if (!isAddForm) message = "Adertise updated!";
+        swal(message, "", "success");
+        handleFormVisibilty();
+        resetUpdate();
+        setReloadToggle(!reloadToggle);
+      } else {
+        swal(res.data.message, "", "Warning");
+      }
+    });
   };
 
   return (
@@ -127,7 +165,7 @@ const ArticleForm = ({
           noValidate=""
         >
           <div className="card-header">
-            <h4>{isAddForm ? 'Add' : 'Edit'} article</h4>
+            <h4>{isAddForm ? "Add" : "Edit"} article</h4>
           </div>
 
           <div className="card-body">
@@ -139,31 +177,32 @@ const ArticleForm = ({
               />
             )}
             <div className="row">
-                <div className="form-group col-md-4 col-12 mt-3">
-                  <label>Title</label>
-                  <input
-                    type="text"
-                    name="title"
-                    className="form-control"
-                    // value="john"
+              <div className="form-group col-md-4 col-12 mt-3">
+                <label>Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  className="form-control"
+                  // value="john"
 
-                    value={values.title}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                  />
-                  {errors.title && touched.title && (
-                    <div
-                      className="invalid-feedback"
-                      style={{ display: 'block' }}
-                    >
-                      {errors.title}
-                    </div>
-                  )}
-                </div>
+                  value={values.title}
+                  onBlur={handleBlur}
+                  onChange={e=>setform({...form,title:e.target.value})}
+                />
+                {errors.title && touched.title && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: "block" }}
+                  >
+                    {errors.title}
+                  </div>
+                )}
+              </div>
               {/* )} */}
 
               <div className="form-group col-md-4 col-12 mt-3">
-                <label>Category</label>{values.category.id}
+                <label>Category</label>
+                {values.category.id}
                 <select
                   name="category"
                   className="form-control"
@@ -172,19 +211,21 @@ const ArticleForm = ({
                   onChange={handleChange}
                 >
                   <option>Select category</option>
-                  {catglist  &&
-                    catglist.category.map(item =>{
-                      if(item.category=='blog'){
-                        return  <option value={item.id} key={item.id}>
-                        {item.name}
-                      </option>
+                  {catglist &&
+                    catglist.category.map((item) => {
+                      if (item.category == "blog") {
+                        return (
+                          <option value={item.id} key={item.id}>
+                            {item.name}
+                          </option>
+                        );
                       }
                     })}
                 </select>
                 {errors.category && touched.category && (
                   <div
                     className="invalid-feedback"
-                    style={{ display: 'block' }}
+                    style={{ display: "block" }}
                   >
                     Please select category
                   </div>
@@ -204,7 +245,7 @@ const ArticleForm = ({
                   {errors.description && touched.description && (
                     <div
                       className="invalid-feedback"
-                      style={{ display: 'block' }}
+                      style={{ display: "block" }}
                     >
                       Please select description
                     </div>
@@ -245,7 +286,7 @@ const ArticleForm = ({
                     {errors.blogUrl && touched.blogUrl && (
                       <div
                         className="invalid-feedback"
-                        style={{ display: 'block' }}
+                        style={{ display: "block" }}
                       >
                         {errors.blogUrl}
                       </div>
@@ -269,8 +310,8 @@ const ArticleForm = ({
               type="submit"
               className={`btn btn-primary   ${
                 isRequesting || isUpdateRequesting
-                  ? 'btn-progress disabled'
-                  : ''
+                  ? "btn-progress disabled"
+                  : ""
               }`}
             >
               Save Changes
@@ -287,11 +328,11 @@ const ArticleFormFormik = withFormik({
   mapPropsToValues: ({ singleBlogData }) => {
     // console.log('singleBlogData', singleBlogData);
     return {
-      title: (singleBlogData && singleBlogData.title) || '',
-      description: (singleBlogData && singleBlogData.description) || '',
-      image: (singleBlogData && singleBlogData.image) || '',
-      category: (singleBlogData && singleBlogData.category?.id) || '',
-      blogUrl: (singleBlogData && singleBlogData.blogUrl) || '',
+      title: (singleBlogData && singleBlogData.title) || "",
+      description: (singleBlogData && singleBlogData.description) || "",
+      image: (singleBlogData && singleBlogData.image) || "",
+      category: (singleBlogData && singleBlogData.category?.id) || "",
+      blogUrl: (singleBlogData && singleBlogData.blogUrl) || "",
       tags: (singleBlogData && singleBlogData.tags) || [],
       isCustom: (singleBlogData && singleBlogData.isCustom) || false,
     };
@@ -302,12 +343,12 @@ const ArticleFormFormik = withFormik({
     //   .max(50)
     //   .required(),
     // description: yupString().required(),
-    category: yupString().required()
+    category: yupString().required(),
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // console.log('values', values);
     // const { router } = props;
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (props.isAddForm) {
       props.blogAdd(
         {
@@ -317,8 +358,8 @@ const ArticleFormFormik = withFormik({
           tags: values.tags,
           blogUrl: values.blogUrl,
           // slug: values.slug,
-          isCustom:values.isCustom,
-          description: values.description
+          isCustom: values.isCustom,
+          description: values.description,
         },
         token
       );
@@ -330,9 +371,9 @@ const ArticleFormFormik = withFormik({
           image: values.image,
           tags: values.tags,
           blogUrl: values.blogUrl,
-          isCustom:values.isCustom,
+          isCustom: values.isCustom,
           // slug: values.slug,
-          description: values.description
+          description: values.description,
         },
         props.blogId,
         token
@@ -342,17 +383,17 @@ const ArticleFormFormik = withFormik({
     resetForm();
   },
 
-  displayName: 'BlogForm' // helps with React DevTools
+  displayName: "BlogForm", // helps with React DevTools
 })(ArticleForm);
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.blogAdd.data,
   isRequesting: state.blogAdd.isRequesting,
   isUpdateRequesting: state.blogUpdate.isRequesting,
   isSuccess: state.blogAdd.isSuccess,
   isUpdateSuccess: state.blogUpdate.isSuccess,
   isError: state.blogAdd.isError,
-  singleBlogData: state.blog.data
+  singleBlogData: state.blog.data,
 });
 
 export default connect(mapStateToProps, {
@@ -362,5 +403,5 @@ export default connect(mapStateToProps, {
   resetAddBlog,
   resetUpdateBlog,
   uploadImage,
-  blogs
+  blogs,
 })(ArticleFormFormik);

@@ -46,7 +46,7 @@ const ArticleForm = ({
 }) => {
   const token = localStorage.getItem("token");
   const [catglist, setcategories] = useState();
-  const [myimage,setimage]=useState()
+  const [myimage, setimage] = useState();
   const [form, setform] = useState({
     title: "",
     category: "",
@@ -92,13 +92,17 @@ const ArticleForm = ({
 
   useEffect(() => {
     if (!isAddForm) {
-      ApiClient.get('/blogs/' + blogId).then(res => {
+      ApiClient.get("/blogs/" + blogId).then((res) => {
         if (res.data.success) {
-          console.log(res.data.data,'here we have data peoples')
-          setform({...form,...res.data.data,category:res.data.data?.category?.id})
-          setimage(res.data.data.image)
+          console.log(res.data.data, "here we have data peoples");
+          setform({
+            ...form,
+            ...res.data.data,
+            category: res.data.data?.category?.id,
+          });
+          setimage(res.data.data.image);
         }
-      })
+      });
     }
   }, [blogId, isAddForm, token]);
 
@@ -122,11 +126,11 @@ const ArticleForm = ({
   };
 
   const getInput = (values) => {
-    setform({...form,tags:values});
+    setform({ ...form, tags: values });
   };
 
   const getImage = (value) => {
-    setimage(value)
+    setimage(value);
   };
 
   const handleSubmit = (e) => {
@@ -137,11 +141,11 @@ const ArticleForm = ({
     let payload = {
       blogUrl: form.blogUrl,
       category: form.category,
-      description:form.description,
-      image:myimage,
+      description: form.description,
+      image: myimage,
       isCustom: form.isCustom,
       tags: form.tags,
-      title:form.title,
+      title: form.title,
     };
     if (!isAddForm) {
       method = "put";
@@ -183,11 +187,7 @@ const ArticleForm = ({
 
           <div className="card-body">
             {!form.isCustom && (
-              <ImageUpload
-                getImage={getImage}
-                type="blogs"
-                value={myimage}
-              />
+              <ImageUpload getImage={getImage} type="blogs" value={myimage} />
             )}
             <div className="row">
               <div className="form-group col-md-4 col-12 mt-3">
@@ -197,10 +197,10 @@ const ArticleForm = ({
                   name="title"
                   className="form-control"
                   // value="john"
-
+                  required
                   value={form.title}
                   onBlur={handleBlur}
-                  onChange={e=>setform({...form,title:e.target.value})}
+                  onChange={(e) => setform({ ...form, title: e.target.value })}
                 />
                 {errors.title && touched.title && (
                   <div
@@ -215,13 +215,17 @@ const ArticleForm = ({
 
               <div className="form-group col-md-4 col-12 mt-3">
                 <label>Category</label>
-                {values.category.id}
+                {/* {form.category} */}
                 <select
                   name="category"
                   className="form-control"
                   value={form.category}
+                  required
                   onBlur={handleBlur}
-                  onChange={e=>setform({...form,category:e.target.value})}
+                  onChange={(e) =>
+                    setform({ ...form, category: e.target.value })
+                  }
+                  
                 >
                   <option>Select category</option>
                   {catglist &&
@@ -235,7 +239,7 @@ const ArticleForm = ({
                       }
                     })}
                 </select>
-                {errors.category && touched.category && (
+                {form.category===''  && (
                   <div
                     className="invalid-feedback"
                     style={{ display: "block" }}
@@ -252,8 +256,11 @@ const ArticleForm = ({
                     className="form-control"
                     name="description"
                     value={form.description}
+                    required
                     onBlur={handleBlur}
-                    onChange={e=>setform({...form,description:e.target.value})}
+                    onChange={(e) =>
+                      setform({ ...form, description: e.target.value })
+                    }
                   />
                   {errors.description && touched.description && (
                     <div
@@ -275,7 +282,9 @@ const ArticleForm = ({
                     checked={form.isCustom}
                     value={form.isCustom}
                     onBlur={handleBlur}
-                    onChange={e=>setform({...form,isCustom:e.target.checked})}
+                    onChange={(e) =>
+                      setform({ ...form, isCustom: e.target.checked })
+                    }
                   />
                   <label className="custom-control-label" for="customCheck1">
                     Or add your custom link for the blog
@@ -291,10 +300,12 @@ const ArticleForm = ({
                       name="blogUrl"
                       className="form-control"
                       // value="john"
-
+                      required
                       value={form.blogUrl}
                       onBlur={handleBlur}
-                      onChange={e=>setform({...form,blogUrl:e.target.value})}
+                      onChange={(e) =>
+                        setform({ ...form, blogUrl: e.target.value })
+                      }
                     />
                     {errors.blogUrl && touched.blogUrl && (
                       <div
@@ -321,6 +332,7 @@ const ArticleForm = ({
             </button>
             <button
               type="submit"
+              disabled={form.category===''}
               className={`btn btn-primary   ${
                 isRequesting || isUpdateRequesting
                   ? "btn-progress disabled"

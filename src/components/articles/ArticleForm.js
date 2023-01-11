@@ -22,7 +22,7 @@ import ApiClient from "../apiClient";
 
 const ArticleForm = ({
   handleFormVisibilty,
-  handleSubmit,
+  // handleSubmit,
   handleBlur,
   // handleChange,
   values,
@@ -46,6 +46,7 @@ const ArticleForm = ({
 }) => {
   const token = localStorage.getItem("token");
   const [catglist, setcategories] = useState();
+  const [myimage,setimage]=useState()
   const [form, setform] = useState({
     title: "",
     category: "",
@@ -90,6 +91,18 @@ const ArticleForm = ({
   }, [catglist]);
 
   useEffect(() => {
+    if (!isAddForm) {
+      ApiClient.get('/blogs/' + blogId).then(res => {
+        if (res.data.success) {
+          console.log(res.data.data,'here we have data peoples')
+          setform({...form,...res.data.data,category:res.data.data?.category?.id})
+          setimage(res.data.data.image)
+        }
+      })
+    }
+  }, [blogId, isAddForm, token]);
+
+  useEffect(() => {
     getCategorylist();
     if (!isAddForm) {
       singleBlog(blogId, token);
@@ -109,11 +122,11 @@ const ArticleForm = ({
   };
 
   const getInput = (values) => {
-    setFieldValue("tags", values);
+    setform({...form,tags:values});
   };
 
   const getImage = (value) => {
-    setFieldValue("image", value);
+    setimage(value)
   };
 
   const handleSubmit = (e) => {
@@ -122,18 +135,18 @@ const ArticleForm = ({
     let method = "post";
     let url = "/blogs";
     let payload = {
-      blogUrl: "",
-      category: "62ecba89a6394a3ec34e5ca2",
-      description: "sddd",
-      image: "",
-      isCustom: false,
-      tags: [],
-      title: "awd",
+      blogUrl: form.blogUrl,
+      category: form.category,
+      description:form.description,
+      image:myimage,
+      isCustom: form.isCustom,
+      tags: form.tags,
+      title:form.title,
     };
     if (!isAddForm) {
       method = "put";
-      payload.id = Id;
-      url = "/blogs/" + Id;
+      payload.id = blogId;
+      url = "/blogs/" + blogId;
     }
     ApiClient.allApi(url, payload, method).then((res) => {
       if (res.data.success) {
@@ -141,7 +154,7 @@ const ArticleForm = ({
         if (!isAddForm) message = "Adertise updated!";
         swal(message, "", "success");
         handleFormVisibilty();
-        resetUpdate();
+        resetUpdateBlog();
         setReloadToggle(!reloadToggle);
       } else {
         swal(res.data.message, "", "Warning");
@@ -169,11 +182,11 @@ const ArticleForm = ({
           </div>
 
           <div className="card-body">
-            {!values.isCustom && (
+            {!form.isCustom && (
               <ImageUpload
                 getImage={getImage}
                 type="blogs"
-                value={values.image}
+                value={myimage}
               />
             )}
             <div className="row">
@@ -185,7 +198,7 @@ const ArticleForm = ({
                   className="form-control"
                   // value="john"
 
-                  value={values.title}
+                  value={form.title}
                   onBlur={handleBlur}
                   onChange={e=>setform({...form,title:e.target.value})}
                 />
@@ -206,9 +219,9 @@ const ArticleForm = ({
                 <select
                   name="category"
                   className="form-control"
-                  value={values.category}
+                  value={form.category}
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  onChange={e=>setform({...form,category:e.target.value})}
                 >
                   <option>Select category</option>
                   {catglist &&
@@ -232,15 +245,15 @@ const ArticleForm = ({
                 )}
               </div>
 
-              {!values.isCustom && (
+              {!form.isCustom && (
                 <div className="form-group col-md-8 col-12">
                   <label>Description</label>
                   <textarea
                     className="form-control"
                     name="description"
-                    value={values.description}
+                    value={form.description}
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={e=>setform({...form,description:e.target.value})}
                   />
                   {errors.description && touched.description && (
                     <div
@@ -259,17 +272,17 @@ const ArticleForm = ({
                     className="custom-control-input"
                     id="customCheck1"
                     name="isCustom"
-                    checked={values.isCustom}
-                    value={values.isCustom}
+                    checked={form.isCustom}
+                    value={form.isCustom}
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={e=>setform({...form,isCustom:e.target.checked})}
                   />
                   <label className="custom-control-label" for="customCheck1">
                     Or add your custom link for the blog
                   </label>
                 </div>
               </div>
-              {values.isCustom && (
+              {form.isCustom && (
                 <>
                   <div className="form-group col-md-12 col-12">
                     <label>URL</label>
@@ -279,9 +292,9 @@ const ArticleForm = ({
                       className="form-control"
                       // value="john"
 
-                      value={values.blogUrl}
+                      value={form.blogUrl}
                       onBlur={handleBlur}
-                      onChange={handleChange}
+                      onChange={e=>setform({...form,blogUrl:e.target.value})}
                     />
                     {errors.blogUrl && touched.blogUrl && (
                       <div

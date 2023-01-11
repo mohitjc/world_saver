@@ -45,9 +45,8 @@ const ArticleForm = ({
   // categories
 }) => {
   const token = localStorage.getItem('token');
-  const [showUrlInput, setShowUrlInput] = useState(false);
   const [catglist,setcategories]=useState()
-  // console.log("categories",categories)
+  const [form,setform]=useState({title:'',category:'',isCustom:false,blogUrl:'',tags:'',image:''})
   useEffect(() => {
     if (isSuccess) {
       swal('New blog added!', '', 'success');
@@ -95,7 +94,6 @@ const ArticleForm = ({
 
   const getCategorylist=()=>{
     ApiClient.get('/allcategory',{page:1,count:100}).then(res=>{
-     
       if(res.data.success){
         setcategories(res.data.data)
         console.log(res.data,'am here for u')
@@ -133,7 +131,7 @@ const ArticleForm = ({
           </div>
 
           <div className="card-body">
-            {!showUrlInput && (
+            {!values.isCustom && (
               <ImageUpload
                 getImage={getImage}
                 type="blogs"
@@ -141,7 +139,6 @@ const ArticleForm = ({
               />
             )}
             <div className="row">
-              {/* {!showUrlInput && ( */}
                 <div className="form-group col-md-4 col-12 mt-3">
                   <label>Title</label>
                   <input
@@ -194,7 +191,7 @@ const ArticleForm = ({
                 )}
               </div>
 
-              {!showUrlInput && (
+              {!values.isCustom && (
                 <div className="form-group col-md-8 col-12">
                   <label>Description</label>
                   <textarea
@@ -220,15 +217,18 @@ const ArticleForm = ({
                     type="checkbox"
                     className="custom-control-input"
                     id="customCheck1"
-                    checked={showUrlInput}
-                    onChange={() => setShowUrlInput(!showUrlInput)}
+                    name="isCustom"
+                    checked={values.isCustom}
+                    value={values.isCustom}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                   />
                   <label className="custom-control-label" for="customCheck1">
                     Or add your custom link for the blog
                   </label>
                 </div>
               </div>
-              {showUrlInput && (
+              {values.isCustom && (
                 <>
                   <div className="form-group col-md-12 col-12">
                     <label>URL</label>
@@ -292,7 +292,8 @@ const ArticleFormFormik = withFormik({
       image: (singleBlogData && singleBlogData.image) || '',
       category: (singleBlogData && singleBlogData.category?.id) || '',
       blogUrl: (singleBlogData && singleBlogData.blogUrl) || '',
-      tags: (singleBlogData && singleBlogData.tags) || []
+      tags: (singleBlogData && singleBlogData.tags) || [],
+      isCustom: (singleBlogData && singleBlogData.isCustom) || false,
     };
   },
 
@@ -316,6 +317,7 @@ const ArticleFormFormik = withFormik({
           tags: values.tags,
           blogUrl: values.blogUrl,
           // slug: values.slug,
+          isCustom:values.isCustom,
           description: values.description
         },
         token
@@ -328,6 +330,7 @@ const ArticleFormFormik = withFormik({
           image: values.image,
           tags: values.tags,
           blogUrl: values.blogUrl,
+          isCustom:values.isCustom,
           // slug: values.slug,
           description: values.description
         },

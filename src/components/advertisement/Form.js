@@ -1,70 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withFormik } from 'formik';
-import Yup, {
+import {
   object as yupObject,
   string as yupString,
-  number as yupNumber
 } from 'yup';
 import swal from 'sweetalert';
-import { withRouter } from 'react-router-dom';
-
-import { isNull, isEmpty } from 'lodash';
 import {
   Add,
   Update,
   single,
   resetAdd,
   resetUpdate,
-  categories
 } from '../../store/actions/advertiseActions';
-import ImageUpload from '../global/ImageUpload';
+import ApiClient from '../apiClient'
+import { API_SLUG } from '../../store/constants';
 
 const Form = ({
   handleFormVisibilty,
-  handleSubmit,
-  handleBlur,
-  handleChange,
-  values,
   isRequesting,
   isUpdateRequesting,
   isSuccess,
   isUpdateSuccess,
   isError,
-  errors,
-  touched,
-  setFieldValue,
   data,
   isAddForm,
   reloadToggle,
   setReloadToggle,
   Id,
-  single,
-  singleData,
   resetAdd,
   resetUpdate,
-  allTypes,
-  categories
 }) => {
   const token = localStorage.getItem('token');
+
+  const [form, setform] = useState({ title: '', image: '', description: '', url: '' })
+  const [uploading, setUploading] = useState(false)
+  const [image, setImage] = useState('')
+
   useEffect(() => {
-    if (isSuccess) {
-      swal('New advertise added!', '', 'success');
-      handleFormVisibilty();
-      resetAdd();
-      setReloadToggle(!reloadToggle);
-    }
     if (isError) {
       swal(data && data.data && data.data.message, '', 'warning');
       // handleFormVisibilty();
       resetAdd();
       // setReloadToggle(!reloadToggle);
-    }
-    if (isUpdateSuccess) {
-      swal('Adertise updated!', '', 'success');
-      handleFormVisibilty();
-      resetUpdate();
-      setReloadToggle(!reloadToggle);
     }
   }, [
     isSuccess,
@@ -80,16 +58,61 @@ const Form = ({
 
   useEffect(() => {
     if (!isAddForm) {
-      single(Id, token);
-      // swal('New user added!', '', 'success');
+      ApiClient.get('/advertisement/' + Id).then(res => {
+        if (res.data.success) {
+          setform(res.data.data)
+          setImage(res.data.data.image)
+        }
+      })
     }
-  }, [Id, isAddForm, single, token]);
+  }, [Id, isAddForm, token]);
 
-  const getImage = value => {
-    setFieldValue('image', value);
-  };
 
-  // console.log('values', values);
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log("form", form);
+    let method = 'post'
+    let url='/advertisement'
+    let payload = { title: form.title, image: image, description: form.description, url: form.url }
+    if (!isAddForm) {
+      method = 'put'
+      payload.id = Id
+      url='/advertisement/'+Id
+    }
+    ApiClient.allApi(url, payload, method).then(res => {
+      if (res.data.success) {
+        let message='Adertise added!'
+        if(!isAddForm) message='Adertise updated!'
+        swal(message, '', 'success');
+        handleFormVisibilty();
+        resetUpdate();
+        setReloadToggle(!reloadToggle);
+      }else{
+        swal(res.data.message, '', 'Warning');
+      }
+    })
+  }
+
+  const uploadImage = (e) => {
+    setform({ ...form, baseImg: e.target.value })
+    let files = e.target.files
+    let file = files.item(0)
+    setUploading(true)
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      ApiClient.postFormData('/upload', reader.result, 'blogs').then(res => {
+        console.log("uploadImage", res)
+        if (res.success) {
+          let image = res.data.imagePath
+          setImage(image)
+        }
+        setUploading(false)
+      })
+    };
+
+
+  }
 
   return (
     <div className="">
@@ -111,32 +134,31 @@ const Form = ({
             <h4>{isAddForm ? 'Add' : 'Edit'} Advertise</h4>
           </div>
           <div className="card-body">
-            <ImageUpload
-              getImage={getImage}
-              type="advertise"
-              value={values.image}
-            />
+
             <div className="row">
+              <div className="form-group col-md-12 mb-3">
+                <label>Image</label>
+                <div>
+                  <label className='btn btn-primary'>
+                    <input type="file" className='d-none' onChange={uploadImage} />
+                    Upload Image
+                  </label>
+                </div>
+
+                {image ? <img src={API_SLUG + image} width="100" /> : <></>}
+
+              </div>
+
               <div className="form-group col-md-12 mb-3">
                 <label>Title</label>
                 <input
                   type="text"
                   name="title"
                   className="form-control"
-                  // value="john"
-
-                  value={values.title}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
+                  value={form.title}
+                  onChange={e => setform({ ...form, title: e.target.value })}
+                  required
                 />
-                {errors.title && touched.title && (
-                  <div
-                    className="invalid-feedback"
-                    style={{ display: 'block' }}
-                  >
-                    {errors.title}
-                  </div>
-                )}
               </div>
 
               <div className="form-group col-md-12 mb-3">
@@ -145,20 +167,11 @@ const Form = ({
                   type="text"
                   name="description"
                   className="form-control"
-                  // value="john"
-
-                  value={values.description}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
+                  value={form.description}
+                  onChange={e => setform({ ...form, description: e.target.value })}
+                  required
                 />
-                {errors.description && touched.description && (
-                  <div
-                    className="invalid-feedback"
-                    style={{ display: 'block' }}
-                  >
-                    {errors.description}
-                  </div>
-                )}
+
               </div>
 
               <div className="form-group col-md-12 mb-3">
@@ -167,23 +180,12 @@ const Form = ({
                   type="text"
                   name="url"
                   className="form-control"
-                  // value="john"
-
-                  value={values.url}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
+                  value={form.url}
+                  onChange={e => setform({ ...form, url: e.target.value })}
                 />
-                {errors.url && touched.url && (
-                  <div
-                    className="invalid-feedback"
-                    style={{ display: 'block' }}
-                  >
-                    {errors.url}
-                  </div>
-                )}
               </div>
-              
-              
+
+
             </div>
           </div>
           <div className="card-footer d-flex justify-content-between">
@@ -196,11 +198,10 @@ const Form = ({
             </button>
             <button
               type="submit"
-              className={`btn btn-primary   ${
-                isRequesting || isUpdateRequesting
+              className={`btn btn-primary   ${isRequesting || isUpdateRequesting
                   ? 'btn-progress disabled'
                   : ''
-              }`}
+                }`}
             >
               Save Changes
             </button>
@@ -226,8 +227,8 @@ const CatgeoryFormFormik = withFormik({
   validationSchema: yupObject().shape({
     title: yupString().required(),
     image: yupString().required(),
-    description:yupString().required(),
-    url:yupString().required()
+    description: yupString().required(),
+    url: yupString().required()
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // const { router } = props;
@@ -237,19 +238,19 @@ const CatgeoryFormFormik = withFormik({
       props.Add(
         {
           title: values.title,
-          image:values.image,
+          image: values.image,
           description: values.description,
-          url:values.url         
+          url: values.url
         },
         token
       );
     } else {
       props.Update(
         {
-          itle: values.title,
-          image:values.image,
+          title: values.title,
+          image: values.image,
           description: values.description,
-          url:values.url  
+          url: values.url
         },
         props.Id,
         token

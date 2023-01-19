@@ -58,10 +58,10 @@ const Form = ({
 
   useEffect(() => {
     if (!isAddForm) {
-      ApiClient.get('/advertisement/' + Id).then(res => {
+      ApiClient.get('/advertisement/'+Id).then(res => {
         if (res.data.success) {
-          setform(res.data.data)
-          setImage(res.data.data.image)
+          setform(res.data?.data)
+          setImage(res?.data?.data?.image)
         }
       })
     }
@@ -77,7 +77,7 @@ const Form = ({
     if (!isAddForm) {
       method = 'put'
       payload.id = Id
-      url='/advertisement/'+Id
+      url='/advertisement'
     }
     ApiClient.allApi(url, payload, method).then(res => {
       if (res.data.success) {
@@ -155,7 +155,7 @@ const Form = ({
                   type="text"
                   name="title"
                   className="form-control"
-                  value={form.title}
+                  value={form?.title}
                   onChange={e => setform({ ...form, title: e.target.value })}
                   required
                 />
@@ -167,7 +167,7 @@ const Form = ({
                   type="text"
                   name="description"
                   className="form-control"
-                  value={form.description}
+                  value={form?.description}
                   onChange={e => setform({ ...form, description: e.target.value })}
                   required
                 />
@@ -180,7 +180,7 @@ const Form = ({
                   type="text"
                   name="url"
                   className="form-control"
-                  value={form.url}
+                  value={form?.url}
                   onChange={e => setform({ ...form, url: e.target.value })}
                 />
               </div>

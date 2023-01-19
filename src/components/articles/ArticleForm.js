@@ -316,9 +316,12 @@ const ArticleForm = ({
                       </div>
                     )}
                   </div>
-                  <TagInput getInput={getInput} tags={values.tags} />
                 </>
               )}
+                 {
+                   form.isCustom? <></>:<TagInput getInput={getInput} tags={values.tags} />
+                 }
+
             </div>
           </div>
 

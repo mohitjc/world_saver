@@ -146,7 +146,7 @@ class ApiClient {
     /*************** Form-Data Method ***********/
     static postFormData(url, file, type = '') {
         url = baseUrl + url
-        config.headers['Content-Type'] = 'multipart/form-data';
+        config.headers['Content-Type'] = 'application/json' ;
         return new Promise(function (fulfill, reject) {
             var body = new FormData();
             body.append('data', file);

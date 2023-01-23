@@ -169,7 +169,6 @@ const Form = ({
                   className="form-control"
                   value={form?.description}
                   onChange={e => setform({ ...form, description: e.target.value })}
-                  required
                 />
 
               </div>

@@ -157,7 +157,6 @@ const Form = ({
                   className="form-control"
                   value={form?.title}
                   onChange={e => setform({ ...form, title: e.target.value })}
-                  required
                 />
               </div>
 
@@ -169,6 +168,7 @@ const Form = ({
                   className="form-control"
                   value={form?.description}
                   onChange={e => setform({ ...form, description: e.target.value })}
+                  required
                 />
 
               </div>

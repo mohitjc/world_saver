@@ -154,8 +154,8 @@ const ArticleForm = ({
     }
     ApiClient.allApi(url, payload, method).then((res) => {
       if (res.data.success) {
-        let message = "Adertise added!";
-        if (!isAddForm) message = "Adertise updated!";
+        let message = "Article added!";
+        if (!isAddForm) message = "Article updated!";
         swal(message, "", "success");
         handleFormVisibilty();
         resetUpdateBlog();

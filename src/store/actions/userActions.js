@@ -195,7 +195,7 @@ export function singleUser(id, token) {
 }
 
 export function deleteUser(id, token) {
-  console.log("ankul");
+  // console.log("ankul");
   return (dispatch) => {
     dispatch(getRequest(DELETE_SINGLE_USER.DELETE_SINGLE_USER_REQUEST));
     const getUrl = `${USER_API}/delete?id=${id}`;

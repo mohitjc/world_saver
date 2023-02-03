@@ -120,7 +120,7 @@ const Form = ({
             <ImageUpload
               getImage={getImage}
               type="youtube"
-              value={values.image}
+              value={values.image?values.image:''}
             />
             <div className="row">
               <div className="form-group col-md-12 mb-3">
@@ -246,7 +246,7 @@ const CatgeoryFormFormik = withFormik({
 
   validationSchema: yupObject().shape({
     title: yupString().required(),
-    image: yupString().required(),
+    image: yupString(),
     description:yupString().required(),
     url:yupString().required()
   }),
@@ -258,7 +258,7 @@ const CatgeoryFormFormik = withFormik({
       props.Add(
         {
           title: values.title,
-          image:values.image,
+          image:values.image?values.image:'',
           description: values.description,
           url:values.url,
           tags: values.tags  
@@ -269,7 +269,7 @@ const CatgeoryFormFormik = withFormik({
       props.Update(
         {
           itle: values.title,
-          image:values.image,
+          image:values.image?values.image:'',
           description: values.description,
           url:values.url,
           tags: values.tags

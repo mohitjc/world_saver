@@ -25,6 +25,9 @@ const handleError = (status) => {
         // ToastsStore.error('Error');
     } else if (status == 404) {
         // ToastsStore.error('Server Error');
+    }else if(status === 401){
+        localStorage.clear()
+        window.location.assign('/')
     }
 }
 
@@ -97,11 +100,14 @@ class ApiClient {
                     load(false)
                 })
                 .catch(function (error) {
+                    console.log(error,'checking error here')
                     // loader(false)
                     load(false)
                     if (error && error.response) {
                         let eres = error.response;
-                        handleError(eres.status)
+                        console.log(eres,'here is my error check....')
+                        handleError(eres.error.code)
+                        
                         fulfill(eres);
                     } else {
                         // ToastsStore.error('Network Error');
@@ -138,18 +144,19 @@ class ApiClient {
     }
 
     /*************** Form-Data Method ***********/
-    static postFormData(url, params, token = '') {
+    static postFormData(url, file, type = '') {
         url = baseUrl + url
-        config.headers['Content-Type'] = 'multipart/form-data';
+        config.headers['Content-Type'] = 'application/json' ;
         return new Promise(function (fulfill, reject) {
             var body = new FormData();
-            body.append('file', params);
+            body.append('data', file);
+            body.append('type', type);
 
             axios
                 .post(url, body, config)
 
                 .then(function (response) {
-                    fulfill({ status: response.status, data: response });
+                    fulfill(response.data);
                     load(false)
                 })
                 .catch(function (error) {
@@ -167,6 +174,15 @@ class ApiClient {
         });
     }
 
+    static allApi(url, params, method = 'get') {
+        if (method === 'get') {
+            return this.get(url, params)
+        } else if (method === 'put') {
+            return this.put(url, params)
+        } if (method === 'post') {
+            return this.post(url, params)
+        }
+    }
 }
 
 export default ApiClient;

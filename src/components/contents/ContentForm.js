@@ -26,14 +26,22 @@ const ContentForm = ({
   }, [blogId, isAddForm, singleContent]);
 
   
+
+  const handleValofEditor=(e)=>{
+    e.preventDefault()
+    setSubmitted(true)
+    setForm({...form,description:e.target.getContent()})
+    // console.log(e.target.getContent(),'here we have new val')
+  }
   const handleSubmit=(e)=>{
     e.preventDefault()
     setSubmitted(true)
-    let description=''
-    if (editorRef.current) {
-      description=editorRef.current.getContent()
-    }
-    setForm({...form,description:description})
+    // let description=''
+    // if (editorRef.current) {
+    //   description=editorRef.current.getContent()
+    // }
+  
+    // setForm({...form,description:description})
 
 
     if(!form.description || !form.title || !form.meta_description || !form.meta_title){
@@ -134,6 +142,7 @@ const ContentForm = ({
                     <Editor
                     onInit={(evt, editor) => editorRef.current = editor}
                     initialValue={form.description}
+                    onChange={e=>handleValofEditor(e)}
                     init={{
                       height: 500,
                       menubar: false,

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { connect, useSelector } from 'react-redux';
-import { withFormik } from 'formik';
+import React, { useEffect, useState } from "react";
+import { connect, useSelector } from "react-redux";
+import { withFormik } from "formik";
 import Yup, {
   object as yupObject,
   string as yupString,
-  number as yupNumber
-} from 'yup';
-import swal from 'sweetalert';
+  number as yupNumber,
+} from "yup";
+import swal from "sweetalert";
 import {
   blogAdd,
   blogsUpdate,
@@ -14,16 +14,17 @@ import {
   resetAddBlog,
   resetUpdateBlog,
   uploadImage,
-  blogs
-} from '../../store/actions/blogsActions';
-import ImageUpload from '../global/ImageUpload';
-import TagInput from '../global/TagInput';
+  blogs,
+} from "../../store/actions/blogsActions";
+import ImageUpload from "../global/ImageUpload";
+import TagInput from "../global/TagInput";
+import ApiClient from "../apiClient";
 
 const ArticleForm = ({
   handleFormVisibilty,
-  handleSubmit,
+  // handleSubmit,
   handleBlur,
-  handleChange,
+  // handleChange,
   values,
   isRequesting,
   isUpdateRequesting,
@@ -41,27 +42,34 @@ const ArticleForm = ({
   resetAddBlog,
   resetUpdateBlog,
   setFieldValue,
-  categories
+  // categories
 }) => {
-  const token = localStorage.getItem('token');
-  const [showUrlInput, setShowUrlInput] = useState(false);
-
-  console.log("categories",categories)
+  const token = localStorage.getItem("token");
+  const [catglist, setcategories] = useState();
+  const [myimage, setimage] = useState();
+  const [form, setform] = useState({
+    title: "",
+    category: "",
+    isCustom: false,
+    blogUrl: "",
+    tags: "",
+    image: "",
+  });
   useEffect(() => {
     if (isSuccess) {
-      swal('New blog added!', '', 'success');
+      swal("New blog added!", "", "success");
       handleFormVisibilty();
       resetAddBlog();
       setReloadToggle(!reloadToggle);
     }
     if (isError) {
-      swal(data && data.data && data.data.message, '', 'warning');
+      swal(data && data.data && data.data.message, "", "warning");
       // handleFormVisibilty();
       resetUpdateBlog();
       // setReloadToggle(!reloadToggle);
     }
     if (isUpdateSuccess) {
-      swal('Blog updated!', '', 'success');
+      swal("Blog updated!", "", "success");
       handleFormVisibilty();
       resetUpdateBlog();
       setReloadToggle(!reloadToggle);
@@ -75,22 +83,87 @@ const ArticleForm = ({
     setReloadToggle,
     reloadToggle,
     data,
-    resetUpdateBlog
+    resetUpdateBlog,
   ]);
 
   useEffect(() => {
+    // console.log(catglist,'here u are ')
+  }, [catglist]);
+
+  useEffect(() => {
+    if (!isAddForm) {
+      ApiClient.get("/blogs/" + blogId).then((res) => {
+        if (res.data.success) {
+          console.log(res.data.data, "here we have data peoples");
+          setform({
+            ...form,
+            ...res.data.data,
+            category: res.data.data?.category?.id,
+          });
+          setimage(res.data.data.image);
+        }
+      });
+    }
+  }, [blogId, isAddForm, token]);
+
+  useEffect(() => {
+    getCategorylist();
     if (!isAddForm) {
       singleBlog(blogId, token);
+
       // swal('New user added!', '', 'success');
     }
+    // console.log(categories,'checking categories here')
   }, [blogId, isAddForm, singleBlog, token]);
 
-  const getInput = values => {
-    setFieldValue('tags', values);
+  const getCategorylist = () => {
+    ApiClient.get("/allcategory", { page: 1, count: 100 }).then((res) => {
+      if (res.data.success) {
+        setcategories(res.data.data);
+        console.log(res.data, "am here for u");
+      }
+    });
   };
 
-  const getImage = value => {
-    setFieldValue('image', value);
+  const getInput = (values) => {
+    setform({ ...form, tags: values });
+  };
+
+  const getImage = (value) => {
+    setimage(value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("form", form);
+    let method = "post";
+    let url = "/blogs";
+    let payload = {
+      blogUrl: form.blogUrl,
+      category: form.category,
+      description: form.description,
+      image: myimage,
+      isCustom: form.isCustom,
+      tags: form.tags,
+      title: form.title,
+    };
+    if (!isAddForm) {
+      method = "put";
+      payload.id = blogId;
+      url = "/blogs/" + blogId;
+    }
+    ApiClient.allApi(url, payload, method).then((res) => {
+      if (res.data.success) {
+        let message = "Article added!";
+        if (!isAddForm) message = "Article updated!";
+        swal(message, "", "success");
+        handleFormVisibilty();
+        resetUpdateBlog();
+        setReloadToggle(!reloadToggle);
+      } else {
+        swal(res.data.message, "", "Warning");
+      }
+    });
   };
 
   return (
@@ -109,85 +182,90 @@ const ArticleForm = ({
           noValidate=""
         >
           <div className="card-header">
-            <h4>{isAddForm ? 'Add' : 'Edit'} article</h4>
+            <h4>{isAddForm ? "Add" : "Edit"} article</h4>
           </div>
 
           <div className="card-body">
-            {!showUrlInput && (
-              <ImageUpload
-                getImage={getImage}
-                type="blogs"
-                value={values.image}
-              />
+            {!form.isCustom && (
+              <ImageUpload getImage={getImage} type="blogs" value={myimage} />
             )}
             <div className="row">
-              {!showUrlInput && (
-                <div className="form-group col-md-4 col-12 mt-3">
-                  <label>Title</label>
-                  <input
-                    type="text"
-                    name="title"
-                    className="form-control"
-                    // value="john"
-
-                    value={values.title}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                  />
-                  {errors.title && touched.title && (
-                    <div
-                      className="invalid-feedback"
-                      style={{ display: 'block' }}
-                    >
-                      {errors.title}
-                    </div>
-                  )}
-                </div>
-              )}
+              <div className="form-group col-md-4 col-12 mt-3">
+                <label>Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  className="form-control"
+                  // value="john"
+                  required
+                  value={form.title}
+                  onBlur={handleBlur}
+                  onChange={(e) => setform({ ...form, title: e.target.value })}
+                />
+                {errors.title && touched.title && (
+                  <div
+                    className="invalid-feedback"
+                    style={{ display: "block" }}
+                  >
+                    {errors.title}
+                  </div>
+                )}
+              </div>
+              {/* )} */}
 
               <div className="form-group col-md-4 col-12 mt-3">
-                <label>Category</label>{values.category.id}
+                <label>Category</label>
+                {/* {form.category} */}
                 <select
                   name="category"
                   className="form-control"
-                  value={values.category}
+                  value={form.category}
+                  required
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setform({ ...form, category: e.target.value })
+                  }
+                  
                 >
                   <option>Select category</option>
-                  {categories && categories.data &&
-                    categories.data.category.map(item =>{
-                      if(item.category=='blog'){
-                        return  <option value={item.id} key={item.id}>
-                        {item.name}
-                      </option>
+                  {catglist &&
+                    catglist.category.map((item) => {
+                      if (item.category == "blog") {
+                        return (
+                          <option value={item.id} key={item.id}>
+                            {item.name}
+                          </option>
+                        );
                       }
                     })}
                 </select>
-                {errors.category && touched.category && (
+                {form.category===''  && (
                   <div
                     className="invalid-feedback"
-                    style={{ display: 'block' }}
+                    style={{ display: "block" }}
                   >
                     Please select category
                   </div>
                 )}
               </div>
 
-              {!showUrlInput && (
+              {!form.isCustom && (
                 <div className="form-group col-md-8 col-12">
                   <label>Description</label>
                   <textarea
                     className="form-control"
                     name="description"
-                    value={values.description}
+                    value={form.description}
+                    required
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      setform({ ...form, description: e.target.value })
+                    }
                   />
                   {errors.description && touched.description && (
                     <div
                       className="invalid-feedback"
-                      style={{ display: 'block' }}
+                      style={{ display: "block" }}
                     >
                       Please select description
                     </div>
@@ -200,15 +278,20 @@ const ArticleForm = ({
                     type="checkbox"
                     className="custom-control-input"
                     id="customCheck1"
-                    checked={showUrlInput}
-                    onChange={() => setShowUrlInput(!showUrlInput)}
+                    name="isCustom"
+                    checked={form.isCustom}
+                    value={form.isCustom}
+                    onBlur={handleBlur}
+                    onChange={(e) =>
+                      setform({ ...form, isCustom: e.target.checked })
+                    }
                   />
                   <label className="custom-control-label" for="customCheck1">
                     Or add your custom link for the blog
                   </label>
                 </div>
               </div>
-              {showUrlInput && (
+              {form.isCustom && (
                 <>
                   <div className="form-group col-md-12 col-12">
                     <label>URL</label>
@@ -217,23 +300,28 @@ const ArticleForm = ({
                       name="blogUrl"
                       className="form-control"
                       // value="john"
-
-                      value={values.blogUrl}
+                      required
+                      value={form.blogUrl}
                       onBlur={handleBlur}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setform({ ...form, blogUrl: e.target.value })
+                      }
                     />
                     {errors.blogUrl && touched.blogUrl && (
                       <div
                         className="invalid-feedback"
-                        style={{ display: 'block' }}
+                        style={{ display: "block" }}
                       >
                         {errors.blogUrl}
                       </div>
                     )}
                   </div>
-                  <TagInput getInput={getInput} tags={values.tags} />
                 </>
               )}
+                 
+                  <TagInput getInput={getInput} tags={values.tags} />
+                 
+
             </div>
           </div>
 
@@ -247,10 +335,11 @@ const ArticleForm = ({
             </button>
             <button
               type="submit"
+              disabled={form.category===''}
               className={`btn btn-primary   ${
                 isRequesting || isUpdateRequesting
-                  ? 'btn-progress disabled'
-                  : ''
+                  ? "btn-progress disabled"
+                  : ""
               }`}
             >
               Save Changes
@@ -267,12 +356,13 @@ const ArticleFormFormik = withFormik({
   mapPropsToValues: ({ singleBlogData }) => {
     // console.log('singleBlogData', singleBlogData);
     return {
-      title: (singleBlogData && singleBlogData.title) || '',
-      description: (singleBlogData && singleBlogData.description) || '',
-      image: (singleBlogData && singleBlogData.image) || '',
-      category: (singleBlogData && singleBlogData.category?.id) || '',
-      blogUrl: (singleBlogData && singleBlogData.blogUrl) || '',
-      tags: (singleBlogData && singleBlogData.tags) || []
+      title: (singleBlogData && singleBlogData.title) || "",
+      description: (singleBlogData && singleBlogData.description) || "",
+      image: (singleBlogData && singleBlogData.image) || "",
+      category: (singleBlogData && singleBlogData.category?.id) || "",
+      blogUrl: (singleBlogData && singleBlogData.blogUrl) || "",
+      tags: (singleBlogData && singleBlogData.tags) || [],
+      isCustom: (singleBlogData && singleBlogData.isCustom) || false,
     };
   },
 
@@ -281,12 +371,12 @@ const ArticleFormFormik = withFormik({
     //   .max(50)
     //   .required(),
     // description: yupString().required(),
-    category: yupString().required()
+    category: yupString().required(),
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // console.log('values', values);
     // const { router } = props;
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (props.isAddForm) {
       props.blogAdd(
         {
@@ -296,7 +386,8 @@ const ArticleFormFormik = withFormik({
           tags: values.tags,
           blogUrl: values.blogUrl,
           // slug: values.slug,
-          description: values.description
+          isCustom: values.isCustom,
+          description: values.description,
         },
         token
       );
@@ -308,8 +399,9 @@ const ArticleFormFormik = withFormik({
           image: values.image,
           tags: values.tags,
           blogUrl: values.blogUrl,
+          isCustom: values.isCustom,
           // slug: values.slug,
-          description: values.description
+          description: values.description,
         },
         props.blogId,
         token
@@ -319,17 +411,17 @@ const ArticleFormFormik = withFormik({
     resetForm();
   },
 
-  displayName: 'BlogForm' // helps with React DevTools
+  displayName: "BlogForm", // helps with React DevTools
 })(ArticleForm);
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.blogAdd.data,
   isRequesting: state.blogAdd.isRequesting,
   isUpdateRequesting: state.blogUpdate.isRequesting,
   isSuccess: state.blogAdd.isSuccess,
   isUpdateSuccess: state.blogUpdate.isSuccess,
   isError: state.blogAdd.isError,
-  singleBlogData: state.blog.data
+  singleBlogData: state.blog.data,
 });
 
 export default connect(mapStateToProps, {
@@ -339,5 +431,5 @@ export default connect(mapStateToProps, {
   resetAddBlog,
   resetUpdateBlog,
   uploadImage,
-  blogs
+  blogs,
 })(ArticleFormFormik);

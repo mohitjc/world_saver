@@ -7,9 +7,7 @@ import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import { isEmpty } from 'lodash';
 import swal from 'sweetalert';
-
 import { SyncLoader } from 'react-spinners';
-
 import { uploadImage } from '../../store/actions/blogsActions';
 import { API_SLUG } from '../../store/constants';
 
@@ -29,7 +27,7 @@ const ImageUpload = ({
 
   useEffect(() => {
     if (isSuccess) {
-      getImage(data && data.data.imagePath);
+      getImage(data && data.data.fullPath);
     }
 
     // if (isSuccess && placeholder === 'Add banner') {
@@ -145,7 +143,7 @@ const ImageUpload = ({
                     <div style={thumb}>
                       <div style={thumbInner}>
                         <img
-                          src={`${API_SLUG}/${value}`}
+                          src={`${API_SLUG}/images/${type}/${value}`}
                           style={img}
                         />
                       </div>

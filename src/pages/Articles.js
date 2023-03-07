@@ -125,27 +125,27 @@ const Articles = ({
   ]);
 
 
-  useEffect(() => {
-    getCategory()
-  });
+  // useEffect(() => {
+  //   getCategory()
+  // });
 
-  const getCategory=()=>{
-    let prm={
-      page:1,
-      count:10,
-      type: 'I',
-      sortBy: 'createdAt desc'
-    }
-    // categories(
-    //   token,
-    //   'I',
-    //   1,
-    //   1000,
-    //   '',
-    //   '',
-    //   ''
-    // );
-  }
+  // const getCategory=()=>{
+  //   let prm={
+  //     page:1,
+  //     count:10,
+  //     type: 'I',
+  //     sortBy: 'createdAt desc'
+  //   }
+  //   // categories(
+  //   //   token,
+  //   //   'I',
+  //   //   1,
+  //   //   1000,
+  //   //   '',
+  //   //   '',
+  //   //   ''
+  //   // );
+  // }
 
   const [formVisibility, setFormVisibilty] = useState(false);
   const [isAddForm, setIsAddForm] = useState(false);

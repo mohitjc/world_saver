@@ -74,7 +74,7 @@ const ContentListing = ({
                   <tr>
                     <th>#</th>
                     <th
-                      onClick={() => toggleSort('title')}
+                      // onClick={() => toggleSort('title')}
                       style={{ cursor: 'pointer' }}
                     >
                       Name

@@ -1,5 +1,3 @@
-/* eslint jsx-a11y/no-redundant-roles: 0 */
-
 import React, { useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';

@@ -195,9 +195,10 @@ export function singleUser(id, token) {
 }
 
 export function deleteUser(id, token) {
+  // console.log("ankul");
   return (dispatch) => {
     dispatch(getRequest(DELETE_SINGLE_USER.DELETE_SINGLE_USER_REQUEST));
-    const getUrl = `${USER_API}/${id}`;
+    const getUrl = `${USER_API}/delete?id=${id}`;
     const config = { headers: { Authorization: `Bearer ${token}` } };
     AXIOS_INSTANCE.delete(getUrl, config)
       .then(checkHttpStatus)

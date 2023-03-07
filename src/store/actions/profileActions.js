@@ -26,7 +26,11 @@ export default function getProfile(token) {
         }
       })
       .catch(error => {
-        // console.log('error', error.response);
+        console.log('error', error.response.data.error.code);
+        if(error.response.data.error.code===401){
+          localStorage.clear()
+          window.location.assign('/')
+        }
         const errorMessage =
           error.response &&
           error.response.data &&

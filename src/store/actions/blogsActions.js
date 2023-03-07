@@ -208,7 +208,6 @@ export function deleteBlog(obj, token) {
 // image upload for blogs
 
 export function uploadImage(obj, token) {
-  console.log('uploadImageobj', obj);
   return dispatch => {
     dispatch(getRequest(BLOG_IMAGE_UPLOAD.BLOG_IMAGE_UPLOAD_REQUEST));
     const getUrl = `${IMAGE_UPLOAD_API}`;
@@ -217,7 +216,7 @@ export function uploadImage(obj, token) {
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(data => {
-        // console.log('uploadImage', data);
+         console.log('uploadImage', data);
         if (data.success) {
           dispatch(
             getSuccess(BLOG_IMAGE_UPLOAD.BLOG_IMAGE_UPLOAD_SUCCESS, data)

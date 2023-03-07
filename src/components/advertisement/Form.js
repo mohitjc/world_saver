@@ -104,7 +104,7 @@ const Form = ({
       ApiClient.postFormData('/upload', reader.result, 'blogs').then(res => {
         console.log("uploadImage", res)
         if (res.success) {
-          let image = res.data.imagePath
+          let image = res.data.fullPath
           setImage(image)
         }
         setUploading(false)
@@ -145,7 +145,7 @@ const Form = ({
                   </label>
                 </div>
 
-                {image ? <img src={API_SLUG + image} width="100" /> : <></>}
+                {image ? <img src={`${API_SLUG} + "/images/category/"${image}`} width="100" /> : <></>}
 
               </div>
 

@@ -89,7 +89,7 @@ const PostItems = ({
             <tr>
                 <td>{index + page * count - (count - 1)}</td>
                 <td>
-                    <Link to={`/post/${item && item.id}`}>
+                    <Link to={`/replypost/${item && item.id}`}>
                         {item && item.user_post ? item.user_post : '___'}
                     </Link>
                 </td>

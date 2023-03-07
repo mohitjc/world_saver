@@ -5,6 +5,7 @@ import Pagination from '../global/Pagination';
 import EmptyState from '../global/EmptyState';
 import Loading from '../global/Loader';
 import PostItems from './PostItems';
+import { Link } from 'react-router-dom';
 
 const Posts = ({
   handleFormVisibilty,
@@ -90,9 +91,7 @@ console.log('users', total);
                     </th>
                     <th>Action</th>
                   </tr>
-                  {users &&
-                    users.map((item, index) => (
-                        console.log(index, 'itms'),
+                  {users && users.map((item, index) => (
                       <PostItems
                         key={item.id}
                         item={item}

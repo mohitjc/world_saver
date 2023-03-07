@@ -22,6 +22,7 @@ import ProjectView from './ProjectView';
 import Advertise from './Advertise';
 import youtube from './youtube';
 import PostData from '../components/Posts/PostData';
+import ReplyPost from '../components/Posts/ReplyPost';
 
 const App = ({ authenticated }) => {
   // console.log('base', authenticated);
@@ -70,6 +71,7 @@ const App = ({ authenticated }) => {
         />
         <Route path="/change-password" component={ForgotPassword} />
         <Route path="/change-password" component={ChangePassword} />
+        <Route path="/replypost" component={ReplyPost} />
       </Switch>
     </BrowserRouter>
   );

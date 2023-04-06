@@ -6,12 +6,11 @@ import Layout from "../../global/Layout";
 import MainSidebar from "../../global/MainSidebar";
 import SectionHeader from "../../global/SectionHeader";
 import Loading from "../../global/Loader";
-import swal from 'sweetalert'
+import swal from "sweetalert";
 export default function NewEventList() {
   const [data, setdata] = useState([]);
   const [loading, setloading] = useState(true);
-  useEffect(() => { 
-  
+  useEffect(() => {
     getdata();
   }, []);
 
@@ -19,7 +18,6 @@ export default function NewEventList() {
   const getdata = () => {
     ApiClient.get(`/events?page=1&count=10&search=`)
       .then((res) => {
-        console.log(res.data.data)
         setdata(res.data.data);
         setloading(false);
       })
@@ -38,10 +36,26 @@ export default function NewEventList() {
     history.push(`/events/${id}`);
   };
   const HandleDelete = (id) => {
-    ApiClient.delete(`/delete/event?id=${id}`)
-      .then((res) => {getdata(); 
-      swal("Delete Message!", "Deleted Success");})
-      .catch((err) =>swal("Error Message","Some Error Occurred While Deleting the Event."));
+    swal({
+      title: "Are you sure?",
+      text: "You will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: [
+        'No, cancel it!',
+        'Yes, I am sure!'
+      ],
+      dangerMode: true,
+    }).then(function(isConfirm) {
+      if (isConfirm) { 
+          ApiClient.delete(`/delete/event?id=${id}`)
+          .then((res) => getdata())
+          .catch((err) => alert("Error"));
+ 
+      } else {
+        swal("Cancelled", "Your  Data is safe :)", "error");
+      }
+    })
+
   };
 
   return (

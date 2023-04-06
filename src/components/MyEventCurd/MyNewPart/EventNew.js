@@ -22,9 +22,7 @@ export default function EventNew() {
     endDate: yup
       .date()
       .min(yup.ref("startDate"), "Please Enter a Valid Event EndDate")
-      .required("Please Enter the Event EndDate"),
-      featuredImage:yup.mixed().required('Please Upload a Featured Image'),
-      images:yup.mixed().required("Please upload the Image")
+      .required("Please Enter the Event EndDate"), 
   
    
   });
@@ -133,10 +131,11 @@ export default function EventNew() {
                   ApiClient.post("/event", data)
                     .then((res) => {
                       history.push("/list/event");
-                      swal("Add Message!","Added Successfully!!");
+                      swal("Add Message","Event Added Successfully!!");
                       resetForm();
                     })
                     .catch((err) => {
+                      swal("Error Message","Some Error While Adding Event. So Try After Some Time!!")
                       console.log(err);
                     });
                 } else {
@@ -154,10 +153,10 @@ export default function EventNew() {
                   };
                   ApiClient.put(`/event`, newdata)
                     .then((res) => {
-                      swal("Update Message","Updated Successfully!!");
                       history.push("/list/event");
+                      swal("Update Message","Event Updated Successfully!!");
                     })
-                    .catch((err) => {console.log(err); swal("Error","Some Error Occurred While Updating")});
+                    .catch((err) => swal("Error Message","Some Error While Updating Event. So Try After Some Time!!"));
                 }
               }}
             >
@@ -206,7 +205,7 @@ export default function EventNew() {
                     </b>
                   ) : null}
                   <label htmlFor="url" className="form-label">
-                    URL
+                    URl
                   </label>
                   <input
                     type="url"
@@ -315,7 +314,7 @@ export default function EventNew() {
                     ) : (
                      ""
                     )}
-                    {errors.images&&touched.images?<b><p className="text-danger">{errors.images}</p></b>:""}
+                    {errors.images&&touched.images?<p className="text-danger">{errors.images}</p>:null}
                   </div>
 
                   <div className="card-footer d-flex my-2 justify-content-between">

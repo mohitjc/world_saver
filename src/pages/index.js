@@ -22,6 +22,10 @@ import ProjectView from './ProjectView';
 import Advertise from './Advertise';
 import youtube from './youtube';
 import PostData from '../components/Posts/PostData';
+import Event from '../components/MyEventCurd/Event';
+import EvenForm from '../components/MyEventCurd/EvenForm';
+import EventNew from '../components/MyEventCurd/MyNewPart/EventNew';
+import EventList from '../components/MyEventCurd/MyNewPart/EventList';
 
 const App = ({ authenticated }) => {
   // console.log('base', authenticated);
@@ -29,14 +33,19 @@ const App = ({ authenticated }) => {
     <BrowserRouter>
       <Switch>
         <PublicRoute restricted={true} component={Login} path="/" exact />
+
         <PrivateRoute component={Home} path="/dashboard" exact />
+       
         <PrivateRoute component={Users} path="/users" exact />
         <PrivateRoute component={youtube} path="/youtube-management" exact />
         <PrivateRoute component={Advertise} path="/advertise" exact />
         <PrivateRoute component={PostData} path="/posts" exact />
         <PrivateRoute component={Category} path="/categories" exact />
         <PrivateRoute component={Articles} path="/articles" exact />
+        <PrivateRoute component={Event} path="/event" exact />
         <PrivateRoute component={Contents} path="/contents" exact />
+        <PrivateRoute component={EventNew} path="/events/:id?" exact />
+        <PrivateRoute component={EventList} path="/list/event" exact />
         <PrivateRoute component={Project} path="/projects" exact />
         <PrivateRoute
           component={ProjectView}
@@ -68,8 +77,9 @@ const App = ({ authenticated }) => {
           path="/forgot-password"
           exact
         />
+       
         <Route path="/change-password" component={ForgotPassword} />
-        <Route path="/change-password" component={ChangePassword} />
+        <Route path="/change-password" component={ChangePassword} /> 
       </Switch>
     </BrowserRouter>
   );

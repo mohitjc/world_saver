@@ -191,9 +191,7 @@ const CatgeoryFormFormik = withFormik({
     // password: yupString().min(8)
   }),
    handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
-    console.log(values,"ddjfdjkfj");
-
-
+  
   // const handleSubmit = (values, { props }) => {
 
     // const { router } = props;

@@ -178,7 +178,7 @@ export default function EventNew() {
                   />
                   {errors.title && touched.title ? (
                     <b>
-                      <p className="text-danger text-center">{errors.title}</p>
+                      <p className="text-danger ">{errors.title}</p>
                     </b>
                   ) : null}
                   <label htmlFor="description" className="form-label">
@@ -195,7 +195,7 @@ export default function EventNew() {
                   />
                   {errors.description && touched.description ? (
                     <b>
-                      <p className="text-danger text-center">
+                      <p className="text-danger ">
                         {errors.description}
                       </p>
                     </b>
@@ -214,7 +214,7 @@ export default function EventNew() {
                   />
                   {errors.url && touched.url ? (
                     <b>
-                      <p className="text-danger text-center">{errors.url}</p>
+                      <p className="text-danger ">{errors.url}</p>
                     </b>
                   ) : null}
                   <label htmlFor="startDate" className="form-label">
@@ -230,7 +230,7 @@ export default function EventNew() {
                   />
                   {errors.startDate && touched.startDate ? (
                     <b>
-                      <p className="text-danger text-center">
+                      <p className="text-danger ">
                         {errors.startDate}
                       </p>
                     </b>
@@ -249,7 +249,7 @@ export default function EventNew() {
                   />
                   {errors.endDate && touched.endDate ? (
                     <b>
-                      <p className="text-danger text-center">
+                      <p className="text-danger ">
                         {errors.endDate}
                       </p>
                     </b>
@@ -320,10 +320,7 @@ export default function EventNew() {
  {/* Disabling the button when yup is giving the error or errors are setted  */}
                     <button
                       className="btn btn-primary"
-                      disabled={
-                        Array.isArray(errors) ||
-                        Object.values(errors).toString() != ""
-                      }
+                 
                       type="submit"
                     >
                       Submit

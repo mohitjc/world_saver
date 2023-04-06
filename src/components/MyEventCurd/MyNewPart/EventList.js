@@ -1,0 +1,110 @@
+import React, { useEffect, useState } from "react";
+import { NavLink, useHistory, useParams } from "react-router-dom";
+import { Toast } from "reactstrap";
+import ApiClient from "../../apiClient";
+import Layout from "../../global/Layout";
+import MainSidebar from "../../global/MainSidebar";
+import SectionHeader from "../../global/SectionHeader";
+import Loading from "../../global/Loader";
+export default function NewEventList() {
+  const [data, setdata] = useState([]);
+  const [loading, setloading] = useState(true);
+  useEffect(() => {
+    getdata();
+  }, []);
+
+
+  const getdata = () => {
+    ApiClient.get(`/events?page=1&count=10&search=`)
+      .then((res) => {
+        console.log(res.data.data)
+        setdata(res.data.data);
+        setloading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setloading(false);
+      });
+  };
+
+  const [editdata, seteditdata] = useState([]);
+  const history = useHistory();
+  const { id } = useParams();
+
+  // For Updating the Event by the api
+  const HandleEidt = (id) => {
+    history.push(`/events/${id}`);
+  };
+  const HandleDelete = (id) => {
+    ApiClient.delete(`/delete/event?id=${id}`)
+      .then((res) => getdata())
+      .catch((err) => alert("Error"));
+  };
+
+  return (
+    <div>
+      <Layout title="Events">
+        <MainSidebar />
+        <div className="main-content">
+          <section className="section">
+            <SectionHeader title="Events List" />
+
+            <button className="btn btn-primary my-2">
+              <NavLink to="/events">
+                <span className="text-white">Add Event</span>
+              </NavLink>
+            </button>
+
+            {loading == true ? (
+              <Loading />
+            ) : (
+              <table className="table ">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Url</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((item, index, array) => (
+                    <tr>
+                      <td>{index + 1}</td>
+                      <td>{item.title}</td>
+                      <td>{item.description}</td>
+                      <td>{item.url}</td>
+                      <td>{item.startDate}</td>
+                      <td>{item.endDate}</td>
+                      <td>
+                        <button
+                          type="button"
+                          className="btn btn-icon btn-primary mr-2 my-2"
+                          onClick={() => HandleEidt(item.id)}
+                          disabled={!!(item && item.type === "custom")}
+                        >
+                          <i className="far fa-edit" />
+                        </button>
+                        <button
+                          onClick={() => HandleDelete(item.id)}
+                          type="button"
+                          className="btn btn-icon btn-danger "
+                          disabled={!!(item && item.type === "custom")}
+                        >
+                          <i className="fas fa-trash" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </section>
+        </div>
+      </Layout>
+    </div>
+  );
+}

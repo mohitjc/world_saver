@@ -6,10 +6,12 @@ import Layout from "../../global/Layout";
 import MainSidebar from "../../global/MainSidebar";
 import SectionHeader from "../../global/SectionHeader";
 import Loading from "../../global/Loader";
+import swal from 'sweetalert'
 export default function NewEventList() {
   const [data, setdata] = useState([]);
   const [loading, setloading] = useState(true);
-  useEffect(() => {
+  useEffect(() => { 
+  
     getdata();
   }, []);
 
@@ -37,8 +39,9 @@ export default function NewEventList() {
   };
   const HandleDelete = (id) => {
     ApiClient.delete(`/delete/event?id=${id}`)
-      .then((res) => getdata())
-      .catch((err) => alert("Error"));
+      .then((res) => {getdata(); 
+      swal("Delete Message!", "Deleted Success");})
+      .catch((err) =>swal("Error Message","Some Error Occurred While Deleting the Event."));
   };
 
   return (

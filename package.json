@@ -25,10 +25,12 @@
     "react-scripts": "3.4.1",
     "react-select": "^3.1.0",
     "react-spinners": "^0.8.3",
+    "react-toastify": "^9.1.2",
     "reactstrap": "^8.4.1",
     "redux": "^4.0.5",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.3.0",
+    "swal": "^0.1.0",
     "sweetalert": "^2.1.2",
     "yup": "^0.28.4"
   },

@@ -8,6 +8,7 @@ import Layout from "../../global/Layout";
 import MainSidebar from "../../global/MainSidebar";
 import SectionHeader from "../../global/SectionHeader";
 import * as yup from "yup";
+import swal from "sweetalert";
 
 export default function EventNew() {
   let schema = yup.object().shape({
@@ -22,6 +23,10 @@ export default function EventNew() {
       .date()
       .min(yup.ref("startDate"), "Please Enter a Valid Event EndDate")
       .required("Please Enter the Event EndDate"),
+      featuredImage:yup.mixed().required('Please Upload a Featured Image'),
+      images:yup.mixed().required("Please upload the Image")
+  
+   
   });
 
   const [Uploading1, setUploading1] = useState("");
@@ -128,6 +133,7 @@ export default function EventNew() {
                   ApiClient.post("/event", data)
                     .then((res) => {
                       history.push("/list/event");
+                      swal("Add Message!","Added Successfully!!");
                       resetForm();
                     })
                     .catch((err) => {
@@ -140,17 +146,18 @@ export default function EventNew() {
                     title: values.title,
                     description: values.description,
                     url: values.url,
-                    images: Images,
-                    featuredImage: Image,
+                    images:Images==""?eventdata.images:Images,
+                    featuredImage: Image==""?eventdata.featuredImage:Image,
                     startDate: values.startDate,
                     endDate: values.endDate,
                     id: id,
                   };
                   ApiClient.put(`/event`, newdata)
                     .then((res) => {
+                      swal("Update Message","Updated Successfully!!");
                       history.push("/list/event");
                     })
-                    .catch((err) => console.log(err));
+                    .catch((err) => {console.log(err); swal("Error","Some Error Occurred While Updating")});
                 }
               }}
             >
@@ -169,8 +176,7 @@ export default function EventNew() {
                   </label>
                   <input
                     type="text"
-                    name="title"
-                    placeholder="Enter your Event Title here..."
+                    name="title" 
                     className="form-control"
                     value={values.title}
                     onChange={handleChange}
@@ -186,8 +192,7 @@ export default function EventNew() {
                   </label>
                   <input
                     type="text"
-                    className="form-control"
-                    placeholder="Enter your Event Description here..."
+                    className="form-control" 
                     onChange={handleChange}
                     name="description"
                     value={values.description}
@@ -201,12 +206,11 @@ export default function EventNew() {
                     </b>
                   ) : null}
                   <label htmlFor="url" className="form-label">
-                    URl
+                    URL
                   </label>
                   <input
                     type="url"
-                    className="form-control"
-                    placeholder="Enter your URL here...."
+                    className="form-control" 
                     onChange={handleChange}
                     name="url"
                     value={values.url}
@@ -276,8 +280,15 @@ export default function EventNew() {
                         src={`https://endpoint.crowdsavetheworld.com/${!Image?eventdata.featuredImage:Image}`}
                       />
                     ) : (
-                      "Please Upload a Featured Image"
+                      ""
                     )}
+                         {errors.featuredImage && touched.featuredImage ? (
+                    <b>
+                      <p className="text-danger ">
+                        {errors.featuredImage}
+                      </p>
+                    </b>
+                  ) : null}
                   </div>
 
                   <div className="my-4">
@@ -302,8 +313,9 @@ export default function EventNew() {
                         alt="No Image"
                       />
                     ) : (
-                      "Please Upload a Image"
+                     ""
                     )}
+                    {errors.images&&touched.images?<b><p className="text-danger">{errors.images}</p></b>:""}
                   </div>
 
                   <div className="card-footer d-flex my-2 justify-content-between">

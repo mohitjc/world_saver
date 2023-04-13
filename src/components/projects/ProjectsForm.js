@@ -52,7 +52,7 @@ const ProjectForm = ({
 }) => {
   const token = localStorage.getItem('token');
 
-
+console.log(values,"hello");
   useEffect(() => {
     if (isSuccess) {
       swal('New Project added!', '', 'success');

@@ -7,9 +7,7 @@ import Yup, {
   number as yupNumber
 } from 'yup';
 import swal from 'sweetalert';
-import { withRouter } from 'react-router-dom';
 
-import { isNull } from 'lodash';
 import {
   skillAdd,
   skillUpdate,

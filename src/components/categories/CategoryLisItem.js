@@ -46,6 +46,7 @@ const CategoryListItem = ({
 
   return (
     <tr>
+     
       <td>{index + page * count - (count - 1)}</td>
       <td>{item && item.name ? item.name : '___'}</td>
     

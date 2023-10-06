@@ -9,8 +9,11 @@ import MainSidebar from "../../global/MainSidebar";
 import SectionHeader from "../../global/SectionHeader";
 import * as yup from "yup";
 import swal from "sweetalert";
+import { eventModel } from "../../../models/category.model";
+import PlacesAutocomplete from "react-places-autocomplete";
+import LocationSearchInput from "../../global/LocationSearchInput";
 
-export default function EventNew() {
+export default function EventNew({item}) {
   let schema = yup.object().shape({
     title: yup.string().required("Please Enter  your Title"),
     description: yup.string().required("Please Enter your Event Description "),
@@ -22,23 +25,29 @@ export default function EventNew() {
     endDate: yup
       .date()
       .min(yup.ref("startDate"), "Please Enter a Valid Event EndDate")
-      .required("Please Enter the Event EndDate"), 
-  
-   
+      .required("Please Enter the Event EndDate"),
   });
-
+const[form,setform]=useState({...eventModel})
   const [Uploading1, setUploading1] = useState("");
-  const [Uploading2,setUploading2]=useState("");
+  const [Uploading2, setUploading2] = useState("");
   const [Image, setImage] = useState("");
   const [Images, setImages] = useState("");
+  const [loc, setloc] = useState([]);
+  const [country, setcountry] = useState('');
+  const[city,setcity]=useState('')
+  const[state,setstate]=useState('')
+  const[zip,setzip]=useState('')
+  const[lat,setlat]=useState('')
+  const[lng,setlng]=useState('')
+  const[event,setevent]=useState([])
+  const[tags,settag]=useState([])
+  const[journey,setjourney]=useState([])
 
   const [eventdata, seteventdata] = useState([]);
 
   // For navigating the user to the another route
   const history = useHistory();
   const { id } = useParams();
-
-
 
   // For Getting the Event List
   const getdatabyid = () => {
@@ -48,6 +57,18 @@ export default function EventNew() {
       })
       .catch((err) => console.log(err));
   };
+
+useEffect(()=>{
+ApiClient.get('/allcategory?types=event&search=&page=1&count=10&sortBy=createdAt%20desc').then((res)=>{
+  console.log(res?.data?.data.category)
+  setevent(res?.data?.data.category)
+
+})
+ApiClient.get('/project?type=I&search=&page=1&count=10&sortBy=createdAt%20desc').then((res)=>{
+  console.log(res.data.result)
+  setjourney(res.data.result)
+})
+},[])
 
   const uploadImage = (e) => {
     let files = e.target.files;
@@ -59,13 +80,92 @@ export default function EventNew() {
       ApiClient.postFormData("/upload", reader.result, "blogs").then((res) => {
         console.log("uploadImage", res);
         if (res.success) {
+         
           let image = res.data.imagePath;
           setImage(image);
+          setform({...form,featuredImage:image})
         }
         setUploading1(false);
       });
     };
   };
+
+  const getAddressDetails = (value) => {
+    console.log("address", value);
+
+    // setFieldValue('address', value.address);
+    setlat(value.latLng.lat);
+    setlng(value.latLng.lng);
+    setloc(value);
+    console.log(value)
+    let res = value?.result?.address_components;
+    const getCountry = () => {
+      let value = "";
+
+      res.map((item) => {
+        if (item.types[0] == "country") {
+          value = item.long_name;
+        }
+      });
+
+      return value;
+    };
+    const getCity = ()=>{
+      let value = '';
+      res.map((item)=>{
+        if(item.types[0] == "locality"){
+          value = item.long_name
+        }
+      })
+		  return value;
+		}
+    const getState = ()=>{
+      let value = '';
+      res.map((item)=>{
+        if(item.types[0] == "administrative_area_level_1"){
+          value = item.long_name
+        }
+      })
+		  return value;
+		}
+    const getPostalCode = () => {
+			let value = '';
+			res.map((item) => {
+				if (item.types[0] == "postal_code") {
+					value = item.long_name
+				}
+			})
+			return value;
+		}
+
+    getPostalCode()
+getState()
+getCity()
+    getCountry();
+    setcountry(getCountry())
+    setcity(getCity())
+    setstate(getState())
+    setzip(getPostalCode())
+   
+
+
+    setform({...form,location:{ type : "Point",
+    coordinates : [ 
+      value.latLng.lat,
+      value.latLng.lng
+       
+    ]},country:getCountry(),city:getCity(),state:getState(),lat:value.latLng.lat,lng:value.latLng.lng,address:value.address,zipcode:getPostalCode()})
+   console.log(form)
+
+ 
+  };
+  
+const SubmitData = ()=>{
+  ApiClient.put('/event',form).then((res)=>{
+    console.log(res)
+  })
+}
+
 
   // For Uploading Image
   const uploadImages = (e) => {
@@ -78,18 +178,49 @@ export default function EventNew() {
       ApiClient.postFormData("/upload", reader.result, "blogs").then((res) => {
         console.log("uploadImage", res);
         if (res.success) {
-          let image = res.data.imagePath; 
+          
+          let image = res.data.imagePath;
           setImages(image);
+         
+         setform({...form,images:[image]})
+        
         }
         setUploading2(false);
       });
     };
   };
 
+  const AddTag = () => {
+    tags.push({
+      name: '',
+    });
+    settag([...tags]);
+  };
+
+  const removetag = (index) => {
+    settag([...tags.filter((itm, i) => i != index)]);
+    setform({
+      ...form,
+      tags: [...tags.filter((itm, i) => i != index)],
+    });
+    console.log(tags);
+  };
+
+  const updatetag = (index, key, value) => {
+    let arr = tags;
+    arr[index][key] = value;
+    settag([...arr]);
+    setform({ ...form, tags: [...arr] });
+    console.log(form);
+  };
+
+
+  
   useEffect(() => {
     if (id) {
       getdatabyid();
     }
+    console.log(form)
   }, []);
 
   return (
@@ -111,13 +242,28 @@ export default function EventNew() {
                 title: id ? eventdata.title : "",
                 description: !eventdata ? "" : eventdata.description,
                 url: !eventdata ? "" : eventdata.url,
+                catagory: !eventdata ? "" : eventdata.catagory,
+                journey: !eventdata ? "" : eventdata.journey,
+                groupName: !eventdata ? "" : eventdata.groupName,
+                address: !eventdata ? "" : eventdata.address,
+                city: !eventdata ? "" : eventdata.city,
+                state: !eventdata ? "" : eventdata.state,
+                zipcode: !eventdata ? "" : eventdata.zipcode,
+                country: !eventdata ? "" : eventdata.country,
+                lat: !eventdata ? "" : eventdata.lat,
+                long: !eventdata ? "" : eventdata.long,
+                cost: !eventdata ? "" : eventdata.cost,
+                sizeOfVenue: !eventdata ? "" : eventdata.sizeOfVenue,
+                location: !eventdata ? {} : eventdata.location,
+                eventType: !eventdata ? {} : eventdata.eventType,
+                tags: !eventdata ? [] : eventdata.tags,
                 images: !eventdata ? [] : eventdata.images,
                 featuredImage: !eventdata ? "" : eventdata.featuredImage,
                 startDate: !eventdata ? "" : eventdata.startDate,
                 endDate: !eventdata ? "" : eventdata.endDate,
               }}
               onSubmit={async (values, { resetForm }) => {
-                //  If user isAdding something then this function called 
+                //  If user isAdding something then this function called
                 const data = {
                   title: values.title,
                   description: values.description,
@@ -131,22 +277,25 @@ export default function EventNew() {
                   ApiClient.post("/event", data)
                     .then((res) => {
                       history.push("/list/event");
-                      swal("Add Message","Event Added Successfully!!");
+                      swal("Add Message", "Event Added Successfully!!");
                       resetForm();
                     })
                     .catch((err) => {
-                      swal("Error Message","Some Error While Adding Event. So Try After Some Time!!")
+                      swal(
+                        "Error Message",
+                        "Some Error While Adding Event. So Try After Some Time!!"
+                      );
                       console.log(err);
                     });
                 } else {
-
-                  // When User is Updating Something then this function is called 
+                  // When User is Updating Something then this function is called
                   const newdata = {
                     title: values.title,
                     description: values.description,
                     url: values.url,
-                    images:Images==""?eventdata.images:Images,
-                    featuredImage: Image==""?eventdata.featuredImage:Image,
+                    images: Images == "" ? eventdata.images : Images,
+                    featuredImage:
+                      Image == "" ? eventdata.featuredImage : Image,
                     startDate: values.startDate,
                     endDate: values.endDate,
                     id: id,
@@ -154,9 +303,14 @@ export default function EventNew() {
                   ApiClient.put(`/event`, newdata)
                     .then((res) => {
                       history.push("/list/event");
-                      swal("Update Message","Event Updated Successfully!!");
+                      swal("Update Message", "Event Updated Successfully!!");
                     })
-                    .catch((err) => swal("Error Message","Some Error While Updating Event. So Try After Some Time!!"));
+                    .catch((err) =>
+                      swal(
+                        "Error Message",
+                        "Some Error While Updating Event. So Try After Some Time!!"
+                      )
+                    );
                 }
               }}
             >
@@ -169,75 +323,144 @@ export default function EventNew() {
                 touched,
                 handleReset,
               }) => (
-                <form onSubmit={handleSubmit}>
-                  <label htmlFor="title" className="form-label">
+                <form onSubmit={(e)=>{
+                  e.preventDefault()
+                  ApiClient.post('/event',form).then((res)=>{
+                    console.log(res)
+                    if(res.success){
+                      history.push('/event')
+                    }
+                  })
+                }}>
+                  <label
+                    htmlFor="title"
+                    className="form-label"
+                    onClick={() => {
+                      getAddressDetails();
+                      
+                      console.log(loc);
+                    }}
+                  >
                     Title
                   </label>
                   <input
                     type="text"
-                    name="title" 
+                    name="title"
                     className="form-control"
-                    value={values.title}
-                    onChange={handleChange}
+                    value={form.title}
+                    onChange={(e)=>{
+                      setform({...form,title:e.target.value})
+                      console.log(e.target.value)
+                    }}
                     onBlur={handleBlur}
                   />
-                  {errors.title && touched.title ? (
-                    <b>
-                      <p className="text-danger ">{errors.title}</p>
-                    </b>
-                  ) : null}
+                 
                   <label htmlFor="description" className="form-label">
                     Description
                   </label>
+
                   <input
                     type="text"
-                    className="form-control" 
-                    onChange={handleChange}
+                    className="form-control"
+                    required
+                    onChange={(e)=>{
+                      setform({...form,description:e.target.value})
+                      console.log(e.target.value)
+                    }}
                     name="description"
-                    value={values.description}
+                    value={form.description}
                     onBlur={handleBlur}
                   />
-                  {errors.description && touched.description ? (
-                    <b>
-                      <p className="text-danger ">
-                        {errors.description}
-                      </p>
-                    </b>
-                  ) : null}
+                  <label className="form-label">Catagory</label>
+                  <select onChange={(e)=>{
+                      console.log(form)
+                      setform({...form,category_id:e.target.value})
+                    }}
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option  selected>Select Catagory</option>
+                    {
+                      event?.map((itm,key)=>{
+                        return(
+
+                   
+                    <option  value={itm.id}>{itm.name}</option>
+                    
+                    )
+                  })
+                }
+                  </select>
+                  <label className="form-label">Event Type</label>
+                  <select onChange={(e)=>{
+                      console.log(form)
+                      setform({...form,eventType:e.target.value})
+                    }}
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option  selected>Select Event Type</option>
+                  
+
+                   
+                    <option  value='free'>Free</option>
+                    <option  value='paid'>Paid</option>
+                  </select>
+                  <label className="form-label">Journey</label>
+                  <select onChange={(e)=>{
+                      console.log(form)
+                      console.log(e.target.value)
+                      setform({...form,journey:e.target.value})
+                    }}
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option  selected>Select Journey</option>
+                    {
+                      journey?.map((itm,key)=>{
+                        return(
+
+                   
+                    <option  value={itm.id}>{itm.name}</option>
+                    
+                    )
+                  })
+                }
+                  </select>
+
+                
                   <label htmlFor="url" className="form-label">
                     URl
                   </label>
                   <input
                     type="url"
-                    className="form-control" 
-                    onChange={handleChange}
+                    required
+                    className="form-control"
+                    onChange={(e)=>{
+                      setform({...form,url:e.target.value})
+                      console.log(e.target.value)
+                    }}
                     name="url"
-                    value={values.url}
+                    value={form.url}
                     onBlur={handleBlur}
                   />
-                  {errors.url && touched.url ? (
-                    <b>
-                      <p className="text-danger ">{errors.url}</p>
-                    </b>
-                  ) : null}
+                 
                   <label htmlFor="startDate" className="form-label">
                     Startdate
                   </label>
                   <input
                     type="date"
                     className="form-control"
-                    onChange={handleChange}
+                    required
+                    onChange={(e)=>{
+                      setform({...form,startDate:e.target.value})
+                      console.log(e.target.value)
+                    }}
                     name="startDate"
-                    value={values.startDate}
+                    value={form.startDate}
                     onBlur={handleBlur}
                   />
-                  {errors.startDate && touched.startDate ? (
-                    <b>
-                      <p className="text-danger ">
-                        {errors.startDate}
-                      </p>
-                    </b>
-                  ) : null}
+                 
 
                   <label htmlFor="endDate" className="form-label">
                     EndDate
@@ -245,18 +468,201 @@ export default function EventNew() {
                   <input
                     type="date"
                     className="form-control"
-                    onChange={handleChange}
+                    required
+                    onChange={(e)=>{
+                      setform({...form,endDate:e.target.value})
+                      console.log(e.target.value)
+                    }}
                     name="endDate"
-                    value={values.endDate}
+                    value={form.endDate}
                     onBlur={handleBlur}
                   />
-                  {errors.endDate && touched.endDate ? (
-                    <b>
-                      <p className="text-danger ">
-                        {errors.endDate}
-                      </p>
-                    </b>
-                  ) : null}
+                  
+                  <label htmlFor="groupName" className="form-label">
+                    Group Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    required
+                    onChange={(e)=>{
+                      setform({...form,groupName:e.target.value})
+                    
+                    }}
+                    name="groupName"
+                    value={form.groupName}
+                    onBlur={handleBlur}
+                  />
+
+                  <label htmlFor="address" className="form-label">
+                    Address
+                  </label>
+                  <LocationSearchInput
+               
+                  getAddressDetails={getAddressDetails}
+                  value={values.address}
+                />
+                  <label htmlFor="city" className="form-label">
+                    city
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="form-control"
+                    onChange={(e)=>{
+                      setform({...form,city:e.target.value})
+                    
+                      console.log(form)
+                    }}
+                    name="city"
+                    value={city}
+                    onBlur={handleBlur}
+                  />
+                  <label htmlFor="state" className="form-label">
+                    state
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="form-control"
+                    onChange={(e)=>{
+                      setform({...form,state:e.target.value})
+                      
+                    }}
+                    name="state"
+                    value={state}
+                    onBlur={handleBlur}
+                  />
+                  <label htmlFor="zipcode" className="form-label">
+                    zipcode
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="form-control"
+                    onChange={(e)=>{
+                      setform({...form,zipcode:e.target.value})
+                      
+                    }}
+                    name="zipcode"
+                    value={zip}
+                    onBlur={handleBlur}
+                  />
+                  <label htmlFor="country" className="form-label">
+                    country
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    required
+                    onChange={(e)=>{
+                      setform({...form,country:e.target.value})
+                      
+                    }}
+                    name="country"
+                    value={country}
+                    onBlur={handleBlur}
+                  />
+                  <label htmlFor="lat" className="form-label">
+                    latitude
+                  </label>
+                  <input
+                   required
+                    type="number"
+                    className="form-control"
+                    onChange={(e)=>{
+                      setform({...form,lat:e.target.value})
+                      
+                    }}
+                    name="lat"
+                    value={lat}
+                    onBlur={handleBlur}
+                  />
+                  <label htmlFor="long" className="form-label">
+                    longitude
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    className="form-control"
+                    onChange={(e)=>{
+                      setform({...form,lng:e.target.value})
+                      
+                    }}
+                    name="long"
+                    value={lng}
+                    onBlur={handleBlur}
+                  />
+                  <label htmlFor="cost" className="form-label">
+                    cost
+                  </label>
+                  <input
+                    type="cost"
+                    required
+                    className="form-control"
+                    onChange={(e)=>{
+                      setform({...form,cost:e.target.value})
+                      
+                    }}
+                    name="long"
+                    value={form.cost}
+                    onBlur={handleBlur}
+                  />
+                  <label htmlFor="sizeOfVenue" className="form-label">
+                    sizeOfVenue
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    className="form-control"
+                    onChange={(e)=>{
+                      setform({...form,sizeOfVenue:e.target.value})
+                      
+                    }}
+                    name="sizeOfVenue"
+                    value={form.sizeOfVenue}
+                    onBlur={handleBlur}
+                  />
+                    {tags.map((itm, i) => {
+                  return (
+                    <div className="row mb-3 border mt-4 p-2 mx-0 w-[120%] rounded">
+                      <h6>Tag</h6>
+                      <div className="col-md-6 mb-3">
+                        <label>Name Of Tag</label>
+                        <input
+                          type="text"
+                          value={itm.name}
+                          className="form-control"
+                          onChange={(e) => {
+                            updatetag(i, 'name', e.target.value);
+                            console.log(tags);
+
+                            console.log(form);
+                          }}
+                          required
+                        />
+                      </div>
+                     
+
+                      <div className="col-md-12 mb-3 text-right">
+                        <i
+                          className="fa fa-trash"
+                          onClick={(e) => removetag(i)}
+                        ></i>
+                      </div>
+                    </div>
+                  );
+                })}
+                <div>
+                  <button
+                    type="button"
+                    className="btn btn-light light_white mt-3"
+                    onClick={AddTag}
+                  >
+                    <i class="fa fa-plus mr-2" aria-hidden="true"></i>Add
+                    Tag
+                  </button>
+                </div>  
 
                   {/* Here we start uploading file function and setting there some conditions\ */}
                   <div className="my-4">
@@ -264,30 +670,29 @@ export default function EventNew() {
                       <input
                         type="file"
                         className="d-none"
+                        required
                         disabled={Uploading1}
                         accept="image/*"
                         name="featuredImage"
                         multiple="multiple"
-                        onChange={uploadImage} 
+                        onChange={uploadImage}
                       />
-                    {!Uploading1?" Upload FeaturedImage Image":"Uploading..."}
+                      {!Uploading1
+                        ? " Upload FeaturedImage Image"
+                        : "Uploading..."}
                     </label>
-                    {Image||id? (
+                    {Image || id ? (
                       <img
                         width={100}
                         height={100}
-                        src={`https://endpoint.crowdsavetheworld.com/${!Image?eventdata.featuredImage:Image}`}
+                        src={`https://endpoint.crowdsavetheworld.com/${
+                          !Image ? eventdata.featuredImage : Image
+                        }`}
                       />
                     ) : (
                       ""
                     )}
-                         {errors.featuredImage && touched.featuredImage ? (
-                    <b>
-                      <p className="text-danger ">
-                        {errors.featuredImage}
-                      </p>
-                    </b>
-                  ) : null}
+                   
                   </div>
 
                   <div className="my-4">
@@ -295,26 +700,29 @@ export default function EventNew() {
                       <input
                         type="file"
                         className="d-none"
+                        required
                         accept="image/*"
-                        disabled={Uploading2} 
+                        disabled={Uploading2}
                         name="featuredImage"
                         multiple="multiple"
                         onChange={uploadImages}
                       />
-                    {!Uploading2?"  Upload Image":"Uploading..."}
+                      {!Uploading2 ? "  Upload Image" : "Uploading..."}
                     </label>
 
-                    {Images||id ? (
+                    {Images || id ? (
                       <img
                         width={100}
                         height={100}
-                        src={`https://endpoint.crowdsavetheworld.com/${!Images?eventdata.images:Images}`}
+                        src={`https://endpoint.crowdsavetheworld.com/${
+                          !Images ? eventdata.images : Images
+                        }`}
                         alt="No Image"
                       />
                     ) : (
-                     ""
+                      ""
                     )}
-                    {errors.images&&touched.images?<p className="text-danger">{errors.images}</p>:null}
+                  
                   </div>
 
                   <div className="card-footer d-flex my-2 justify-content-between">
@@ -328,11 +736,8 @@ export default function EventNew() {
                       </NavLink>
                     </button>
 
- {/* Disabling the button when yup is giving the error or errors are setted  */}
-                    <button
-                      className="btn btn-primary"
-                 
-                      type="submit"
+                    {/* Disabling the button when yup is giving the error or errors are setted  */}
+                    <button className="btn btn-primary" type="submit" 
                     >
                       Submit
                     </button>

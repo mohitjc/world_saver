@@ -108,6 +108,7 @@ console.log(values,"hello");
     setFieldValue('address', value.address);
     setFieldValue('lat', value.latLng.lat);
     setFieldValue('lng', value.latLng.lng);
+    console.log("=================>",value)
   };
 
   const getCategory=()=>{

@@ -12,7 +12,8 @@ import swal from "sweetalert";
 import { eventModel } from "../../../models/category.model";
 import PlacesAutocomplete from "react-places-autocomplete";
 import LocationSearchInput from "../../global/LocationSearchInput";
-import { forEach } from "lodash";
+
+import moment from 'moment'
 
 export default function EventNew({ item }) {
   let schema = yup.object().shape({
@@ -324,18 +325,11 @@ export default function EventNew({ item }) {
                   onSubmit={(e) => {
                     e.preventDefault();
 
-                    if (id) {
-                      ApiClient.put('/event',form).then((res)=>{
-                        console.log(res)
-                        if(res.success){
-                          history.push('/list/event')
-                        }
-                      })
-                    }
+                   
                     if (!id) {
                       ApiClient.post("/event", form).then((res) => {
-                        if (res.success) {
-                          history.push("/event");
+                        if (res.data.success) {
+                          history.push("/list/event");
                         }
                       });
                     }
@@ -448,10 +442,12 @@ export default function EventNew({ item }) {
                     required
                     
                     onChange={(e) => {
+                     
+                     
                       setform({ ...form, startDate: e.target.value });
                     }}
                     name="startDate"
-                    value={form.startDate}
+                    value={moment(form.startDate).utc().format('YYYY-MM-DD')}
                     // onBlur={handleBlur}
                   />
 
@@ -464,10 +460,12 @@ export default function EventNew({ item }) {
                     required
                     onChange={(e) => {
                       console.log(e.target.value)
+                      console.log(JSON.stringify(loc))
+                      console.log(form)
                       setform({ ...form, endDate: e.target.value });
                     }}
                     name="endDate"
-                    value= { form.endDate }
+                    value= { moment(form.endDate).utc().format('YYYY-MM-DD')}
                     // onBlur={handleBlur}
                   />
 
@@ -583,11 +581,12 @@ export default function EventNew({ item }) {
                         cost
                       </label>
                       <input
-                        type="cost"
+                        type="number"
                         required
                         className="form-control"
                         onChange={(e) => {
-                          setform({ ...form, cost: e.target.value });
+                          setform({ ...form, cost: e.target.value<0? '0':e.target.value });
+                          console.log(form)
                         }}
                         name="long"
                         value={form.cost}
@@ -602,12 +601,16 @@ export default function EventNew({ item }) {
                     type="number"
                     required
                     className="form-control"
+              
                     onChange={(e) => {
-                      setform({ ...form, sizeOfVenue: e.target.value });
+               
+
+                      setform({ ...form, sizeOfVenue: e.target.value<0? '0':e.target.value });
+                   
                     }}
                     name="sizeOfVenue"
                     value={form.sizeOfVenue}
-                    onBlur={handleBlur}
+                    
                   />
                   {tags.map((itm, i) => {
                     return (
@@ -703,19 +706,28 @@ export default function EventNew({ item }) {
                   </div>
 
                   <div className="card-footer d-flex my-2 justify-content-between">
-                    <button type="button" className="btn btn-danger">
+                    <button type="button" className="btn btn-danger" onClick={()=>{
+                      history.push('/list/event')
+                    }}>
                       {/* On clcking cancel the user will redirected to the List/event Page */}
-                      <NavLink
-                        to="/list/event"
-                        style={{ textDecoration: "none" }}
-                      >
+                      
                         <span className="text-white">Cnacel</span>
-                      </NavLink>
+                      
                     </button>
 
                     {/* Disabling the button when yup is giving the error or errors are setted  */}
                     {id ? (
-                      <button className="btn btn-primary" type="submit">
+                      <button className="btn btn-primary" onClick={()=>{
+                        if (id) {
+                          ApiClient.put('/event',form).then((res)=>{
+                            console.log(res)
+                            if(res.data.success){
+                              console.log(res)
+                              history.push('/list/event')
+                            }
+                          })
+                        }
+                      }}>
                         Update
                       </button>
                     ) : (

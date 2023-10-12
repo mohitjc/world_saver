@@ -28,7 +28,8 @@ export const eventModel = {
     sizeOfVenue:'',
     location:{},
     eventType:'',
-    tags:[]
+    tags:[],
+   
 
 }
 const categoryModel={list,find}

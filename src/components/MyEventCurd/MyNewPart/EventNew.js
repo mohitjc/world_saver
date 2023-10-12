@@ -35,12 +35,14 @@ const[form,setform]=useState({...eventModel})
   const [loc, setloc] = useState([]);
   const [country, setcountry] = useState('');
   const[city,setcity]=useState('')
+
   const[state,setstate]=useState('')
   const[zip,setzip]=useState('')
   const[lat,setlat]=useState('')
   const[lng,setlng]=useState('')
   const[event,setevent]=useState([])
   const[tags,settag]=useState([])
+  const[paid,setpaid]=useState(false)
   const[journey,setjourney]=useState([])
 
   const [eventdata, seteventdata] = useState([]);
@@ -70,6 +72,8 @@ ApiClient.get('/project?type=I&search=&page=1&count=10&sortBy=createdAt%20desc')
 })
 },[])
 
+
+  
   const uploadImage = (e) => {
     let files = e.target.files;
     let file = files.item(0);
@@ -395,6 +399,11 @@ const SubmitData = ()=>{
                   <select onChange={(e)=>{
                       console.log(form)
                       setform({...form,eventType:e.target.value})
+                      if(e.target.value=='free'){
+                        setpaid(false)
+                      }else{
+                        setpaid(true)
+                      }
                     }}
                     class="form-select"
                     aria-label="Default select example"
@@ -409,9 +418,13 @@ const SubmitData = ()=>{
                   <label className="form-label">Journey</label>
                   <select onChange={(e)=>{
                       console.log(form)
-                      console.log(e.target.value)
+               
+                      
+              
+
                       setform({...form,journey:e.target.value})
-                    }}
+
+             }}
                     class="form-select"
                     aria-label="Default select example"
                   >
@@ -421,7 +434,7 @@ const SubmitData = ()=>{
                         return(
 
                    
-                    <option  value={itm.id}>{itm.name}</option>
+                    <option   value={itm.id} >{itm.name}</option>
                     
                     )
                   })
@@ -515,7 +528,7 @@ const SubmitData = ()=>{
                       console.log(form)
                     }}
                     name="city"
-                    value={city}
+                    value={city || form.city}
                     onBlur={handleBlur}
                   />
                   <label htmlFor="state" className="form-label">
@@ -530,14 +543,14 @@ const SubmitData = ()=>{
                       
                     }}
                     name="state"
-                    value={state}
+                    value={state || form.state}
                     onBlur={handleBlur}
                   />
                   <label htmlFor="zipcode" className="form-label">
                     zipcode
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     required
                     className="form-control"
                     onChange={(e)=>{
@@ -545,7 +558,7 @@ const SubmitData = ()=>{
                       
                     }}
                     name="zipcode"
-                    value={zip}
+                    value={zip || form.zipcode}
                     onBlur={handleBlur}
                   />
                   <label htmlFor="country" className="form-label">
@@ -560,7 +573,7 @@ const SubmitData = ()=>{
                       
                     }}
                     name="country"
-                    value={country}
+                    value={country || form.country}
                     onBlur={handleBlur}
                   />
                   <label htmlFor="lat" className="form-label">
@@ -575,7 +588,7 @@ const SubmitData = ()=>{
                       
                     }}
                     name="lat"
-                    value={lat}
+                    value={lat || form.lat}
                     onBlur={handleBlur}
                   />
                   <label htmlFor="long" className="form-label">
@@ -590,10 +603,11 @@ const SubmitData = ()=>{
                       
                     }}
                     name="long"
-                    value={lng}
+                    value={lng || form.lng}
                     onBlur={handleBlur}
                   />
-                  <label htmlFor="cost" className="form-label">
+                  {
+                    paid?<><label htmlFor="cost" className="form-label">
                     cost
                   </label>
                   <input
@@ -607,7 +621,8 @@ const SubmitData = ()=>{
                     name="long"
                     value={form.cost}
                     onBlur={handleBlur}
-                  />
+                  /></>:null
+                }
                   <label htmlFor="sizeOfVenue" className="form-label">
                     sizeOfVenue
                   </label>

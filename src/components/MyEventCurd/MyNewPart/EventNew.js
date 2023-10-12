@@ -196,6 +196,7 @@ export default function EventNew({ item }) {
   const AddTag = () => {
     tags.push({
       name: "",
+      roll:''
     });
     settag([...tags]);
   };
@@ -628,7 +629,18 @@ export default function EventNew({ item }) {
                             required
                           />
                         </div>
-
+                        <div className="col-md-6 mb-3">
+                          <label>Name Of roll</label>
+                          <input
+                            type="text"
+                            value={itm.roll}
+                            className="form-control"
+                            onChange={(e) => {
+                              updatetag(i, "roll", e.target.value);
+                            }}
+                            required
+                          />
+                        </div>
                         <div className="col-md-12 mb-3 text-right">
                           <i
                             className="fa fa-trash"

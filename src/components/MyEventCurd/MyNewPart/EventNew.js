@@ -12,8 +12,9 @@ import swal from "sweetalert";
 import { eventModel } from "../../../models/category.model";
 import PlacesAutocomplete from "react-places-autocomplete";
 import LocationSearchInput from "../../global/LocationSearchInput";
+import { forEach } from "lodash";
 
-export default function EventNew({item}) {
+export default function EventNew({ item }) {
   let schema = yup.object().shape({
     title: yup.string().required("Please Enter  your Title"),
     description: yup.string().required("Please Enter your Event Description "),
@@ -27,23 +28,24 @@ export default function EventNew({item}) {
       .min(yup.ref("startDate"), "Please Enter a Valid Event EndDate")
       .required("Please Enter the Event EndDate"),
   });
-const[form,setform]=useState({...eventModel})
+  const [form, setform] = useState({ ...eventModel });
   const [Uploading1, setUploading1] = useState("");
   const [Uploading2, setUploading2] = useState("");
   const [Image, setImage] = useState("");
   const [Images, setImages] = useState("");
   const [loc, setloc] = useState([]);
-  const [country, setcountry] = useState('');
-  const[city,setcity]=useState('')
+  const [country, setcountry] = useState("");
+  const [city, setcity] = useState("");
 
-  const[state,setstate]=useState('')
-  const[zip,setzip]=useState('')
-  const[lat,setlat]=useState('')
-  const[lng,setlng]=useState('')
-  const[event,setevent]=useState([])
-  const[tags,settag]=useState([])
-  const[paid,setpaid]=useState(false)
-  const[journey,setjourney]=useState([])
+  const [state, setstate] = useState("");
+  const [zip, setzip] = useState("");
+  const [lat, setlat] = useState("");
+  const [lng, setlng] = useState("");
+  const [event, setevent] = useState([]);
+  const [tags, settag] = useState([]);
+  const [paid, setpaid] = useState(false);
+  const [journey, setjourney] = useState([]);
+  const param = useParams();
 
   const [eventdata, seteventdata] = useState([]);
 
@@ -55,25 +57,26 @@ const[form,setform]=useState({...eventModel})
   const getdatabyid = () => {
     ApiClient.get(`/event?id=${id}`)
       .then((res) => {
-        seteventdata(res.data.data);
+        setform(res.data.data);
+        console.log(res.data.data);
+        console.log(form);
       })
       .catch((err) => console.log(err));
   };
 
-useEffect(()=>{
-ApiClient.get('/allcategory?types=event&search=&page=1&count=10&sortBy=createdAt%20desc').then((res)=>{
-  console.log(res?.data?.data.category)
-  setevent(res?.data?.data.category)
+  useEffect(() => {
+    ApiClient.get(
+      "/allcategory?types=event&search=&page=1&count=10&sortBy=createdAt%20desc"
+    ).then((res) => {
+      setevent(res?.data?.data.category);
+    });
+    ApiClient.get(
+      "/project?type=I&search=&page=1&count=10&sortBy=createdAt%20desc"
+    ).then((res) => {
+      setjourney(res.data.result);
+    });
+  }, []);
 
-})
-ApiClient.get('/project?type=I&search=&page=1&count=10&sortBy=createdAt%20desc').then((res)=>{
-  console.log(res.data.result)
-  setjourney(res.data.result)
-})
-},[])
-
-
-  
   const uploadImage = (e) => {
     let files = e.target.files;
     let file = files.item(0);
@@ -84,10 +87,9 @@ ApiClient.get('/project?type=I&search=&page=1&count=10&sortBy=createdAt%20desc')
       ApiClient.postFormData("/upload", reader.result, "blogs").then((res) => {
         console.log("uploadImage", res);
         if (res.success) {
-         
           let image = res.data.imagePath;
           setImage(image);
-          setform({...form,featuredImage:image})
+          setform({ ...form, featuredImage: image });
         }
         setUploading1(false);
       });
@@ -95,13 +97,11 @@ ApiClient.get('/project?type=I&search=&page=1&count=10&sortBy=createdAt%20desc')
   };
 
   const getAddressDetails = (value) => {
-    console.log("address", value);
-
     // setFieldValue('address', value.address);
     setlat(value.latLng.lat);
     setlng(value.latLng.lng);
     setloc(value);
-    console.log(value)
+
     let res = value?.result?.address_components;
     const getCountry = () => {
       let value = "";
@@ -114,62 +114,62 @@ ApiClient.get('/project?type=I&search=&page=1&count=10&sortBy=createdAt%20desc')
 
       return value;
     };
-    const getCity = ()=>{
-      let value = '';
-      res.map((item)=>{
-        if(item.types[0] == "locality"){
-          value = item.long_name
+    const getCity = () => {
+      let value = "";
+      res.map((item) => {
+        if (item.types[0] == "locality") {
+          value = item.long_name;
         }
-      })
-		  return value;
-		}
-    const getState = ()=>{
-      let value = '';
-      res.map((item)=>{
-        if(item.types[0] == "administrative_area_level_1"){
-          value = item.long_name
+      });
+      return value;
+    };
+    const getState = () => {
+      let value = "";
+      res.map((item) => {
+        if (item.types[0] == "administrative_area_level_1") {
+          value = item.long_name;
         }
-      })
-		  return value;
-		}
+      });
+      return value;
+    };
     const getPostalCode = () => {
-			let value = '';
-			res.map((item) => {
-				if (item.types[0] == "postal_code") {
-					value = item.long_name
-				}
-			})
-			return value;
-		}
+      let value = "";
+      res.map((item) => {
+        if (item.types[0] == "postal_code") {
+          value = item.long_name;
+        }
+      });
+      return value;
+    };
 
-    getPostalCode()
-getState()
-getCity()
+    getPostalCode();
+    getState();
+    getCity();
     getCountry();
-    setcountry(getCountry())
-    setcity(getCity())
-    setstate(getState())
-    setzip(getPostalCode())
-   
+    setcountry(getCountry());
+    setcity(getCity());
+    setstate(getState());
+    setzip(getPostalCode());
 
-
-    setform({...form,location:{ type : "Point",
-    coordinates : [ 
-      value.latLng.lat,
-      value.latLng.lng
-       
-    ]},country:getCountry(),city:getCity(),state:getState(),lat:value.latLng.lat,lng:value.latLng.lng,address:value.address,zipcode:getPostalCode()})
-   console.log(form)
-
- 
+    setform({
+      ...form,
+      location: {
+        type: "Point",
+        coordinates: [value.latLng.lat, value.latLng.lng],
+      },
+      country: getCountry(),
+      city: getCity(),
+      state: getState(),
+      lat: value.latLng.lat,
+      lng: value.latLng.lng,
+      address: value.address,
+      zipcode: getPostalCode(),
+    });
   };
-  
-const SubmitData = ()=>{
-  ApiClient.put('/event',form).then((res)=>{
-    console.log(res)
-  })
-}
 
+  const SubmitData = () => {
+    ApiClient.put("/event", form).then((res) => {});
+  };
 
   // For Uploading Image
   const uploadImages = (e) => {
@@ -182,12 +182,10 @@ const SubmitData = ()=>{
       ApiClient.postFormData("/upload", reader.result, "blogs").then((res) => {
         console.log("uploadImage", res);
         if (res.success) {
-          
           let image = res.data.imagePath;
           setImages(image);
-         
-         setform({...form,images:[image]})
-        
+
+          setform({ ...form, images: [image] });
         }
         setUploading2(false);
       });
@@ -196,7 +194,7 @@ const SubmitData = ()=>{
 
   const AddTag = () => {
     tags.push({
-      name: '',
+      name: "",
     });
     settag([...tags]);
   };
@@ -207,7 +205,6 @@ const SubmitData = ()=>{
       ...form,
       tags: [...tags.filter((itm, i) => i != index)],
     });
-    console.log(tags);
   };
 
   const updatetag = (index, key, value) => {
@@ -215,16 +212,12 @@ const SubmitData = ()=>{
     arr[index][key] = value;
     settag([...arr]);
     setform({ ...form, tags: [...arr] });
-    console.log(form);
   };
 
-
-  
   useEffect(() => {
     if (id) {
       getdatabyid();
     }
-    console.log(form)
   }, []);
 
   return (
@@ -327,22 +320,32 @@ const SubmitData = ()=>{
                 touched,
                 handleReset,
               }) => (
-                <form onSubmit={(e)=>{
-                  e.preventDefault()
-                  ApiClient.post('/event',form).then((res)=>{
-                    console.log(res)
-                    if(res.success){
-                      history.push('/event')
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+
+                    if (id) {
+                      ApiClient.put('/event',form).then((res)=>{
+                        console.log(res)
+                        if(res.success){
+                          history.push('/list/event')
+                        }
+                      })
                     }
-                  })
-                }}>
+                    if (!id) {
+                      ApiClient.post("/event", form).then((res) => {
+                        if (res.success) {
+                          history.push("/event");
+                        }
+                      });
+                    }
+                  }}
+                >
                   <label
                     htmlFor="title"
                     className="form-label"
                     onClick={() => {
                       getAddressDetails();
-                      
-                      console.log(loc);
                     }}
                   >
                     Title
@@ -352,13 +355,12 @@ const SubmitData = ()=>{
                     name="title"
                     className="form-control"
                     value={form.title}
-                    onChange={(e)=>{
-                      setform({...form,title:e.target.value})
-                      console.log(e.target.value)
+                    onChange={(e) => {
+                      setform({ ...form, title: e.target.value });
                     }}
                     onBlur={handleBlur}
                   />
-                 
+
                   <label htmlFor="description" className="form-label">
                     Description
                   </label>
@@ -367,81 +369,61 @@ const SubmitData = ()=>{
                     type="text"
                     className="form-control"
                     required
-                    onChange={(e)=>{
-                      setform({...form,description:e.target.value})
-                      console.log(e.target.value)
+                    onChange={(e) => {
+                      setform({ ...form, description: e.target.value });
                     }}
                     name="description"
                     value={form.description}
                     onBlur={handleBlur}
                   />
                   <label className="form-label">Catagory</label>
-                  <select onChange={(e)=>{
-                      console.log(form)
-                      setform({...form,category_id:e.target.value})
+                  <select
+                  value={form.category_id}
+                    onChange={(e) => {
+                      setform({ ...form, category_id: e.target.value });
                     }}
                     class="form-select"
                     aria-label="Default select example"
                   >
-                    <option  selected>Select Catagory</option>
-                    {
-                      event?.map((itm,key)=>{
-                        return(
-
-                   
-                    <option  value={itm.id}>{itm.name}</option>
-                    
-                    )
-                  })
-                }
+                    <option selected>Select Catagory</option>
+                    {event?.map((itm, key) => {
+                      return <option value={itm.id }>{itm.name}</option>;
+                    })}
                   </select>
                   <label className="form-label">Event Type</label>
-                  <select onChange={(e)=>{
-                      console.log(form)
-                      setform({...form,eventType:e.target.value})
-                      if(e.target.value=='free'){
-                        setpaid(false)
-                      }else{
-                        setpaid(true)
+                  <select
+                  value={form.eventType}
+                    onChange={(e) => {
+                      setform({ ...form, eventType: e.target.value });
+                      if (e.target.value == "free") {
+                        setpaid(false);
+                      } else {
+                        setpaid(true);
                       }
                     }}
                     class="form-select"
                     aria-label="Default select example"
                   >
-                    <option  selected>Select Event Type</option>
-                  
+                    <option selected>Select Event Type</option>
 
-                   
-                    <option  value='free'>Free</option>
-                    <option  value='paid'>Paid</option>
+                    <option value="free">Free</option>
+                    <option value="paid">Paid</option>
                   </select>
                   <label className="form-label">Journey</label>
-                  <select onChange={(e)=>{
-                      console.log(form)
-               
-                      
-              
-
-                      setform({...form,journey:e.target.value})
-
-             }}
+                  <select
+                  value={form.journey}
+                    onChange={(e) => {
+                      setform({ ...form, journey: e.target.value });
+                    }}
                     class="form-select"
                     aria-label="Default select example"
                   >
-                    <option  selected>Select Journey</option>
-                    {
-                      journey?.map((itm,key)=>{
-                        return(
-
-                   
-                    <option   value={itm.id} >{itm.name}</option>
-                    
-                    )
-                  })
-                }
+                    <option selected>Select Journey</option>
+                    {journey?.map((itm, key) => {
+                      return <option value={itm.id}>{itm.name}</option>;
+                    })}
                   </select>
 
-                
                   <label htmlFor="url" className="form-label">
                     URl
                   </label>
@@ -449,15 +431,14 @@ const SubmitData = ()=>{
                     type="url"
                     required
                     className="form-control"
-                    onChange={(e)=>{
-                      setform({...form,url:e.target.value})
-                      console.log(e.target.value)
+                    onChange={(e) => {
+                      setform({ ...form, url: e.target.value });
                     }}
                     name="url"
                     value={form.url}
                     onBlur={handleBlur}
                   />
-                 
+
                   <label htmlFor="startDate" className="form-label">
                     Startdate
                   </label>
@@ -465,15 +446,14 @@ const SubmitData = ()=>{
                     type="date"
                     className="form-control"
                     required
-                    onChange={(e)=>{
-                      setform({...form,startDate:e.target.value})
-                      console.log(e.target.value)
+                    
+                    onChange={(e) => {
+                      setform({ ...form, startDate: e.target.value });
                     }}
                     name="startDate"
                     value={form.startDate}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                   />
-                 
 
                   <label htmlFor="endDate" className="form-label">
                     EndDate
@@ -482,15 +462,15 @@ const SubmitData = ()=>{
                     type="date"
                     className="form-control"
                     required
-                    onChange={(e)=>{
-                      setform({...form,endDate:e.target.value})
+                    onChange={(e) => {
                       console.log(e.target.value)
+                      setform({ ...form, endDate: e.target.value });
                     }}
                     name="endDate"
-                    value={form.endDate}
-                    onBlur={handleBlur}
+                    value= { form.endDate }
+                    // onBlur={handleBlur}
                   />
-                  
+
                   <label htmlFor="groupName" className="form-label">
                     Group Name
                   </label>
@@ -498,9 +478,8 @@ const SubmitData = ()=>{
                     type="text"
                     className="form-control"
                     required
-                    onChange={(e)=>{
-                      setform({...form,groupName:e.target.value})
-                    
+                    onChange={(e) => {
+                      setform({ ...form, groupName: e.target.value });
                     }}
                     name="groupName"
                     value={form.groupName}
@@ -511,10 +490,9 @@ const SubmitData = ()=>{
                     Address
                   </label>
                   <LocationSearchInput
-               
-                  getAddressDetails={getAddressDetails}
-                  value={values.address}
-                />
+                    getAddressDetails={getAddressDetails}
+                    value={values.address || form.address}
+                  />
                   <label htmlFor="city" className="form-label">
                     city
                   </label>
@@ -522,10 +500,8 @@ const SubmitData = ()=>{
                     type="text"
                     required
                     className="form-control"
-                    onChange={(e)=>{
-                      setform({...form,city:e.target.value})
-                    
-                      console.log(form)
+                    onChange={(e) => {
+                      setform({ ...form, city: e.target.value });
                     }}
                     name="city"
                     value={city || form.city}
@@ -538,9 +514,8 @@ const SubmitData = ()=>{
                     type="text"
                     required
                     className="form-control"
-                    onChange={(e)=>{
-                      setform({...form,state:e.target.value})
-                      
+                    onChange={(e) => {
+                      setform({ ...form, state: e.target.value });
                     }}
                     name="state"
                     value={state || form.state}
@@ -553,9 +528,8 @@ const SubmitData = ()=>{
                     type="number"
                     required
                     className="form-control"
-                    onChange={(e)=>{
-                      setform({...form,zipcode:e.target.value})
-                      
+                    onChange={(e) => {
+                      setform({ ...form, zipcode: e.target.value });
                     }}
                     name="zipcode"
                     value={zip || form.zipcode}
@@ -568,9 +542,8 @@ const SubmitData = ()=>{
                     type="text"
                     className="form-control"
                     required
-                    onChange={(e)=>{
-                      setform({...form,country:e.target.value})
-                      
+                    onChange={(e) => {
+                      setform({ ...form, country: e.target.value });
                     }}
                     name="country"
                     value={country || form.country}
@@ -580,12 +553,11 @@ const SubmitData = ()=>{
                     latitude
                   </label>
                   <input
-                   required
+                    required
                     type="number"
                     className="form-control"
-                    onChange={(e)=>{
-                      setform({...form,lat:e.target.value})
-                      
+                    onChange={(e) => {
+                      setform({ ...form, lat: e.target.value });
                     }}
                     name="lat"
                     value={lat || form.lat}
@@ -598,31 +570,31 @@ const SubmitData = ()=>{
                     type="number"
                     required
                     className="form-control"
-                    onChange={(e)=>{
-                      setform({...form,lng:e.target.value})
-                      
+                    onChange={(e) => {
+                      setform({ ...form, lng: e.target.value });
                     }}
                     name="long"
                     value={lng || form.lng}
                     onBlur={handleBlur}
                   />
-                  {
-                    paid?<><label htmlFor="cost" className="form-label">
-                    cost
-                  </label>
-                  <input
-                    type="cost"
-                    required
-                    className="form-control"
-                    onChange={(e)=>{
-                      setform({...form,cost:e.target.value})
-                      
-                    }}
-                    name="long"
-                    value={form.cost}
-                    onBlur={handleBlur}
-                  /></>:null
-                }
+                  {paid ? (
+                    <>
+                      <label htmlFor="cost" className="form-label">
+                        cost
+                      </label>
+                      <input
+                        type="cost"
+                        required
+                        className="form-control"
+                        onChange={(e) => {
+                          setform({ ...form, cost: e.target.value });
+                        }}
+                        name="long"
+                        value={form.cost}
+                        onBlur={handleBlur}
+                      />
+                    </>
+                  ) : null}
                   <label htmlFor="sizeOfVenue" className="form-label">
                     sizeOfVenue
                   </label>
@@ -630,54 +602,48 @@ const SubmitData = ()=>{
                     type="number"
                     required
                     className="form-control"
-                    onChange={(e)=>{
-                      setform({...form,sizeOfVenue:e.target.value})
-                      
+                    onChange={(e) => {
+                      setform({ ...form, sizeOfVenue: e.target.value });
                     }}
                     name="sizeOfVenue"
                     value={form.sizeOfVenue}
                     onBlur={handleBlur}
                   />
-                    {tags.map((itm, i) => {
-                  return (
-                    <div className="row mb-3 border mt-4 p-2 mx-0 w-[120%] rounded">
-                      <h6>Tag</h6>
-                      <div className="col-md-6 mb-3">
-                        <label>Name Of Tag</label>
-                        <input
-                          type="text"
-                          value={itm.name}
-                          className="form-control"
-                          onChange={(e) => {
-                            updatetag(i, 'name', e.target.value);
-                            console.log(tags);
+                  {tags.map((itm, i) => {
+                    return (
+                      <div className="row mb-3 border mt-4 p-2 mx-0 w-[120%] rounded">
+                        <h6>Tag</h6>
+                        <div className="col-md-6 mb-3">
+                          <label>Name Of Tag</label>
+                          <input
+                            type="text"
+                            value={itm.name}
+                            className="form-control"
+                            onChange={(e) => {
+                              updatetag(i, "name", e.target.value);
+                            }}
+                            required
+                          />
+                        </div>
 
-                            console.log(form);
-                          }}
-                          required
-                        />
+                        <div className="col-md-12 mb-3 text-right">
+                          <i
+                            className="fa fa-trash"
+                            onClick={(e) => removetag(i)}
+                          ></i>
+                        </div>
                       </div>
-                     
-
-                      <div className="col-md-12 mb-3 text-right">
-                        <i
-                          className="fa fa-trash"
-                          onClick={(e) => removetag(i)}
-                        ></i>
-                      </div>
-                    </div>
-                  );
-                })}
-                <div>
-                  <button
-                    type="button"
-                    className="btn btn-light light_white mt-3"
-                    onClick={AddTag}
-                  >
-                    <i class="fa fa-plus mr-2" aria-hidden="true"></i>Add
-                    Tag
-                  </button>
-                </div>  
+                    );
+                  })}
+                  <div>
+                    <button
+                      type="button"
+                      className="btn btn-light light_white mt-3"
+                      onClick={AddTag}
+                    >
+                      <i class="fa fa-plus mr-2" aria-hidden="true"></i>Add Tag
+                    </button>
+                  </div>
 
                   {/* Here we start uploading file function and setting there some conditions\ */}
                   <div className="my-4">
@@ -700,14 +666,12 @@ const SubmitData = ()=>{
                       <img
                         width={100}
                         height={100}
-                        src={`https://endpoint.crowdsavetheworld.com/${
-                          !Image ? eventdata.featuredImage : Image
+                        src={`https://endpoint.crowdsavetheworld.com/${ eventdata.featuredImage || form.featuredImage
                         }`}
                       />
                     ) : (
                       ""
                     )}
-                   
                   </div>
 
                   <div className="my-4">
@@ -729,15 +693,13 @@ const SubmitData = ()=>{
                       <img
                         width={100}
                         height={100}
-                        src={`https://endpoint.crowdsavetheworld.com/${
-                          !Images ? eventdata.images : Images
+                        src={`https://endpoint.crowdsavetheworld.com/${ eventdata.images || form.images[0]
                         }`}
                         alt="No Image"
                       />
                     ) : (
                       ""
                     )}
-                  
                   </div>
 
                   <div className="card-footer d-flex my-2 justify-content-between">
@@ -752,10 +714,15 @@ const SubmitData = ()=>{
                     </button>
 
                     {/* Disabling the button when yup is giving the error or errors are setted  */}
-                    <button className="btn btn-primary" type="submit" 
-                    >
-                      Submit
-                    </button>
+                    {id ? (
+                      <button className="btn btn-primary" type="submit">
+                        Update
+                      </button>
+                    ) : (
+                      <button className="btn btn-primary" type="submit">
+                        Submit
+                      </button>
+                    )}
                   </div>
                 </form>
               )}

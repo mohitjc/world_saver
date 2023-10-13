@@ -71,7 +71,7 @@ const UserListItem = ({
           {item && item.fullName ? item.fullName : '___'}
         </Link>
       </td>
-      <td>{item && item.username}</td>
+      <td>{item && item.email}</td>
       <td>{item && item.mobile ? item.mobile : '___'}</td>
       <td>
         {item && item.status === 'deactive' ? (
@@ -103,7 +103,7 @@ const UserListItem = ({
       <td>
         <button
           type="button"
-          className="btn btn-icon btn-primary mr-2"
+          className="btn btn-icon btn-primary "
           onClick={() => {
             handAddFormToggle(false);
             handleFormVisibilty();
@@ -114,7 +114,7 @@ const UserListItem = ({
         </button>
         <button
           type="button"
-          className="btn btn-icon btn-danger"
+          className="btn  btn-icon btn-danger "
           onClick={handleDelete}
         >
           <i className="fas fa-trash" />

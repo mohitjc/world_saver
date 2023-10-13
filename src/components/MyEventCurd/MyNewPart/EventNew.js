@@ -50,6 +50,20 @@ export default function EventNew({ item }) {
 
   const [eventdata, seteventdata] = useState([]);
 
+
+useEffect(async()=>{
+ const get = await fetch('http://localhost:5500/api/auth/post/getpost',{
+  method:'Post',
+headers:{"Content-Type":"application/json"},body:JSON.stringify({
+  userId:["65029e104e088f7c659ee720"]
+})
+ })
+ const res = await get.json()
+ console.log(res)
+},[])
+
+
+
   // For navigating the user to the another route
   const history = useHistory();
   const { id } = useParams();
@@ -662,26 +676,38 @@ export default function EventNew({ item }) {
                         onChange={uploadImage}
                       />
                       {!Uploading1
-                        ? " Upload FeaturedImage Image"
+                        ? " Upload Featured Image"
                         : "Uploading..."}
                     </label>
                     {Image || id ? (
+                      <>
+                      
                       <img
+                      className="ml-3"
                         width={100}
                         height={100}
+                        alt="Select Image"
                         src={`https://endpoint.crowdsavetheworld.com/${ eventdata.featuredImage || form.featuredImage
-                        }`}
+
+                      }`}
                       />
+                       <svg onClick={()=>{
+                        setform({...form,featuredImage:''})
+                       }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi pointer bi-trash ml-3" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+</svg>
+                      </>
                     ) : (
                       ""
                     )}
                   </div>
 
-                  <div className="my-4">
+                  <div className="mb-2">
                     <label className="btn btn-primary ">
                       <input
                         type="file"
-                        className="d-none"
+                        className="d-none "
                         required
                         accept="image/*"
                         disabled={Uploading2}
@@ -693,13 +719,22 @@ export default function EventNew({ item }) {
                     </label>
 
                     {Images || id ? (
-                      <img
+                      <>
+                        <img
                         width={100}
                         height={100}
+                        className="ml-3"
                         src={`https://endpoint.crowdsavetheworld.com/${ eventdata.images || form.images[0]
                         }`}
-                        alt="No Image"
-                      />
+                        alt="Select  Image"
+                        />
+                     <svg onClick={()=>{
+                      setform({...form,images:['']})
+                     }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash ml-3" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+</svg>
+                        </>
                     ) : (
                       ""
                     )}

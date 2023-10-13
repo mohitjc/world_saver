@@ -83,9 +83,13 @@ const ListItem = ({
       <td>{item && item.url ? item.url : '___'}</td>
     
       <td>
+        <div className='d-flex ' style={{height:'12vh'}}>
+
+        
         <button
           type="button"
-          className="btn btn-icon btn-primary mr-2"
+          style={{width:'50px',height:'7vh'}}
+          className="btn btn-icon btn-primary mr-2 mt-2"
           onClick={() => {
             handAddFormToggle(false);
             handleFormVisibilty();
@@ -96,7 +100,8 @@ const ListItem = ({
         </button>
         <button
           type="button"
-          className="btn btn-icon btn-danger mr-2"
+          style={{width:'50px',height:'7vh'}}
+          className="btn btn-icon btn-danger mr-2 mt-2"
           onClick={handleDelete}
         >
           <i className="fas fa-trash" />
@@ -104,7 +109,7 @@ const ListItem = ({
 
         <button
           type="button"
-          className="btn btn-icon btn-secondary m-2"
+          className="btn btn-icon btn-secondary m-2 text-center"
           onClick={()=>handleArchive(item && item.id ,item && item.isArchive)}
         >
           {item && item.isArchive?'Un-Archive':'Archive'}
@@ -112,14 +117,15 @@ const ListItem = ({
 
         {item && item.isFeatured?<a className="badge badge-success text-white">Featrued</a>:<button
           type="button"
-          className="btn btn-icon btn-secondary"
+          style={{height:'7vh'}}
+          className="btn btn-icon btn-secondary mt-2"
           onClick={()=>handleFeature(item && item.id)}
         >
           Feature
         </button>}
 
         
-       
+        </div>
       </td>
     </tr>
   );

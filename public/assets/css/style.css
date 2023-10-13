@@ -4141,7 +4141,9 @@ body:not(.sidebar-mini)
 #demo-upload {
   width: 20rem !important;
 }
-
+label.form-label {
+  margin-top: 10px;
+}
 .autocomplete-dropdown-container {
   position: absolute;
   z-index: 1000;

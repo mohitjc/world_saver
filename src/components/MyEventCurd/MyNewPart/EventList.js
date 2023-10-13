@@ -92,7 +92,7 @@ export default function NewEventList() {
                     <tr>
                       <td>{index + 1}</td>
                       <td>{item.title}</td>
-                      <td>{item.description}</td>
+                      <td>{item.description.substr(0,10)}</td>
                       <td>{item.url}</td>
                       <td>{item.startDate}</td>
                       <td>{item.endDate}</td>

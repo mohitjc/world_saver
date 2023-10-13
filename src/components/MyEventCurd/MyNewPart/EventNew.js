@@ -381,7 +381,7 @@ export default function EventNew({ item }) {
                     onChange={(e) => {
                       setform({ ...form, category_id: e.target.value });
                     }}
-                    class="form-select"
+                    class="form-control"
                     aria-label="Default select example"
                   >
                     <option selected>Select Catagory</option>
@@ -400,7 +400,7 @@ export default function EventNew({ item }) {
                         setpaid(true);
                       }
                     }}
-                    class="form-select"
+                    class="form-control"
                     aria-label="Default select example"
                   >
                     <option selected>Select Event Type</option>
@@ -414,7 +414,7 @@ export default function EventNew({ item }) {
                     onChange={(e) => {
                       setform({ ...form, journey: e.target.value });
                     }}
-                    class="form-select"
+                    class="form-control"
                     aria-label="Default select example"
                   >
                     <option selected>Select Journey</option>

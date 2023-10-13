@@ -51,16 +51,7 @@ export default function EventNew({ item }) {
   const [eventdata, seteventdata] = useState([]);
 
 
-useEffect(async()=>{
- const get = await fetch('http://localhost:5500/api/auth/post/getpost',{
-  method:'Post',
-headers:{"Content-Type":"application/json"},body:JSON.stringify({
-  userId:["65029e104e088f7c659ee720"]
-})
- })
- const res = await get.json()
- console.log(res)
-},[])
+
 
 
 

@@ -102,8 +102,8 @@ export default function EventNew({ item }) {
     };
   };
 
+  // setFieldValue('address', value.address);
   const getAddressDetails = (value) => {
-    // setFieldValue('address', value.address);
     setlat(value.latLng.lat);
     setlng(value.latLng.lng);
     setloc(value);

@@ -75,6 +75,7 @@ export default function NewEventList() {
             {loading == true ? (
               <Loading />
             ) : (
+              <div className="table-responsive">
               <table className="table ">
                 <thead>
                   <tr>
@@ -97,6 +98,7 @@ export default function NewEventList() {
                       <td>{item.startDate}</td>
                       <td>{item.endDate}</td>
                       <td>
+                        <div className="d-flex align-items-center">
                         <button
                           type="button"
                           className="btn btn-icon btn-primary mr-2 my-2"
@@ -113,11 +115,13 @@ export default function NewEventList() {
                         >
                           <i className="fas fa-trash" />
                         </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              </div>
             )}
           </section>
         </div>

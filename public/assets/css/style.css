@@ -4151,7 +4151,12 @@ body:not(.sidebar-mini)
 textarea.form-control {
   height: 100px !important;
 }
-
+/* .table>:not(caption)>*>* {
+  padding: 0 !important; 
+  background-color: inherit !important;
+  border-bottom-width: 0px !important;
+   box-shadow: none !important;
+} */
 /* .invite-img {
   height: 25px;
 } */

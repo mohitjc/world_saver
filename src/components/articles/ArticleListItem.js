@@ -80,6 +80,7 @@ const ArticleListItem = ({
         )}
       </td>
       <td>
+        <div className='d-flex'>
         <button
           type="button"
           className="btn btn-icon btn-primary mr-2"
@@ -100,6 +101,7 @@ const ArticleListItem = ({
         >
           <i className="fas fa-trash" />
         </button>
+        </div>
       </td>
     </tr>
     </>

@@ -79,16 +79,15 @@ const ListItem = ({
     <tr>
       <td>{index + page * count - (count - 1)}</td>
       <td>{item && item.title ? item.title : '___'}</td>
-      <td>{item && item.description ? item.description : '___'}</td>
+      <td><span className=''>{item && item.description ? item.description : '___'}</span></td>
       <td>{item && item.url ? item.url : '___'}</td>
     
       <td>
-        <div className='d-flex ' style={{height:'12vh'}}>
+        <div className='d-flex align-items-center'>
 
         
         <button
-          type="button"
-          style={{width:'50px',height:'7vh'}}
+          type="button" 
           className="btn btn-icon btn-primary mr-2 mt-2"
           onClick={() => {
             handAddFormToggle(false);
@@ -99,8 +98,7 @@ const ListItem = ({
           <i className="far fa-edit" />
         </button>
         <button
-          type="button"
-          style={{width:'50px',height:'7vh'}}
+          type="button" 
           className="btn btn-icon btn-danger mr-2 mt-2"
           onClick={handleDelete}
         >
@@ -109,15 +107,15 @@ const ListItem = ({
 
         <button
           type="button"
-          className="btn btn-icon btn-secondary m-2 text-center"
+          style={{width:'100px'}}
+          className="btn btn-icon btn-secondary mt-2 mr-2 text-center"
           onClick={()=>handleArchive(item && item.id ,item && item.isArchive)}
         >
           {item && item.isArchive?'Un-Archive':'Archive'}
         </button>
 
         {item && item.isFeatured?<a className="badge badge-success text-white">Featrued</a>:<button
-          type="button"
-          style={{height:'7vh'}}
+          type="button" 
           className="btn btn-icon btn-secondary mt-2"
           onClick={()=>handleFeature(item && item.id)}
         >

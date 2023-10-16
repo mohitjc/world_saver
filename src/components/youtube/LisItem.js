@@ -22,7 +22,7 @@ const ListItem = ({
     const token = localStorage.getItem('token');
     swal({
       title: 'Are you sure?',
-      text: 'you want to delete the user!',
+      text: 'you want to delete the Video!',
       icon: 'warning',
       buttons: true,
       dangerMode: true

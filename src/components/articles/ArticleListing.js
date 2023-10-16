@@ -109,6 +109,7 @@ const ArticleListing = ({
                         getStatus={getStatus}
                         page={page}
                         count={count}
+                       
                       />
                     ))}
                 </table>
@@ -117,7 +118,7 @@ const ArticleListing = ({
             </div>
           )}
           {!isEmpty(blogs) && (
-            <Pagination total={total} setPage={setPage} page={page} />
+            <Pagination total={total} page={page} setPage={setPage}  />
           )}
         </div>
       </div>

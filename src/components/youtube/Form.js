@@ -121,7 +121,18 @@ const Form = ({
               getImage={getImage}
               type="youtube"
               value={values.image?values.image:''}
-            />
+            />{
+              values?.image?
+              <button
+              type="button"
+              className="btn btn-danger"
+              onClick={()=>{
+                setFieldValue('image','')
+              }}
+              >
+              Remove Image
+            </button>:null
+            }
             <div className="row">
               <div className="form-group col-md-12 mb-3">
                 <label>Title</label>

@@ -116,7 +116,7 @@ const CategoryListing = ({
             </div>
           )}
           {categories && !isEmpty(categories) && (
-            <Pagination total={total} setPage={setPage} />
+            <Pagination total={total} setPage={setPage} page={page} />
           )}
         </div>
       </div>

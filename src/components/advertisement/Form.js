@@ -145,9 +145,20 @@ const Form = ({
                   </label>
                 </div>
 
-                {image ? <img src={`${API_SLUG} + "/images/category/"${image}`} width="100" /> : <></>}
-
+                {image ? <img src={`https://endpoint.crowdsavetheworld.com/images/blogs/${image}`} width="100" /> : <></>}
               </div>
+                {
+                  image?
+                  <button
+                  type="button"
+                  className="btn btn-danger mb-3"
+                  onClick={()=>{
+               setImage('')
+                  }}
+                  >
+                  Remove Image
+                </button>:null
+                }
 
               <div className="form-group col-md-12 mb-3">
                 <label>Title</label>

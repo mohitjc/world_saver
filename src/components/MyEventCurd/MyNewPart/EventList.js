@@ -15,6 +15,20 @@ export default function NewEventList() {
   }, []);
 
 
+  var months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
   const getdata = () => {
     ApiClient.get(`/events?page=1&count=10&search=`)
       .then((res) => {
@@ -83,6 +97,7 @@ export default function NewEventList() {
                     <th>Title</th>
                     <th>Description</th>
                     <th>Url</th>
+                   
                     <th>StartDate</th>
                     <th>EndDate</th>
                     <th>Action</th>
@@ -95,8 +110,26 @@ export default function NewEventList() {
                       <td>{item.title}</td>
                       <td>{item.description.substr(0,10)}</td>
                       <td>{item.url}</td>
-                      <td>{item.startDate}</td>
-                      <td>{item.endDate}</td>
+                   
+                      <td>  {' '}
+                        {months[
+                          new Date(item && item.startDate).getMonth()
+                        ] +
+                        ' ' +
+                        new Date(item && item.startDate).getDate() +
+                          ', ' +
+                          new Date(item && item.startDate ).getFullYear()}</td>
+                      <td>
+                      {' '}
+                        {months[
+                          new Date(item && item.endDate).getMonth()
+                        ] +
+                        ' ' +
+                        new Date(item && item.endDate).getDate() +
+                          ', ' +
+                          new Date(item && item.endDate).getFullYear()}
+                          </td>
+                    
                       <td>
                         <div className="d-flex align-items-center">
                         <button

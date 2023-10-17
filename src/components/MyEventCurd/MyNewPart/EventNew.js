@@ -1,6 +1,8 @@
 import { data, image } from "@tensorflow/tfjs";
 import Axios from "axios";
 import { Formik } from "formik";
+import 'react-time-picker/dist/TimePicker.css';
+import 'react-clock/dist/Clock.css';
 import React, { useEffect, useState } from "react";
 import { NavLink, useHistory, useParams } from "react-router-dom";
 import ApiClient from "../../apiClient";
@@ -12,7 +14,7 @@ import swal from "sweetalert";
 import { eventModel } from "../../../models/category.model";
 import PlacesAutocomplete from "react-places-autocomplete";
 import LocationSearchInput from "../../global/LocationSearchInput";
-
+import TimePicker from 'react-time-picker';
 import moment from 'moment'
 
 export default function EventNew({ item }) {
@@ -34,6 +36,7 @@ export default function EventNew({ item }) {
   const [Uploading2, setUploading2] = useState("");
   const [Image, setImage] = useState("");
   const [Images, setImages] = useState("");
+    const [value, onChange] = useState();
   const [loc, setloc] = useState([]);
   const [country, setcountry] = useState("");
   const [city, setcity] = useState("");
@@ -52,7 +55,10 @@ export default function EventNew({ item }) {
 
 
 
-
+useEffect(()=>{
+  console.log(value)
+  setform({...form,time:value})
+},[value])
 
 
   // For navigating the user to the another route
@@ -473,6 +479,16 @@ export default function EventNew({ item }) {
                     value= { moment(form.endDate).utc().format('YYYY-MM-DD')}
                     // onBlur={handleBlur}
                   />
+
+
+                   <label htmlFor="endDate" className="form-label">
+                    Select Time
+                  </label>
+                  <div style={{width:'100%'}}>
+
+      <TimePicker onChange={onChange  }  value={form.time} />
+                  </div>
+    
 
                   <label htmlFor="groupName" className="form-label">
                     Group Name

@@ -80,7 +80,7 @@ const ListItem = ({
     <tr>
       <td>{index + page * count - (count - 1)}</td>
       <td>{item && item.title ? item.title : '___'}</td>
-      <td>{item && item.description ? item.description : '___'}</td>
+      <td>{item && item.description ? item.description.substr(0,10) : '___'}</td>
       <td>{item && item.url ? item.url : '___'}</td>
     
       <td>
@@ -123,7 +123,7 @@ const ListItem = ({
           // style={{height:'7vh'}}
           className=" btn btn-icon badge badge-success text-white mt-2"
           style={{height:'7vh',borderRadius:'5px',textAlign:'center',marginTop:'6px',width:'80px'}}
-          
+          onClick={()=>handleFeature(item && item.id)}
         >
           Featured
         </button>

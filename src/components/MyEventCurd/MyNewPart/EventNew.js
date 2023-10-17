@@ -1,8 +1,8 @@
 import { data, image } from "@tensorflow/tfjs";
 import Axios from "axios";
 import { Formik } from "formik";
-import 'react-time-picker/dist/TimePicker.css';
-import 'react-clock/dist/Clock.css';
+import "react-time-picker/dist/TimePicker.css";
+import "react-clock/dist/Clock.css";
 import React, { useEffect, useState } from "react";
 import { NavLink, useHistory, useParams } from "react-router-dom";
 import ApiClient from "../../apiClient";
@@ -14,8 +14,8 @@ import swal from "sweetalert";
 import { eventModel } from "../../../models/category.model";
 import PlacesAutocomplete from "react-places-autocomplete";
 import LocationSearchInput from "../../global/LocationSearchInput";
-import TimePicker from 'react-time-picker';
-import moment from 'moment'
+import TimePicker from "react-time-picker";
+import moment from "moment";
 
 export default function EventNew({ item }) {
   let schema = yup.object().shape({
@@ -36,7 +36,7 @@ export default function EventNew({ item }) {
   const [Uploading2, setUploading2] = useState("");
   const [Image, setImage] = useState("");
   const [Images, setImages] = useState("");
-    const [value, onChange] = useState();
+  const [value, onChange] = useState();
   const [loc, setloc] = useState([]);
   const [country, setcountry] = useState("");
   const [city, setcity] = useState("");
@@ -53,13 +53,10 @@ export default function EventNew({ item }) {
 
   const [eventdata, seteventdata] = useState([]);
 
-
-
-useEffect(()=>{
-  console.log(value)
-  setform({...form,time:value})
-},[value])
-
+  useEffect(() => {
+    console.log(value);
+    setform({ ...form, time: value });
+  }, [value]);
 
   // For navigating the user to the another route
   const history = useHistory();
@@ -336,7 +333,6 @@ useEffect(()=>{
                   onSubmit={(e) => {
                     e.preventDefault();
 
-                   
                     if (!id) {
                       ApiClient.post("/event", form).then((res) => {
                         if (res.data.success) {
@@ -383,7 +379,7 @@ useEffect(()=>{
                   />
                   <label className="form-label">Catagory</label>
                   <select
-                  value={form.category_id}
+                    value={form.category_id}
                     onChange={(e) => {
                       setform({ ...form, category_id: e.target.value });
                     }}
@@ -392,12 +388,12 @@ useEffect(()=>{
                   >
                     <option selected>Select Catagory</option>
                     {event?.map((itm, key) => {
-                      return <option value={itm.id }>{itm.name}</option>;
+                      return <option value={itm.id}>{itm.name}</option>;
                     })}
                   </select>
                   <label className="form-label">Event Type</label>
                   <select
-                  value={form.eventType}
+                    value={form.eventType}
                     onChange={(e) => {
                       setform({ ...form, eventType: e.target.value });
                       if (e.target.value == "free") {
@@ -416,7 +412,7 @@ useEffect(()=>{
                   </select>
                   <label className="form-label">Journey</label>
                   <select
-                  value={form.journey}
+                    value={form.journey}
                     onChange={(e) => {
                       setform({ ...form, journey: e.target.value });
                     }}
@@ -451,14 +447,11 @@ useEffect(()=>{
                     type="date"
                     className="form-control"
                     required
-                    
                     onChange={(e) => {
-                     
-                     
                       setform({ ...form, startDate: e.target.value });
                     }}
                     name="startDate"
-                    value={moment(form.startDate).utc().format('YYYY-MM-DD')}
+                    value={moment(form.startDate).utc().format("YYYY-MM-DD")}
                     // onBlur={handleBlur}
                   />
 
@@ -470,25 +463,22 @@ useEffect(()=>{
                     className="form-control"
                     required
                     onChange={(e) => {
-                      console.log(e.target.value)
-                      console.log(JSON.stringify(loc))
-                      console.log(form)
+                      console.log(e.target.value);
+                      console.log(JSON.stringify(loc));
+                      console.log(form);
                       setform({ ...form, endDate: e.target.value });
                     }}
                     name="endDate"
-                    value= { moment(form.endDate).utc().format('YYYY-MM-DD')}
+                    value={moment(form.endDate).utc().format("YYYY-MM-DD")}
                     // onBlur={handleBlur}
                   />
 
-
-                   <label htmlFor="endDate" className="form-label">
+                  <label htmlFor="endDate" className="form-label">
                     Select Time
                   </label>
-                  <div style={{width:'100%'}}>
-
-      <TimePicker onChange={onChange  }  value={form.time} />
+                  <div style={{ width: "100%" }}>
+                    <TimePicker onChange={onChange} value={form.time} />
                   </div>
-    
 
                   <label htmlFor="groupName" className="form-label">
                     Group Name
@@ -606,8 +596,11 @@ useEffect(()=>{
                         required
                         className="form-control"
                         onChange={(e) => {
-                          setform({ ...form, cost: e.target.value<0? '0':e.target.value });
-                          console.log(form)
+                          setform({
+                            ...form,
+                            cost: e.target.value < 0 ? "0" : e.target.value,
+                          });
+                          console.log(form);
                         }}
                         name="long"
                         value={form.cost}
@@ -622,16 +615,14 @@ useEffect(()=>{
                     type="number"
                     required
                     className="form-control"
-              
                     onChange={(e) => {
-               
-
-                      setform({ ...form, sizeOfVenue: e.target.value<0? '0':e.target.value });
-                   
+                      setform({
+                        ...form,
+                        sizeOfVenue: e.target.value < 0 ? "0" : e.target.value,
+                      });
                     }}
                     name="sizeOfVenue"
                     value={form.sizeOfVenue}
-                    
                   />
                   {tags.map((itm, i) => {
                     return (
@@ -682,28 +673,33 @@ useEffect(()=>{
                         multiple="multiple"
                         onChange={uploadImage}
                       />
-                      {!Uploading1
-                        ? " Upload Featured Image"
-                        : "Uploading..."}
+                      {!Uploading1 ? " Upload Featured Image" : "Uploading..."}
                     </label>
                     {form?.featuredImage || id ? (
                       <>
-                      
-                      <img
-                      className="ml-3"
-                        width={100}
-                        height={100}
-                        alt="Select Image"
-                        src={`https://endpoint.crowdsavetheworld.com/${ eventdata.featuredImage || form.featuredImage
-
-                      }`}
-                      />
-                       <svg onClick={()=>{
-                        setform({...form,featuredImage:''})
-                       }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi pointer bi-trash ml-3" viewBox="0 0 16 16">
-  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-</svg>
+                        <img
+                          className="ml-3"
+                          width={100}
+                          height={100}
+                          alt="Select Image"
+                          src={`https://endpoint.crowdsavetheworld.com/${
+                            eventdata.featuredImage || form.featuredImage
+                          }`}
+                        />
+                        <svg
+                          onClick={() => {
+                            setform({ ...form, featuredImage: "" });
+                          }}
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi pointer bi-trash ml-3"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                        </svg>
                       </>
                     ) : (
                       ""
@@ -728,48 +724,62 @@ useEffect(()=>{
                     {form?.images[0] || id ? (
                       <>
                         <img
-                        width={100}
-                        height={100}
-                        className="ml-3"
-                        src={`https://endpoint.crowdsavetheworld.com/${ eventdata.images || form.images[0]
-                        }`}
-                      
+                          width={100}
+                          height={100}
+                          className="ml-3"
+                          src={`https://endpoint.crowdsavetheworld.com/${
+                            eventdata.images || form.images[0]
+                          }`}
                         />
-                     <svg onClick={()=>{
-                      setform({...form,images:['']})
-                     }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash ml-3" viewBox="0 0 16 16">
-  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-</svg>
-                        </>
+                        <svg
+                          onClick={() => {
+                            setform({ ...form, images: [""] });
+                          }}
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-trash ml-3"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                        </svg>
+                      </>
                     ) : (
                       ""
                     )}
                   </div>
 
                   <div className="card-footer d-flex my-2 justify-content-between">
-                    <button type="button" className="btn btn-danger" onClick={()=>{
-                      history.push('/list/event')
-                    }}>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => {
+                        history.push("/list/event");
+                      }}
+                    >
                       {/* On clcking cancel the user will redirected to the List/event Page */}
-                      
-                        <span className="text-white">Cnacel</span>
-                      
+
+                      <span className="text-white">Cnacel</span>
                     </button>
 
                     {/* Disabling the button when yup is giving the error or errors are setted  */}
                     {id ? (
-                      <button className="btn btn-primary" onClick={()=>{
-                        if (id) {
-                          ApiClient.put('/event',form).then((res)=>{
-                            console.log(res)
-                            if(res.data.success){
-                              console.log(res)
-                              history.push('/list/event')
-                            }
-                          })
-                        }
-                      }}>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          if (id) {
+                            ApiClient.put("/event", form).then((res) => {
+                              console.log(res);
+                              if (res.data.success) {
+                                console.log(res);
+                                history.push("/list/event");
+                              }
+                            });
+                          }
+                        }}
+                      >
                         Update
                       </button>
                     ) : (

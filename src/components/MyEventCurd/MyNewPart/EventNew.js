@@ -670,7 +670,7 @@ export default function EventNew({ item }) {
                         ? " Upload Featured Image"
                         : "Uploading..."}
                     </label>
-                    {Image || id ? (
+                    {form?.featuredImage || id ? (
                       <>
                       
                       <img
@@ -709,7 +709,7 @@ export default function EventNew({ item }) {
                       {!Uploading2 ? "  Upload Image" : "Uploading..."}
                     </label>
 
-                    {Images || id ? (
+                    {form?.images[0] || id ? (
                       <>
                         <img
                         width={100}
@@ -717,7 +717,7 @@ export default function EventNew({ item }) {
                         className="ml-3"
                         src={`https://endpoint.crowdsavetheworld.com/${ eventdata.images || form.images[0]
                         }`}
-                        alt="Select  Image"
+                      
                         />
                      <svg onClick={()=>{
                       setform({...form,images:['']})

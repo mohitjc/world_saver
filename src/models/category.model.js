@@ -11,6 +11,7 @@ export const eventModel = {
     title:'',
     description:'',
     category_id:'',
+    timetype:'',
     journey:'',
     images:[],
     featuredImage:'',

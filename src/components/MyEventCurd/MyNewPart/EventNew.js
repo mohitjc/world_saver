@@ -479,6 +479,21 @@ export default function EventNew({ item }) {
                   <div style={{ width: "100%" }}>
                     <TimePicker onChange={onChange} value={form.time} />
                   </div>
+                  <label className="form-label">Time</label>
+                  <select
+                    value={form.eventType}
+                    onChange={(e) => {
+                      setform({ ...form, timetype: e.target.value });
+                    
+                    }}
+                    class="form-control"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select Time </option>
+
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
 
                   <label htmlFor="groupName" className="form-label">
                     Group Name

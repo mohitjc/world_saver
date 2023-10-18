@@ -481,7 +481,7 @@ export default function EventNew({ item }) {
                   </div>
                   <label className="form-label">Time</label>
                   <select
-                    value={form.eventType}
+                    value={form.timetype}
                     onChange={(e) => {
                       setform({ ...form, timetype: e.target.value });
                     

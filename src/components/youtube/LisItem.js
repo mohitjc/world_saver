@@ -79,8 +79,8 @@ const ListItem = ({
   return (
     <tr>
       <td>{index + page * count - (count - 1)}</td>
-      <td>{item && item.title ? item.title : '___'}</td>
-      <td>{item && item.description ? item.description.substr(0,10) : '___'}</td>
+      <td>{item && item.title ? item.title.substr(0,10) : '___'}</td>
+      <td>{item && item.description ? item.description.substr(0,10)+"...." : '___'}</td>
       <td>{item && item.url ? item.url : '___'}</td>
     
       <td>

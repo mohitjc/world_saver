@@ -776,7 +776,7 @@ export default function EventNew({ item }) {
                     >
                       {/* On clcking cancel the user will redirected to the List/event Page */}
 
-                      <span className="text-white">Cnacel</span>
+                      <span className="text-white">Cancel</span>
                     </button>
 
                     {/* Disabling the button when yup is giving the error or errors are setted  */}

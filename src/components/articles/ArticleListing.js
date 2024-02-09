@@ -31,6 +31,9 @@ const ArticleListing = ({
   }, [getSearchKeyword, keyword]);
   // console.log('total', total);
 
+  const openEventForm=()=>{
+    // window.push(``)
+  }
   return (
     <div className="row">
       <div className="col-12">
@@ -40,6 +43,7 @@ const ArticleListing = ({
               <button
                 className="btn btn-primary"
                 onClick={() => {
+                  openEventForm();
                   handleFormVisibilty();
                   handAddFormToggle(true);
                   resetSingleBlog();
@@ -105,6 +109,7 @@ const ArticleListing = ({
                         getStatus={getStatus}
                         page={page}
                         count={count}
+                       
                       />
                     ))}
                 </table>
@@ -113,7 +118,7 @@ const ArticleListing = ({
             </div>
           )}
           {!isEmpty(blogs) && (
-            <Pagination total={total} setPage={setPage} page={page} />
+            <Pagination total={total} page={page} setPage={setPage}  />
           )}
         </div>
       </div>

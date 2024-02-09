@@ -2,19 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 
 import Pagination from '../global/Pagination';
-import CategoryListItem from './CategoryLisItem';
+import BlogListItem from './EventListItem';
 import EmptyState from '../global/EmptyState';
 import Loading from '../global/Loader';
+import ApiClient from '../apiClient';
+import Axios from 'axios';
 
-const CategoryListing = ({
+ 
+
+const EventListing = ({
   handleFormVisibilty,
   handAddFormToggle,
   getSearchKeyword,
-  getCategoryId,
-  resetSingleCategory,
-  deleteCategory,
-  categories,
+  getBlogId,
+  resetSingleBlog,
+  deleteBlog,
+  blogs,
   sort,
+  setSort,
   total,
   setPage,
   page,
@@ -29,7 +34,9 @@ const CategoryListing = ({
     getSearchKeyword(keyword);
   }, [getSearchKeyword, keyword]);
   // console.log('total', total);
-
+ useEffect(()=>{
+ApiClient.get(`/eventevents?page=1&count=10&search=`).then(res=>{console.log(res);alert(res);alert("Success Event Listing")}).catch(err=>alert(err));
+ },[])
   return (
     <div className="row">
       <div className="col-12">
@@ -41,12 +48,11 @@ const CategoryListing = ({
                 onClick={() => {
                   handleFormVisibilty();
                   handAddFormToggle(true);
-                  resetSingleCategory();
-                  getCategoryId('')
+                  resetSingleBlog();
                 }}
                 type="button"
               >
-                Add Category
+                Add Event
               </button>
             </h4>
             <div className="card-header-form">
@@ -62,7 +68,7 @@ const CategoryListing = ({
                     }}
                   />
                   <div className="input-group-btn">
-                    <button className="btn btn-primary">
+                    <button className="btn btn-primary" type="button">
                       <i className="fas fa-search" />
                     </button>
                   </div>
@@ -76,46 +82,43 @@ const CategoryListing = ({
             <div className="card-body p-0">
               <div className="table-responsive">
                 <table className="table table-striped">
-                  <thead>
                   <tr>
                     <th>#</th>
                     <th
-                      onClick={() => toggleSort('name')}
+                      onClick={() => toggleSort('title')}
                       style={{ cursor: 'pointer' }}
                     >
-                      Name{' '}
+                      Name
                       <i className={`fas fa-chevron-${sort ? 'down' : 'up'}`} />
                     </th>
-                    <th>Category</th>
-                    <th>Created At</th>
-                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Startdate</th>
+                    {/* <th>Created At</th> */}
+                    <th>EndDate</th>
                     <th>Action</th>
                   </tr>
-                  </thead>
-                  <tbody>
-                  {categories &&
-                    categories.map((item, index) => (
-                      <CategoryListItem
+                  {blogs &&
+                    blogs.map((item, index) => (
+                      <BlogListItem
                         key={item.id}
                         item={item}
                         index={index}
                         handAddFormToggle={handAddFormToggle}
                         handleFormVisibilty={handleFormVisibilty}
-                        getCategoryId={getCategoryId}
-                        deleteCategory={deleteCategory}
+                        getBlogId={getBlogId}
+                        deleteBlog={deleteBlog}
                         changeStatus={changeStatus}
                         getStatus={getStatus}
                         page={page}
                         count={count}
                       />
                     ))}
-                    </tbody>
                 </table>
-                {isEmpty(categories) && <EmptyState />}
+                {isEmpty(blogs) && <EmptyState />}
               </div>
             </div>
           )}
-          {categories && !isEmpty(categories) && (
+          {!isEmpty(blogs) && (
             <Pagination total={total} setPage={setPage} page={page} />
           )}
         </div>
@@ -124,4 +127,4 @@ const CategoryListing = ({
   );
 };
 
-export default CategoryListing;
+export default  EventListing;

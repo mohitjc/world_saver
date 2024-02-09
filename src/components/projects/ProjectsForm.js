@@ -7,9 +7,7 @@ import Yup, {
   number as yupNumber
 } from 'yup';
 import swal from 'sweetalert';
-import { withRouter } from 'react-router-dom';
 
-import { isNull } from 'lodash';
 import {
   skillAdd,
   skillUpdate,
@@ -52,7 +50,7 @@ const ProjectForm = ({
 }) => {
   const token = localStorage.getItem('token');
 
-
+console.log(values,"hello");
   useEffect(() => {
     if (isSuccess) {
       swal('New Project added!', '', 'success');
@@ -110,6 +108,7 @@ const ProjectForm = ({
     setFieldValue('address', value.address);
     setFieldValue('lat', value.latLng.lat);
     setFieldValue('lng', value.latLng.lng);
+    console.log("=================>",value)
   };
 
   const getCategory=()=>{
@@ -136,6 +135,8 @@ const ProjectForm = ({
           </div>
           <div className="card-body">
             <div className="d-flex">
+              <div className='d-flex flex-column'>
+
               <ImageUpload
                 imageType={imageType}
                 getImage={getImage}
@@ -143,7 +144,19 @@ const ProjectForm = ({
                 value={values.image}
                 placeholder="Add Project image"
                 setImageType={setImageType}
-              />
+                />{
+                  values?.image?
+                  <button
+                  type="button"
+                  className="btn btn-danger mb-3"
+                  onClick={()=>{
+                    setFieldValue('image','')
+                  }}
+                  >
+                  Remove Image
+                </button>:null
+                }
+                </div>
               <div className="ml-4">
                 <ImageUpload
                   imageType={imageType}
@@ -153,6 +166,18 @@ const ProjectForm = ({
                   placeholder="Add banner"
                   setImageType={setImageType}
                 />
+                {
+              values?.banner_image?
+              <button
+              type="button"
+              className="btn btn-danger mb-3"
+              onClick={()=>{
+                setFieldValue('banner_image','')
+              }}
+              >
+              Remove BannerImage
+            </button>:null
+            }
               </div>
             </div>
             <div className="row">

@@ -7,7 +7,7 @@
 import axios from 'axios';
 import querystring from 'querystring';
 import { setAuthorizationToken } from './auth';
-// import { ToastsStore } from 'react-toasts';
+// import { sStore } from 'react-toasts';
 import { API_SLUG } from '../store/constants';
 import load from '../methods/load';
 

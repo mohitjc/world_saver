@@ -71,7 +71,7 @@ const UserListItem = ({
           {item && item.fullName ? item.fullName : '___'}
         </Link>
       </td>
-      <td>{item && item.username}</td>
+      <td>{item && item.email}</td>
       <td>{item && item.mobile ? item.mobile : '___'}</td>
       <td>
         {item && item.status === 'deactive' ? (
@@ -94,16 +94,19 @@ const UserListItem = ({
       </td>
       {/* Guide Button */}
       <td>
+      
         {item.isGuide==true?
         <button type="button" className="badge badge-success" onClick={() => guidestatus(item)}>Unguide</button>
         :
         <button type="button" className="badge badge-warning" onClick={() => guidestatus(item)}>Guide</button>
-        }        
+        }  
+            
       </td>
       <td>
+      <div className='d-flex'>
         <button
           type="button"
-          className="btn btn-icon btn-primary mr-2"
+          className="btn btn-icon btn-primary "
           onClick={() => {
             handAddFormToggle(false);
             handleFormVisibilty();
@@ -114,11 +117,12 @@ const UserListItem = ({
         </button>
         <button
           type="button"
-          className="btn btn-icon btn-danger"
+          className="btn  btn-icon btn-danger ml-2"
           onClick={handleDelete}
         >
           <i className="fas fa-trash" />
         </button>
+        </div>
       </td>
     </tr>
   );

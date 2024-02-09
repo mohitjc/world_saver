@@ -188,7 +188,20 @@ const ArticleForm = ({
           <div className="card-body">
             {!form.isCustom && (
               <ImageUpload getImage={getImage} type="blogs" value={myimage} />
+              
             )}
+            {
+              myimage?
+              <button
+              type="button"
+              className="btn btn-danger"
+              onClick={()=>{
+            setimage('')
+              }}
+              >
+              Remove Image
+            </button>:null
+            }
             <div className="row">
               <div className="form-group col-md-4 col-12 mt-3">
                 <label>Title</label>

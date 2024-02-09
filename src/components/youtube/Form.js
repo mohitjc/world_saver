@@ -20,6 +20,7 @@ import {
 } from '../../store/actions/youtubeActions';
 import ImageUpload from '../global/ImageUpload';
 import TagInput from '../global/TagInput';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 const Form = ({
   handleFormVisibilty,
@@ -78,7 +79,13 @@ const Form = ({
     data,
     resetUpdate
   ]);
+const {id} = useParams()
 
+useEffect(()=>{
+  if(!id){
+    setFieldValue('image','')
+  }
+},[])
   useEffect(() => {
     if (!isAddForm) {
       single(Id, token);
@@ -120,8 +127,19 @@ const Form = ({
             <ImageUpload
               getImage={getImage}
               type="youtube"
-              value={values.image?values.image:''}
-            />
+              value={values?.image}
+            />{
+              values?.image?
+              <button
+              type="button"
+              className="btn btn-danger"
+              onClick={()=>{
+                setFieldValue('image','')
+              }}
+              >
+              Remove Image
+            </button>:null
+            }
             <div className="row">
               <div className="form-group col-md-12 mb-3">
                 <label>Title</label>

@@ -105,6 +105,18 @@ const CategoryForm = ({
               type="category"
               value={values.image}
             />
+            {
+              values?.image?
+            
+             <button
+              type="button"
+              className="btn btn-danger mb-3"
+           onClick={()=>{
+            setFieldValue('image','')
+           }}
+            >
+              Remove Image
+            </button>:null}
             <div className="row">
               <div className="form-group col-md-4 col-12">
                 <label>Name</label>
@@ -191,9 +203,7 @@ const CatgeoryFormFormik = withFormik({
     // password: yupString().min(8)
   }),
    handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
-    console.log(values,"ddjfdjkfj");
-
-
+  
   // const handleSubmit = (values, { props }) => {
 
     // const { router } = props;

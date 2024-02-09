@@ -4,7 +4,7 @@ import swal from 'sweetalert';
 import { truncate } from 'lodash';
 import Posts from '../Posts/Posts';
 
-const ArticleListItem = ({
+const EventListItem = ({
   item,
   index,
   handAddFormToggle,
@@ -80,7 +80,7 @@ const ArticleListItem = ({
         )}
       </td>
       <td>
-        <div className='d-flex'>
+          <div className='d-flex'>
         <button
           type="button"
           className="btn btn-icon btn-primary mr-2"
@@ -108,4 +108,4 @@ const ArticleListItem = ({
   );
 };
 
-export default ArticleListItem;
+export default EventListItem;

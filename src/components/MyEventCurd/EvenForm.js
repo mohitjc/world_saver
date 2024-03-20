@@ -232,7 +232,6 @@ const getdata=()=>{
                     className="form-control"
                     name="description"
                     value={form.description}
-                    required
                     onBlur={handleBlur}
                     onChange={(e) =>
                       setform({ ...form, description: e.target.value })
@@ -258,7 +257,6 @@ const getdata=()=>{
                       name="blogUrl"
                       className="form-control"
                       // value="john"
-                      required
                       value={form.blogUrl}
                       onBlur={handleBlur}
                       onChange={(e) =>

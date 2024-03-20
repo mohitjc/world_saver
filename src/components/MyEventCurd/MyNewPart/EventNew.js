@@ -21,10 +21,10 @@ export default function EventNew({ item }) {
   let schema = yup.object().shape({
     title: yup.string().required("Please Enter  your Title"),
     description: yup.string().required("Please Enter your Event Description "),
-    url: yup
-      .string()
-      .url("It must be a URL")
-      .required("Please Enter the URL First."),
+    // url: yup
+    //   .string()
+    //   .url("It must be a URL")
+    //   .required("Please Enter the URL First."),
     startDate: yup.date().required("Please enter your Event Start Date."),
     endDate: yup
       .date()
@@ -332,7 +332,6 @@ export default function EventNew({ item }) {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-
                     if (!id) {
                       ApiClient.post("/event", form).then((res) => {
                         if (res.data.success) {
@@ -355,6 +354,7 @@ export default function EventNew({ item }) {
                     type="text"
                     name="title"
                     className="form-control"
+                    required
                     value={form.title}
                     onChange={(e) => {
                       setform({ ...form, title: e.target.value });
@@ -369,7 +369,6 @@ export default function EventNew({ item }) {
                   <input
                     type="text"
                     className="form-control"
-                    required
                     onChange={(e) => {
                       setform({ ...form, description: e.target.value });
                     }}
@@ -430,7 +429,6 @@ export default function EventNew({ item }) {
                   </label>
                   <input
                     type="url"
-                    required
                     className="form-control"
                     onChange={(e) => {
                       setform({ ...form, url: e.target.value });
@@ -452,6 +450,7 @@ export default function EventNew({ item }) {
                     }}
                     name="startDate"
                     value={moment(form.startDate).utc().format("YYYY-MM-DD")}
+                    min={moment(new Date).format("YYYY-MM-DD")}
                     // onBlur={handleBlur}
                   />
 
@@ -462,6 +461,7 @@ export default function EventNew({ item }) {
                     type="date"
                     className="form-control"
                     required
+                    min={moment(form?.startDate || new Date()).format("YYYY-MM-DD")}
                     onChange={(e) => {
                       console.log(e.target.value);
                       console.log(JSON.stringify(loc));
@@ -477,7 +477,7 @@ export default function EventNew({ item }) {
                     Select Time
                   </label>
                   <div style={{ width: "100%" }}>
-                    <TimePicker onChange={onChange} value={form.time} />
+                    <TimePicker onChange={onChange} value={form.time} format="h:m" />
                   </div>
                   <label className="form-label">Time</label>
                   <select
@@ -501,7 +501,6 @@ export default function EventNew({ item }) {
                   <input
                     type="text"
                     className="form-control"
-                    required
                     onChange={(e) => {
                       setform({ ...form, groupName: e.target.value });
                     }}
@@ -536,7 +535,6 @@ export default function EventNew({ item }) {
                   </label>
                   <input
                     type="text"
-                    required
                     className="form-control"
                     onChange={(e) => {
                       setform({ ...form, state: e.target.value });
@@ -550,7 +548,6 @@ export default function EventNew({ item }) {
                   </label>
                   <input
                     type="number"
-                    required
                     className="form-control"
                     onChange={(e) => {
                       setform({ ...form, zipcode: e.target.value });
@@ -681,7 +678,6 @@ export default function EventNew({ item }) {
                       <input
                         type="file"
                         className="d-none"
-                        required
                         disabled={Uploading1}
                         accept="image/*"
                         name="featuredImage"
@@ -725,8 +721,7 @@ export default function EventNew({ item }) {
                     <label className="btn btn-primary ">
                       <input
                         type="file"
-                        className="d-none "
-                        required
+                        className="d-none"
                         accept="image/*"
                         disabled={Uploading2}
                         name="featuredImage"

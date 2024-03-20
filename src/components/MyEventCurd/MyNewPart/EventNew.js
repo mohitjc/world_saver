@@ -16,6 +16,7 @@ import PlacesAutocomplete from "react-places-autocomplete";
 import LocationSearchInput from "../../global/LocationSearchInput";
 import TimePicker from "react-time-picker";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 export default function EventNew({ item }) {
   let schema = yup.object().shape({
@@ -32,6 +33,7 @@ export default function EventNew({ item }) {
       .required("Please Enter the Event EndDate"),
   });
   const [form, setform] = useState({ ...eventModel });
+  const data = useSelector((state)=>state.profile.data)
   const [Uploading1, setUploading1] = useState("");
   const [Uploading2, setUploading2] = useState("");
   const [Image, setImage] = useState("");
@@ -80,11 +82,11 @@ export default function EventNew({ item }) {
       setevent(res?.data?.data.category);
     });
     ApiClient.get(
-      "/project?type=I&search=&page=1&count=10&sortBy=createdAt%20desc"
+      `/project?type=I&sortBy=createdAt%20desc&user_id=${data?.id}`
     ).then((res) => {
       setjourney(res.data.result);
     });
-  }, []);
+  }, [data]);
 
   const uploadImage = (e) => {
     let files = e.target.files;
@@ -177,7 +179,7 @@ export default function EventNew({ item }) {
   };
 
   const SubmitData = () => {
-    ApiClient.put("/event", form).then((res) => {});
+    ApiClient.put("/event", form).then((res) => { });
   };
 
   // For Uploading Image
@@ -451,7 +453,7 @@ export default function EventNew({ item }) {
                     name="startDate"
                     value={moment(form.startDate).utc().format("YYYY-MM-DD")}
                     min={moment(new Date).format("YYYY-MM-DD")}
-                    // onBlur={handleBlur}
+                  // onBlur={handleBlur}
                   />
 
                   <label htmlFor="endDate" className="form-label">
@@ -470,7 +472,7 @@ export default function EventNew({ item }) {
                     }}
                     name="endDate"
                     value={moment(form.endDate).utc().format("YYYY-MM-DD")}
-                    // onBlur={handleBlur}
+                  // onBlur={handleBlur}
                   />
 
                   <label htmlFor="endDate" className="form-label">
@@ -484,7 +486,7 @@ export default function EventNew({ item }) {
                     value={form.timetype}
                     onChange={(e) => {
                       setform({ ...form, timetype: e.target.value });
-                    
+
                     }}
                     class="form-control"
                     aria-label="Default select example"
@@ -590,7 +592,7 @@ export default function EventNew({ item }) {
                   <input
                     type="number"
                     required
-                    className="form-control"  
+                    className="form-control"
                     onChange={(e) => {
                       setform({ ...form, lng: e.target.value });
                     }}
@@ -693,9 +695,8 @@ export default function EventNew({ item }) {
                           width={100}
                           height={100}
                           alt="Select Image"
-                          src={`https://endpoint.crowdsavetheworld.com/${
-                            eventdata.featuredImage || form.featuredImage
-                          }`}
+                          src={`https://endpoint.crowdsavetheworld.com/${eventdata.featuredImage || form.featuredImage
+                            }`}
                         />
                         <svg
                           onClick={() => {
@@ -737,9 +738,8 @@ export default function EventNew({ item }) {
                           width={100}
                           height={100}
                           className="ml-3"
-                          src={`https://endpoint.crowdsavetheworld.com/${
-                            eventdata.images || form.images[0]
-                          }`}
+                          src={`https://endpoint.crowdsavetheworld.com/${eventdata.images || form.images[0]
+                            }`}
                         />
                         <svg
                           onClick={() => {

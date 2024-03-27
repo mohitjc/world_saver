@@ -27,21 +27,20 @@ function ViewReport() {
   const GetData = () => {
     setLoading(true);
 
-    ApiClient.get(`/post?post_id=${id}`)
-      .then((res) => {
-        if (res?.data?.success) {
-          setData(res?.data?.data);
-          setComments(res?.data?.data?.comments);
-          setTotal(res?.data?.total);
-          setLoading(false);
-          //   history.goBack();
-        } else {
-        }
+    ApiClient.get(`/post?post_id=${id}`).then((res) => {
+      if (!res.success) {
+        history.goBack();
+      }
+      if (res?.data?.success) {
+        setData(res?.data?.data);
+        setComments(res?.data?.data?.comments);
+        setTotal(res?.data?.total);
         setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        //   history.goBack();
+      } else {
+      }
+      setLoading(false);
+    });
   };
 
   useEffect(() => {

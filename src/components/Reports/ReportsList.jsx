@@ -1,11 +1,75 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Loading from "../global/Loader";
 import Layout from "../global/Layout";
 import MainSidebar from "../global/MainSidebar";
 import SectionHeader from "../global/SectionHeader";
+import ApiClient from "../apiClient";
+import moment from "moment";
+import Pagination from "../global/Pagination";
+import swal from "sweetalert";
+import Axios from "axios";
 
 function ReportsList() {
   const [isLoading, setLoading] = useState(false);
+  const [listData, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [count, setCount] = useState(5);
+  let [filters, setfilters] = useState({
+    count: 5,
+    page: 1,
+    type: "post",
+  });
+  console.log(page, "=================");
+  const GetData = (p = {}) => {
+    setLoading(true);
+    let filter = { ...filters, ...p };
+    ApiClient.get("/reports", filter).then((res) => {
+      if (res.data?.success) {
+        setData(res?.data?.data);
+        setTotal(res?.data?.total);
+        setLoading(false);
+      }
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    GetData({ page: page });
+  }, [page]);
+
+  const DeleteReport = (id) => {
+    setLoading(true);
+    Axios.delete(
+      `https://endpoint.crowdsavetheworld.com/delete/report?id=${id}`
+    ).then((res) => {
+      if (res?.data?.success) {
+        setLoading(false);
+        swal(res?.data?.message);
+      }
+      setLoading(false);
+    });
+  };
+
+  const handleDelete = (id) => {
+    // console.log(item, 'itemitemitem');
+
+    // const token = localStorage.getItem('token');
+    swal({
+      title: "Are you sure?",
+      text: "you want to delete the report!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        DeleteReport(id);
+      } else {
+        return null;
+      }
+    });
+  };
+
   return (
     <Layout title="Posts">
       <MainSidebar />
@@ -15,6 +79,7 @@ function ReportsList() {
 
           <div className="row">
             <div className="col-12">
+              {/* reports */}
               <div className="card">
                 <div className="card-header">
                   <h4>
@@ -27,10 +92,10 @@ function ReportsList() {
               }}
               type="button"
             >
-              Add User
+              Add Userreports
             </button> */}
                   </h4>
-                  <div className="card-header-form">
+                  {/* <div className="card-header-form">
                     <form>
                       <div className="input-group">
                         <input
@@ -49,7 +114,7 @@ function ReportsList() {
                         </div>
                       </div>
                     </form>
-                  </div>
+                  </div> */}
                 </div>
                 {isLoading ? (
                   <Loading />
@@ -71,27 +136,38 @@ function ReportsList() {
 
                           <th>Action</th>
                         </tr>
-                        <tr>
-                          <td>Vikas Rajput</td>
-                          <td>Adult Content</td>
-                          <td>Report Reason description</td>
-                          <td>29 Feb 2028</td>
-                          <td>
-                            <button
-                              type="button"
-                              className="btn btn-icon btn-danger"
-                            >
-                              <i className="fas fa-trash" />
-                            </button>
-                          </td>
-                        </tr>
+                        {listData?.map((itm) => {
+                          return (
+                            <tr>
+                              <td>
+                                {itm?.reportedByDetails?.fullName || "--"}
+                              </td>
+                              <td>{itm?.reportType || "--"}</td>
+                              <td>{itm?.reason || "--"}</td>
+                              <td>
+                                {moment(itm?.createdAt).format("DD MMM YYYY")}
+                              </td>
+                              <td>
+                                <button
+                                  type="button"
+                                  className="btn btn-icon btn-danger"
+                                  onClick={() => {
+                                    handleDelete(itm?.id);
+                                  }}
+                                >
+                                  <i className="fas fa-trash" />
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </table>
                       {/* {users && isEmpty(users) && <EmptyState />} */}
                     </div>
                   </div>
                 )}
+                <Pagination total={total} setPage={setPage} page={page} />
                 {/* {users && !isEmpty(users) && (
-            <Pagination total={total} setPage={setPage} page={page} />
           )} */}
               </div>
             </div>

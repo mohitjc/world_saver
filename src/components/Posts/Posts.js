@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { isEmpty } from 'lodash';
+import React, { useState, useEffect } from "react";
+import { isEmpty } from "lodash";
 // import UserListItem from '../UserListItem';
-import Pagination from '../global/Pagination';
-import EmptyState from '../global/EmptyState';
-import Loading from '../global/Loader';
-import PostItems from './PostItems';
-import { Link } from 'react-router-dom';
+import Pagination from "../global/Pagination";
+import EmptyState from "../global/EmptyState";
+import Loading from "../global/Loader";
+import PostItems from "./PostItems";
+import { Link } from "react-router-dom";
 
 const Posts = ({
   handleFormVisibilty,
@@ -26,14 +26,13 @@ const Posts = ({
   toggleSort,
   page,
   count,
-  isRequesting
+  isRequesting,
 }) => {
-  const [keyword, setKeyword] = useState('');
-//   useEffect(() => {
-//     getSearchKeyword(keyword);
-//   }, [getSearchKeyword, keyword]);
-console.log('users', total);
-
+  const [keyword, setKeyword] = useState("");
+  //   useEffect(() => {
+  //     getSearchKeyword(keyword);
+  //   }, [getSearchKeyword, keyword]);
+  console.log("users", total);
 
   return (
     <div className="row">
@@ -60,7 +59,7 @@ console.log('users', total);
                     type="text"
                     className="form-control"
                     placeholder="Search"
-                    onChange={e => {
+                    onChange={(e) => {
                       setKeyword(e.target.value);
                       setPage(1);
                     }}
@@ -83,15 +82,15 @@ console.log('users', total);
                   <tr>
                     <th>#</th>
                     <th
-                      onClick={() => toggleSort('fullName')}
-                      style={{ cursor: 'pointer' }}
+                      onClick={() => toggleSort("fullName")}
+                      style={{ cursor: "pointer" }}
                     >
-                      User_post{' '}
-                      
+                      User_post{" "}
                     </th>
                     <th>Action</th>
                   </tr>
-                  {users && users.map((item, index) => (
+                  {users &&
+                    users.map((item, index) => (
                       <PostItems
                         key={item.id}
                         item={item}

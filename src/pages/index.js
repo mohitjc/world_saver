@@ -27,6 +27,7 @@ import Event from '../components/MyEventCurd/Event';
 import EvenForm from '../components/MyEventCurd/EvenForm';
 import EventNew from '../components/MyEventCurd/MyNewPart/EventNew';
 import EventList from '../components/MyEventCurd/MyNewPart/EventList';
+import ReportsList from '../components/Reports/ReportsList';
 
 const App = ({ authenticated }) => {
   // console.log('base', authenticated);
@@ -41,6 +42,8 @@ const App = ({ authenticated }) => {
         <PrivateRoute component={youtube} path="/youtube-management" exact />
         <PrivateRoute component={Advertise} path="/advertise" exact />
         <PrivateRoute component={PostData} path="/posts" exact />
+        <PrivateRoute component={ReportsList} path="/reports" exact />
+
         <PrivateRoute component={Category} path="/categories" exact />
         <PrivateRoute component={Articles} path="/articles" exact />
         <PrivateRoute component={Event} path="/event" exact />

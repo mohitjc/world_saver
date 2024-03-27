@@ -49,6 +49,7 @@ function ReportsList() {
     ).then((res) => {
       if (res?.data?.success) {
         setLoading(false);
+        GetData();
         swal(res?.data?.message);
       }
       setLoading(false);
@@ -174,6 +175,15 @@ function ReportsList() {
                                   }}
                                 >
                                   <i className="fas fa-trash" />
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn btn-icon btn-primary ml-2"
+                                  onClick={() => {
+                                    history.push(`/report/${itm?.eventId}`);
+                                  }}
+                                >
+                                  <i className="fas fa-eye" />
                                 </button>
                               </td>
                             </tr>

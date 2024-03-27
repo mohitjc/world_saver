@@ -43,7 +43,7 @@ const App = ({ authenticated }) => {
         <PrivateRoute component={Advertise} path="/advertise" exact />
         <PrivateRoute component={PostData} path="/posts" exact />
         <PrivateRoute component={ReportsList} path="/reports" exact />
-        <PrivateRoute component={ReportsList} path="/report/:id" exact />
+        {/* <PrivateRoute component={ViewReport} path="/report/:id" exact /> */}
 
         <PrivateRoute component={Category} path="/categories" exact />
         <PrivateRoute component={Articles} path="/articles" exact />

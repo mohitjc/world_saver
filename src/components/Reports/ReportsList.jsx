@@ -8,6 +8,8 @@ import moment from "moment";
 import Pagination from "../global/Pagination";
 import swal from "sweetalert";
 import Axios from "axios";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Swal from "sweetalert2";
 
 function ReportsList() {
   const [isLoading, setLoading] = useState(false);
@@ -15,6 +17,8 @@ function ReportsList() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [count, setCount] = useState(5);
+  const [reportForm, setReportForm] = useState({});
+  const history = useHistory();
   let [filters, setfilters] = useState({
     count: 5,
     page: 1,
@@ -71,7 +75,7 @@ function ReportsList() {
   };
 
   return (
-    <Layout title="Posts">
+    <Layout title="Reports">
       <MainSidebar />
       <div className="main-content">
         <section className="section">
@@ -139,7 +143,21 @@ function ReportsList() {
                         {listData?.map((itm) => {
                           return (
                             <tr>
-                              <td>
+                              <td
+                                onClick={async () => {
+                                  setReportForm(itm);
+                                  await Swal.fire({
+                                    title: "Report Details",
+                                    html: `
+                                    <label>Report Type</label>
+                                      <input id="swal-input1" value=${itm?.reportType} disabled class="swal2-input">
+                                    <label class="mt-3">Reason</label>
+                                      <input id="swal-input2" value=${itm?.reason} disabled class="swal2-input">
+                                    `,
+                                    focusConfirm: false,
+                                  });
+                                }}
+                              >
                                 {itm?.reportedByDetails?.fullName || "--"}
                               </td>
                               <td>{itm?.reportType || "--"}</td>

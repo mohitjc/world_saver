@@ -68,8 +68,12 @@ function ViewReport() {
     ).then((res) => {
       if (res?.data?.success) {
         swal(res?.data?.message);
+        GetData()
+        setLoading(false);
       }
+      setLoading(false);
     });
+
   };
 
   const handleDelete = (id) => {
@@ -97,149 +101,152 @@ function ViewReport() {
       <div className="main-content">
         <section className="section">
           <SectionHeader title={"Post"} />
+          {isLoading ? (
+            <Loading />
+          ) :
+            <div class="mt-4 mb-5">
+              <div class="container">
+                <div class="col-md-8 mb-4">
+                  <section class="border-bottom mb-4">
+                    <img
+                      src={
+                        listData?.image
+                          ? `https://endpoint.crowdsavetheworld.com/${listData?.image[0]?.imagePath}`
+                          : `https://mdbootstrap.com/img/Photos/Slides/img%20(144).jpg`
+                      }
+                      class="img-fluid shadow-2-strong rounded mb-4"
+                      alt=""
+                    />
 
-          <div class="mt-4 mb-5">
-            <div class="container">
-              <div class="col-md-8 mb-4">
-                <section class="border-bottom mb-4">
-                  <img
-                    src={
-                      listData?.image
-                        ? `https://endpoint.crowdsavetheworld.com/${listData?.image[0]?.imagePath}`
-                        : `https://mdbootstrap.com/img/Photos/Slides/img%20(144).jpg`
-                    }
-                    class="img-fluid shadow-2-strong rounded mb-4"
-                    alt=""
-                  />
-
-                  <div class="row align-items-center mb-4">
-                    <div class="col-lg-6 text-center text-lg-start mb-3 m-lg-0">
-                      <img
-                        style={{
-                          borderRadius: "50%",
-                          width: "70px",
-                          height: "70px",
+                    <div class="row align-items-center mb-4">
+                      <div class="col-lg-6 text-center text-lg-start mb-3 m-lg-0">
+                        <img
+                          style={{
+                            borderRadius: "50%",
+                            width: "70px",
+                            height: "70px",
+                          }}
+                          src={
+                            listData?.createdBy?.image
+                              ? `https://endpoint.crowdsavetheworld.com/` +
+                              listData?.createdBy?.image
+                              : `https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg`
+                          }
+                          height="35"
+                          alt=""
+                          loading="lazy"
+                        />
+                        <span>
+                          {" "}
+                          Published{" "}
+                          <u>
+                            {moment(listData?.createdAt).format("DD-MMM-YYYY")}
+                          </u>{" "}
+                          by
+                        </span>
+                        <a href="" class="text-dark">
+                          {listData?.createdBy?.fullName}
+                        </a>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-icon btn-danger"
+                        onClick={() => {
+                          handleDelete();
+                          // handleDelete(itm?.id);
                         }}
-                        src={
-                          listData?.createdBy?.image
-                            ? `https://endpoint.crowdsavetheworld.com/` +
+                      >
+                        <i className="fas fa-trash" />
+                      </button>
+                    </div>
+                  </section>
+
+                  <section class="border-bottom mb-4 pb-4">
+                    <div class="row">
+                      <div class="col-3">
+                        <img
+                          src={
                             listData?.createdBy?.image
-                            : `https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg`
-                        }
-                        height="35"
-                        alt=""
-                        loading="lazy"
-                      />
-                      <span>
-                        {" "}
-                        Published{" "}
-                        <u>
-                          {moment(listData?.createdAt).format("DD-MMM-YYYY")}
-                        </u>{" "}
-                        by
-                      </span>
-                      <a href="" class="text-dark">
-                        {listData?.createdBy?.fullName}
-                      </a>
+                              ? `https://endpoint.crowdsavetheworld.com/` +
+                              listData?.createdBy?.image
+                              : `https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg`
+                          }
+                          class="img-fluid shadow-1-strong rounded"
+                          alt=""
+                        />
+                      </div>
+
+                      <div class="col-9">
+                        <p class="mb-2">
+                          <strong>{listData?.createdBy?.fullName}</strong>
+                        </p>
+                        <a href="" class="text-dark">
+                          <i class="fab fa-facebook-f me-1"></i>
+                        </a>
+                        <a href="" class="text-dark">
+                          <i class="fab fa-twitter me-1"></i>
+                        </a>
+                        <a href="" class="text-dark">
+                          <i class="fab fa-linkedin me-1"></i>
+                        </a>
+                        <p>{listData?.createdBy?.aboutme}</p>
+                      </div>
                     </div>
-                    <button
-                      type="button"
-                      className="btn btn-icon btn-danger"
-                      onClick={() => {
-                        handleDelete();
-                        // handleDelete(itm?.id);
-                      }}
-                    >
-                      <i className="fas fa-trash" />
-                    </button>
-                  </div>
-                </section>
+                  </section>
 
-                <section class="border-bottom mb-4 pb-4">
-                  <div class="row">
-                    <div class="col-3">
-                      <img
-                        src={
-                          listData?.createdBy?.image
-                            ? `https://endpoint.crowdsavetheworld.com/` +
-                            listData?.createdBy?.image
-                            : `https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg`
-                        }
-                        class="img-fluid shadow-1-strong rounded"
-                        alt=""
-                      />
-                    </div>
+                  <section class="border-bottom mb-3">
+                    <p class="text-center">
+                      <strong>Comments: {comments?.length}</strong>
+                    </p>
 
-                    <div class="col-9">
-                      <p class="mb-2">
-                        <strong>{listData?.createdBy?.fullName}</strong>
-                      </p>
-                      <a href="" class="text-dark">
-                        <i class="fab fa-facebook-f me-1"></i>
-                      </a>
-                      <a href="" class="text-dark">
-                        <i class="fab fa-twitter me-1"></i>
-                      </a>
-                      <a href="" class="text-dark">
-                        <i class="fab fa-linkedin me-1"></i>
-                      </a>
-                      <p>{listData?.createdBy?.aboutme}</p>
-                    </div>
-                  </div>
-                </section>
-
-                <section class="border-bottom mb-3">
-                  <p class="text-center">
-                    <strong>Comments: {comments?.length}</strong>
-                  </p>
-
-                  {comments &&
-                    comments?.map((itm) => {
-                      return (
-                        <div class="row mb-4">
-                          <div class="col-2">
-                            <img
-                              style={{
-                                borderRadius: "50%",
-                                width: "50px",
-                                height: "50px",
-                              }}
-                              src={
-                                itm?.createdBy?.image
-                                  ? `https://endpoint.crowdsavetheworld.com/` +
+                    {comments &&
+                      comments?.map((itm) => {
+                        return (
+                          <div class="row mb-4">
+                            <div class="col-2">
+                              <img
+                                style={{
+                                  borderRadius: "50%",
+                                  width: "50px",
+                                  height: "50px",
+                                }}
+                                src={
                                   itm?.createdBy?.image
-                                  : `https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg`
-                              }
-                              alt=""
-                            />
-                          </div>
+                                    ? `https://endpoint.crowdsavetheworld.com/` +
+                                    itm?.createdBy?.image
+                                    : `https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg`
+                                }
+                                alt=""
+                              />
+                            </div>
 
-                          <div class="col-10">
-                            <p class="mb-2">
-                              <strong>{itm?.createdBy?.fullName}</strong>
-                            </p>
-                            <p>{itm?.post_comment}</p>
-                            <p>
-                              {moment(itm?.createdAt).format("DD-MMM-YYYY")}
-                            </p>
+                            <div class="col-10">
+                              <p class="mb-2">
+                                <strong>{itm?.createdBy?.fullName}</strong>
+                              </p>
+                              <p>{itm?.post_comment}</p>
+                              <p>
+                                {moment(itm?.createdAt).format("DD-MMM-YYYY")}
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              className="btn btn-icon btn-danger"
+                              onClick={() => {
+                                DeleteCOmment(itm?.id);
+                                // handleDelete(itm?.id);
+                              }}
+                            >
+                              <i className="fas fa-trash" />
+                            </button>
                           </div>
-                          <button
-                            type="button"
-                            className="btn btn-icon btn-danger"
-                            onClick={() => {
-                              DeleteCOmment(itm?.id);
-                              // handleDelete(itm?.id);
-                            }}
-                          >
-                            <i className="fas fa-trash" />
-                          </button>
-                        </div>
-                      );
-                    })}
-                </section>
+                        );
+                      })}
+                  </section>
+                </div>
               </div>
             </div>
-          </div>
+          }
         </section>
       </div>
     </Layout>

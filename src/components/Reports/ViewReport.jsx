@@ -123,7 +123,7 @@ function ViewReport() {
                         src={
                           listData?.createdBy?.image
                             ? `https://endpoint.crowdsavetheworld.com/` +
-                              listData?.createdBy?.image
+                            listData?.createdBy?.image
                             : `https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg`
                         }
                         height="35"
@@ -162,7 +162,7 @@ function ViewReport() {
                         src={
                           listData?.createdBy?.image
                             ? `https://endpoint.crowdsavetheworld.com/` +
-                              listData?.createdBy?.image
+                            listData?.createdBy?.image
                             : `https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg`
                         }
                         class="img-fluid shadow-1-strong rounded"
@@ -207,7 +207,7 @@ function ViewReport() {
                               src={
                                 itm?.createdBy?.image
                                   ? `https://endpoint.crowdsavetheworld.com/` +
-                                    itm?.createdBy?.image
+                                  itm?.createdBy?.image
                                   : `https://surgassociates.com/wp-content/uploads/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg`
                               }
                               alt=""

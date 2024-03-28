@@ -151,9 +151,9 @@ function ReportsList() {
                                     title: "Report Details",
                                     html: `
                                     <label>Report Type</label>
-                                      <input id="swal-input1" value=${itm?.reportType} disabled class="swal2-input">
+                                    <p>${itm?.reportType}</p>
                                     <label class="mt-3">Reason</label>
-                                      <input id="swal-input2" value=${itm?.reason} disabled class="swal2-input">
+                                      <p>${itm?.reason}</p>
                                     `,
                                     focusConfirm: false,
                                   });

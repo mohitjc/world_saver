@@ -20,8 +20,8 @@ function ReportsList() {
   const [reportForm, setReportForm] = useState({});
   const history = useHistory();
   let [filters, setfilters] = useState({
-    count: 5,
-    page: 1,
+    // count: 5,
+    // page: 1,
     type: "post",
   });
   console.log(page, "=================");

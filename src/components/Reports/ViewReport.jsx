@@ -28,7 +28,7 @@ function ViewReport() {
     setLoading(true);
 
     ApiClient.get(`/post?post_id=${id}`).then((res) => {
-      if (!res.success) {
+      if (!res.data) {
         history.goBack();
       }
       if (res?.data?.success) {

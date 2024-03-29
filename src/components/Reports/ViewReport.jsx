@@ -110,8 +110,8 @@ function ViewReport() {
                   <section class="border-bottom mb-4">
                     <img
                       src={
-                        listData?.image
-                          ? `https://endpoint.crowdsavetheworld.com/${listData?.image[0]?.imagePath}`
+                        listData?.images
+                          ? `https://endpoint.crowdsavetheworld.com/${listData?.images[0]?.imagePath}`
                           : `https://mdbootstrap.com/img/Photos/Slides/img%20(144).jpg`
                       }
                       class="img-fluid shadow-2-strong rounded mb-4"

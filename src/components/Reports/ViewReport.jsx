@@ -119,6 +119,7 @@ function ViewReport() {
                     />
 
                     <div class="row align-items-center mb-4">
+                      <p>{listData?.post}</p>
                       <div class="col-lg-6 text-center text-lg-start mb-3 m-lg-0">
                         <img
                           style={{

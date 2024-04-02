@@ -167,6 +167,8 @@ const UserListItem = ({
                   <label>Reason</label>
                 </div>
                 <textarea
+                  required
+                  value={form?.reason}
                   onChange={(e) => {
                     setform({ ...form, reason: e.target.value });
                   }}

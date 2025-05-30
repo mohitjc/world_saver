@@ -5,7 +5,8 @@ import Pagination from '../global/Pagination';
 import ListItem from './LisItem';
 import EmptyState from '../global/EmptyState';
 import Loading from '../global/Loader';
-
+import Thumbnail from './Thumbnail';
+import Popup from 'reactjs-popup'
 const Listing = ({
   handleFormVisibilty,
   handAddFormToggle,
@@ -32,6 +33,15 @@ const Listing = ({
     getSearchKeyword(keyword);
   }, [getSearchKeyword, keyword]);
   // console.log('total', total);
+
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const handleExperience = (e) =>{
+    setIsModalOpen(true)
+  }
 
   return (
     <div className="row">
@@ -109,6 +119,7 @@ const Listing = ({
                         getStatus={getStatus}
                         page={page}
                         count={count}
+                        handleExperience={handleExperience} 
                       />
                     ))}
                 </table>
@@ -120,6 +131,35 @@ const Listing = ({
             <Pagination total={total} setPage={setPage} />
           )}
         </div>
+        
+        {isModalOpen && (
+  <Popup
+    modal
+    open={isModalOpen}
+    onClose={() => setIsModalOpen(false)}
+    contentStyle={{
+      padding: '0', // Remove default padding
+    }}
+    overlayStyle={{
+      background: 'rgba(0, 0, 0, 0.5)', // Optional: dim background
+    }}
+  >
+    <div
+      // style={{
+      //   minWidth: '700px',
+      //   minHeight : "400px",
+      //   backgroundColor: '#fff',
+      //   padding: '1.25rem', // 
+      //   borderRadius: '1rem', // Equivalent to rounded-2xl
+      //   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Equivalent to shadow-lg
+      // }}
+    >
+      
+      <Thumbnail isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
+    </div>
+  </Popup>
+)}
+
       </div>
     </div>
   );

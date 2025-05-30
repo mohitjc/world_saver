@@ -3,6 +3,8 @@ import swal from 'sweetalert';
 import dayjs from 'dayjs';
 import { items } from '../../store/actions/youtubeActions';
 import { trimEnd } from 'lodash';
+import Thumbnail from './Thumbnail';
+import Popup from 'reactjs-popup';
 
 const ListItem = ({
   item,
@@ -16,7 +18,8 @@ const ListItem = ({
   featrued,
   changeStatus,
   getStatus,
-  count
+  count,
+  
 }) => {
   const handleDelete = () => {
     const token = localStorage.getItem('token');
@@ -75,6 +78,15 @@ const ListItem = ({
       }
     });
   }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const handleExperience = (e) =>{
+    setIsModalOpen(true)
+  }
+
+  
  
   return (
     <tr>
@@ -136,11 +148,46 @@ const ListItem = ({
         >
           Feature
         </button>}
+        <button
+        type='button'
+        className="btn btn-icon btn-secondary m-2 text-center"
+        onClick={()=>handleExperience(true)}
+        style={{height:'7vh'}}
+        >Experience</button>
+         {isModalOpen && (
+  <Popup
+    modal
+    open={isModalOpen}
+    onClose={() => setIsModalOpen(false)}
+    contentStyle={{
+      padding: '0', // Remove default padding
+    }}
+    overlayStyle={{
+      background: 'rgba(0, 0, 0, 0.5)', // Optional: dim background
+    }}
+  >
+    <div
+      // style={{
+      //   minWidth: '700px',
+      //   minHeight : "400px",
+      //   backgroundColor: '#fff',
+      //   padding: '1.25rem', // 
+      //   borderRadius: '1rem', // Equivalent to rounded-2xl
+      //   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Equivalent to shadow-lg
+      // }}
+    >
+      
+      <Thumbnail isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} videoUrl={item.url}/>
+    </div>
+  </Popup>
+)}
+        
 
         
         </div>
       </td>
     </tr>
+    
   );
 };
 

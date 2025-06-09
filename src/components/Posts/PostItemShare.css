@@ -1,0 +1,12 @@
+
+.modal-body.box {
+  box-shadow: 1px 1px  #dadcde;
+}
+button.ant-btn.ant-btn-primary.login-form-button {
+
+  background: #113b5e;
+  border-color: #113b5e;
+}
+.close{
+  color:gray !important;
+}

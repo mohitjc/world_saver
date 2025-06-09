@@ -1,0 +1,71 @@
+.type_video {
+  color: #fff !important;
+  position: relative;
+
+  &:after {
+    content: '\f04b';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    width: 50px;
+    margin: -25px auto 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    font-family: 'FontAwesome';
+    font-size: 14px;
+    line-height: 50px;
+    text-align: center;
+    transition: background-color 0.25s ease-in-out;
+    z-index: 1;
+  }
+}
+
+.type_audio {
+  position: relative;
+
+  &:after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(../../../assets/img/music-icon.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 33px;
+  }
+}
+
+.image_modal_image {
+  object-fit: cover;
+  object-position: center center;
+  // z-index: 2px;
+  width: 100%;
+}
+
+.image_modal {
+  // z-index: 2px;
+  background-color: #00000042;
+}
+
+@media (max-width: 991px) {
+  .main--sidebar .widget {
+    padding: 15px !important;
+  }
+
+  .main--sidebar .widget h4,
+  .main--sidebar .widget--title {
+    font-size: 18px;
+  }
+
+  .photos-row>*>img {
+    height: 50px;
+  }
+}
+
+img.card-img-top {
+  // height: 70px;
+}

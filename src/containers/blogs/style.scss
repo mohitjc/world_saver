@@ -1,0 +1,35 @@
+@import '../../assets/scss/mixins.scss';
+
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label1 {
+  font-size: 16px;
+}
+
+
+.blog-category-ul {
+  a {
+    display: block;
+    padding: 6px 15px;
+    padding-left: 30px;
+    line-height: normal;
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+
+    > i {
+      position: absolute;
+      top: 8px;
+      left: 5px;
+    }
+
+    &:hover,
+    &.active {
+      color: #ffffff !important;
+      background-color: $primaryColor;
+    }
+  }
+}

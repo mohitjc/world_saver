@@ -1,0 +1,246 @@
+.rightsidebar {
+  //   padding: 15px;
+  position: fixed;
+  right: 0;
+  top: 84px;
+  width: 250px;
+  background-color: #fff;
+  z-index: 9999999999;
+  min-height: 100%;
+
+  .close-btn {
+    // font-size: 18px;
+    cursor: pointer;
+    display: inline-block;
+    // padding: 10px;
+  }
+
+  .userlist {
+    height: calc(100vh - 126px);
+    overflow: auto;
+
+    .user-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      color: #000;
+      font-weight: 600;
+
+      >img {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        object-position: center top;
+        border-radius: 50%;
+      }
+
+      >span {
+        padding-left: 10px;
+        width: calc(100% - 30px);
+      }
+
+      &:hover {
+        background-color: #ecececee;
+      }
+    }
+  }
+}
+
+.user-item {
+  position: relative;
+
+  .count {
+    position: absolute;
+    left: 6px;
+    top: 5px;
+    background-color: red;
+    height: 16px;
+    width: 16px;
+    font-size: 9px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
+
+.no_image {
+  text-align: center;
+  padding: 0 15px;
+
+  img {
+    width: 100%;
+    max-width: 139px;
+  }
+}
+
+.youtubeCard {
+  height: 280px;
+}
+
+.message-heading {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background: #113b5e;
+  color: #fff;
+}
+
+.message-heading h5 {
+  margin-bottom: 0px !important;
+  line-height: initial;
+}
+
+.icon_scroll {
+  display: none !important;
+}
+
+.icon_scroll2 {
+  display: none !important;
+}
+
+.main_row {
+  position: relative;
+}
+
+.list_row22 {
+  display: none;
+}
+
+@media(max-width:991px) {
+  .notification_dropdown .dropdown-menu {
+    width: 300px;
+    left: -152% !important;
+    right: initial !important;
+    transform: translateX(-50%) !important;
+    top: 45px !important;
+  }
+
+  .bgnotification2 i.fa.fa-bell.menuh-size {
+    color: #183a5e !important;
+    max-width: 0px 5px !important;
+  }
+
+  .list_row22 {
+    display: block;
+  }
+
+
+  .list_flex i.fa.fa-bell.menuh-size {
+    color: #fff !important;
+    font-size: 20px;
+    margin: 16px 10px;
+    margin-right: 5px !important;
+  }
+
+  .list_flex i.fa.fa-comments.menuh-size.pt-0 {
+    color: #fff !important;
+    font-size: 20px;
+    margin: 0px 10px;
+    margin-left: 5px !important;
+  }
+
+  .commentss2 {
+    padding: 3px 5px 3px 7px !important;
+    height: auto;
+    border-radius: 50%;
+    height: 29px;
+    color: #183a5e !important;
+    width: 30px;
+    font-size: 13px;
+  }
+
+  .list_flex {
+    display: flex;
+    margin-right: 22px;
+    align-items: center;
+  }
+
+  .bgnotification2 {
+    background: none !important;
+  }
+}
+
+@media(max-width:575px) {
+  .list_row {
+    display: flex;
+    overflow: auto;
+    padding-bottom: 10px !important;
+    margin: 0px 24px;
+  }
+  .list_name {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+  .text-truncate {
+    min-width: 130px !important;
+    width: 130px !important;
+  }
+
+  a.mt-2.show-more-btn {
+    margin-top: 0px !important;
+    display: flex;
+    justify-content: end;
+    margin-bottom: 5px;
+  }
+
+  .d-flex.bgmain {
+    display: unset !important;
+  }
+
+  .text-truncate.ml-3.mt-2 {
+    margin-top: 0px !important;
+    margin-left: 0px !important;
+    text-align: center;
+  }
+
+  .list_row a {
+    margin-right: 8px;
+  }
+
+  .icon_scroll {
+    display: block !important;
+  }
+
+  .icon_scroll2 {
+    display: block !important;
+  }
+
+  .icon_scroll {
+    position: absolute;
+    left: -4px;
+    top: 12px;
+    background: #eee;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 4px 8px #eee;
+    font-size: 17px !important;
+    padding: 3px;
+  }
+
+  .icon_scroll2 {
+    position: absolute;
+    right: -4px;
+    top: 12px;
+    background: #eee;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 0px 4px 8px #eee;
+    font-size: 17px !important;
+    padding: 3px;
+  }
+
+  .icon_scroll:hover {
+    background: #183a5e;
+    color: #fff;
+  }
+
+  .icon_scroll2:hover {
+    background: #183a5e;
+    color: #fff;
+  }
+}

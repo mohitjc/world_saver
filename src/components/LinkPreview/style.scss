@@ -1,0 +1,45 @@
+.linkPreview {
+    width: 100%;
+    min-width: 250px;
+    max-width: 300px;
+
+    p.shine {
+        min-height: 100px;
+    }
+
+    .lpBottom {
+        display: flex;
+        align-items: center;
+    }
+
+    .favImg {
+        margin-right: 10px;
+        max-width: 30px;
+    }
+}
+
+.linkpreviewlist {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: center;
+
+    >* {
+        width: fit-content;
+    }
+}
+
+@media(min-width:768px) {
+    .linkPreview {
+        display: flex;
+        min-width: 650px;
+
+        >img {
+            width: 50% !important;
+        }
+
+        >.p-2 {
+            width: 50%;
+        }
+    }
+}

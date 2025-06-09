@@ -1,0 +1,148 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.steps {
+  position: relative;
+  padding: 0 15px;
+  counter-reset: steps;
+  text-align: center;
+}
+
+.rotate180 {
+  transform: rotate(180deg);
+}
+
+.steps::before {
+  position: absolute;
+  content: '';
+  height: 1px;
+  background-color: #00000045;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+}
+
+.ImageAPI {
+  height: 600px;
+  overflow-y: auto;
+}
+
+.steps>li {
+  position: relative;
+  margin: 0 5px;
+  height: 30px;
+  width: 30px;
+  box-shadow: 0 0 4px 0px #00000047;
+  width: 30px;
+  background-color: #fff;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 14px;
+  color: #000;
+  display: inline-block;
+}
+
+.steps>li::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  counter-increment: steps;
+  content: counter(steps);
+}
+
+.steps>li.active {
+  background-color: blue;
+  color: #fff;
+}
+
+.upload-input {
+  position: relative;
+}
+
+.upload-input>input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.up-image {
+  display: inline-block;
+  position: relative;
+}
+
+.up-image.banner>img {
+  max-width: 170px;
+}
+
+.up-image>.crose {
+  position: absolute;
+  top: -15px;
+  font-size: 20px;
+  right: -6px;
+  color: red;
+}
+
+.justify-center {
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.center-alignment {
+  justify-content: center;
+}
+
+/* .tag:hover {
+  color: #fff !important;
+} */
+
+.tag::after {
+  background: #fff;
+  border-bottom: 13px solid transparent;
+  border-left: 10px solid transparent !important;
+  border-top: 13px solid transparent;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* .main--sidebar.col-md-4 {
+  z-index: 999;
+} */
+
+/* .main--sidebar.col-md-3 {
+  z-index: 999;
+} */
+
+.inline-detail {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 0;
+}
+.card_img {
+  position: relative;
+}
+.heart_img {
+  position: absolute;
+  right: 12px;
+  font-size: 16px;
+  color: red;
+  bottom: 12px;
+}
+.heart_white {
+  position: absolute;
+  right: 12px;
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  bottom: 12px;
+}
+h2.heading {
+  font-size: 24px;
+}

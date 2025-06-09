@@ -1,0 +1,114 @@
+.post-wrapper {
+  background: #e5e5e5;
+  text-align: center;
+  border-radius: 8px;
+  border: #ebebeb solid 1px;
+}
+
+.shareBytxt {
+  font-size: 10px;
+}
+
+.iconclo {
+  color: green;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.prevImg {
+  padding-right: 7px;
+}
+
+.prevImg img {
+  width: 70px;
+}
+
+.choose_file {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  border: #ebebeb solid 1px;
+  padding: 4px 6px 4px 8px;
+  font: normal 14px Myriad Pro, Verdana, Geneva, sans-serif;
+  color: #7f7f7f;
+  margin-top: 2px;
+  background: #e5e5e5;
+}
+
+.choose_file input[type='file'] {
+  -webkit-appearance: none;
+  position: absolute;
+  top: 0;
+  left: -98px;
+  opacity: 0;
+  cursor: inherit;
+  width: 14rem;
+}
+
+/* image preview after upload */
+
+.upload-post-image-video img {
+  max-width: 200px;
+  max-height: 200px;
+  padding: 5px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.share-dropdown {
+  height: 24px;
+  margin-left: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  background: #e5e5e5;
+  border-color: #e5e5e5;
+}
+
+@supports (object-fit: cover) {
+  .upload-post-image-video img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    display: inline-block;
+  }
+}
+
+.activity_content_item {
+  width: 50%;
+  height: 250px;
+  object-fit: cover;
+  object-position: center center;
+  background-color: #000;
+}
+
+.share-with-modal-option {
+  height: 40px;
+  border-bottom: 1px solid #eaeaea;
+  font-size: 14px;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+}
+
+.share-with-modal-option .fa {
+  padding: 10px
+}
+
+.share-with-modal-option:hover {
+  background: #c6e5ff;
+  border-radius: 10px;
+}
+
+.modal-img {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+
+.postdc {
+  font-size: 16px;
+}

@@ -16,7 +16,9 @@ import {
   GET_BLOGS,
   GET_SINGLE_BLOG,
   DELETE_SINGLE_BLOG,
-  BLOG_IMAGE_UPLOAD
+  BLOG_IMAGE_UPLOAD,
+  BLOG_VIDEO_UPLOAD,
+  VIDEO_UPLOAD_API
 } from '../constants';
 import { checkHttpStatus, parseJSON } from '../../utils/helpers';
 import { getRequest, getSuccess, getFailure, reset } from './index';
@@ -242,6 +244,64 @@ export function uploadImage(obj, token) {
       });
   };
 }
+
+
+//for Video Upload
+export function uploadVideo(obj, token) {
+  return dispatch => {
+    // Dispatch request action
+    dispatch(getRequest(BLOG_VIDEO_UPLOAD.BLOG_VIDEO_UPLOAD_REQUEST));
+
+    // Define the API endpoint for video upload
+    const getUrl = `${VIDEO_UPLOAD_API}`;
+
+    // Set the authorization headers (do NOT set Content-Type here, let the browser handle it)
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    };
+
+
+    // Make the POST request to upload the video
+    AXIOS_INSTANCE.post(getUrl, obj, config)
+      .then(checkHttpStatus) // Check if the status code is okay
+      .then(parseJSON) // Parse the JSON response
+      .then(data => {
+        console.log('uploadVideo', data);
+        if (data.success) {
+          // Dispatch success action if the upload is successful
+          dispatch(
+            getSuccess(BLOG_VIDEO_UPLOAD.BLOG_VIDEO_UPLOAD_SUCCESS, data)
+          );
+        }
+      })
+      .catch(error => {
+        console.log('error', error.response);
+
+        // Extract the error message and dispatch failure action
+        const errorMessage =
+          error.response &&
+          error.response.data &&
+          error.response.data.error_description
+            ? error.response.data.error_description
+            : 'Something went wrong!';
+        
+        dispatch(
+          getFailure(BLOG_VIDEO_UPLOAD.BLOG_VIDEO_UPLOAD_FAILURE, {
+            data: {
+              statusCode: 403,
+              message: errorMessage
+            }
+          })
+        );
+      });
+  };
+}
+
+
+
+
 
 // resets the blog
 

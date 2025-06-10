@@ -120,7 +120,7 @@ const ImageUpload = ({
     reader.readAsDataURL(file);
     reader.onload = function() {
       const token = localStorage.getItem('token');
-
+      console.log(type)
       dispatch(uploadImage({ type: type, data: reader.result }, token));
     };
     reader.onerror = function(error) {
@@ -144,8 +144,10 @@ const ImageUpload = ({
                       <div style={thumbInner}>
                         <img
                           src={`${API_SLUG}/images/${type}/${value}`}
+                          
                           style={img}
                         />
+                        {console.log(`${API_SLUG}/images/${type}/${value}`)}
                       </div>
                     </div>
                   ) : placeholder ? (

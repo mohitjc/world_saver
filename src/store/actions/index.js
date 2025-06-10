@@ -11,7 +11,9 @@
 
 // handle state when request is send and resposen is awaited
 export function getRequest(REQUEST) {
+  {console.log(REQUEST)}
   return {
+    
     type: REQUEST
   };
 }

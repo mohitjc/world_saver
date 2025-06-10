@@ -172,7 +172,8 @@ export function items(token, type, page, count, sortType, sort, search) {
   };
 }
 
-// get single
+
+
 
 export function single(id, token) {
   return dispatch => {

@@ -50,6 +50,7 @@ import blogUpdate from './blogUpdateReducer';
 import blogs from './getBlogsReducer';
 import blog from './singleBlogReducer';
 import imageUpload from './imageUploadReducer';
+import videoUpload from './VideouploadReducer';
 import deleteBlog from './deleteBlogReducer';
 
 import skillsAdd from './skillAddReducer';
@@ -164,6 +165,7 @@ const rootReducer = combineReducers({
   profile,
   catByType,
   inviteListUser,
+  videoUpload,
 });
 
 export default rootReducer;

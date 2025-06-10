@@ -21,6 +21,8 @@ import {
 import ImageUpload from '../global/ImageUpload';
 import TagInput from '../global/TagInput';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import VideoUpload from '../global/VideoUpload';
+
 
 const Form = ({
   handleFormVisibilty,
@@ -95,6 +97,11 @@ useEffect(()=>{
 
   const getImage = value => {
     setFieldValue('image', value);
+    
+  };
+  const getVideo = value => {
+    setFieldValue('video', value);
+   
   };
 
   // console.log('values', values);
@@ -133,8 +140,12 @@ useEffect(()=>{
               <button
               type="button"
               className="btn btn-danger"
-              onClick={()=>{
-                setFieldValue('image','')
+              onClick={()=>{{
+                setFieldValue('image','');
+                
+              }
+                
+                
               }}
               >
               Remove Image
@@ -184,7 +195,35 @@ useEffect(()=>{
                   </div>
                 )}
               </div>
+              <div>
+                {console.log(values)}
+              <VideoUpload
+              getVideo={getVideo}
+              type="youtube"
+              value={values?.video}
+            />{
+              values?.video? 
+              
+              <button
+              type="button"
+              className="btn btn-danger"
+              onClick={()=>{
+                setFieldValue('video','')
+              }}
+              >
+              Remove Video
+            </button> : null
+            }
 
+
+  
+  
+
+
+
+
+
+              </div>
               <div className="form-group col-md-12 mb-3">
                 <label>URL</label>
                 <input
@@ -252,21 +291,23 @@ useEffect(()=>{
 const CatgeoryFormFormik = withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ singleData }) => {
-    // console.log('singleCategoryData', singleCategoryData);
     return {
-      title: (singleData && singleData.title) || '',
-      image: (singleData && singleData.image) || '',
-      description: (singleData && singleData.description) || '',
-      url: (singleData && singleData.url) || '',
-      tags: (singleData && singleData.tags) || '',
+      title: singleData?.title || '',
+      image: singleData?.image || '',
+      description: singleData?.description || '',
+      url: singleData?.url || '',
+      tags: singleData?.tags || '',
+      video: singleData?.video || '' // Added video field to be pre-filled
     };
   },
+  
 
   validationSchema: yupObject().shape({
     title: yupString().required(),
     image: yupString(),
     description:yupString().required(),
-    url:yupString().required()
+    url:yupString().required(),
+    video: yupString()
   }),
   handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     // const { router } = props;
@@ -279,7 +320,8 @@ const CatgeoryFormFormik = withFormik({
           image:values.image?values.image:'',
           description: values.description,
           url:values.url,
-          tags: values.tags  
+          tags: values.tags ,
+          video: values.video || ''
         },
         token
       );
@@ -290,7 +332,8 @@ const CatgeoryFormFormik = withFormik({
           image:values.image?values.image:'',
           description: values.description,
           url:values.url,
-          tags: values.tags
+          tags: values.tags,
+          video: values.video || ''
         },
         props.Id,
         token

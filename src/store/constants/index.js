@@ -359,6 +359,15 @@ export const BLOG_IMAGE_UPLOAD = {
   BLOG_IMAGE_UPLOAD_RESET: 'BLOG_IMAGE_UPLOAD_RESET',
 };
 
+// constants.js or your relevant constants file
+export const BLOG_VIDEO_UPLOAD = {
+  BLOG_VIDEO_UPLOAD_REQUEST: 'VIDEO_UPLOAD_REQUEST',
+  BLOG_VIDEO_UPLOAD_SUCCESS: 'VIDEO_UPLOAD_SUCCESS',
+  BLOG_VIDEO_UPLOAD_FAILURE: 'VIDEO_UPLOAD_FAILURE',
+  BLOG_VIDEO_UPLOAD_RESET: 'VIDEO_UPLOAD_RESET',
+};
+
+
 export const CHANGE_STATUS = {
   CHANGE_STATUS_REQUEST: 'CHANGE_STATUS_REQUEST',
   CHANGE_STATUS_SUCCESS: 'CHANGE_STATUS_SUCCESS',
@@ -575,6 +584,7 @@ export const ALL_BLOGS_API = `${API_SLUG}/blogs`;
 export const BLOG_API = `${API_SLUG}/blogs`;
 export const DELETE_API = `${API_SLUG}/delete`;
 export const IMAGE_UPLOAD_API = `${API_SLUG}/upload`;
+export const VIDEO_UPLOAD_API = `${API_SLUG}/uploadVideos`;
 export const CHANGE_STATUS_API = `${API_SLUG}/changestatus`;
 export const TOTAL_COUNT_API = `${API_SLUG}/totalcount`;
 export const USER_COUNT_API = `${API_SLUG}/usercount`;

@@ -62,6 +62,8 @@ const RightWidgets = (props) => {
     });
   }, []);
 
+  const [activeVideoId, setActiveVideoId] = useState(null);
+
   const journeySearchHandler = (event) => {
     event.preventDefault();
     const searchInputValue = searchInput.current.value;
@@ -179,36 +181,39 @@ const RightWidgets = (props) => {
                           </span>
                         </span>
                         <div
-                          className={`youtubeDiv ${
-                            videoPlayer.video ==
-                              methodModel.getYoutubeId1(item.url) && 'active'
-                          }`}
+                          // className={`youtubeDiv ${
+                          //   videoPlayer.video ==
+                          //     methodModel.getYoutubeId1(item.url) && 'active'
+                          // }`}
                           id="youtubeDiv"
-                          onClick={() =>
-                            youtubeClick(methodModel.getYoutubeId1(item.url))
-                          }
+                          // onClick={() =>
+                          //   youtubeClick(methodModel.getYoutubeId1(item.url))
+                          // }
                         >
-                          <img
-                            className="card-img-top"
-                            src={
-                              item.image
-                                ? `${apiUrl}/images/youtube/${item.image}`
-                                : `https://img.youtube.com/vi/${methodModel.getYoutubeId1(
-                                    item.url
-                                  )}/sddefault.jpg`
-                            }
-                            alt="Card cap"
-                          />
-
-                          {videoPlayer.video !=
-                          methodModel.getYoutubeId1(item.url) ? (
-                            <img
-                              src="/assets/img/youtubeIcon.png"
-                              className="youtubeIcon"
-                            />
-                          ) : (
-                            <></>
-                          )}
+                          {activeVideoId !== item.id ? (
+                                                        <img
+                                                          src={`${apiUrl}/images/youtube/${item.image}`}
+                                                          className="card-img-top w-full h-fit "
+                                                          alt="Play Video"
+                                                          onClick={() => setActiveVideoId(activeVideoId === item.id ? null : item.id)}
+                                                          style={{ cursor: 'pointer' }}
+                                                        />
+                                                      ) : (
+                                                        <video
+                                                          // width="90%"
+                                                          // height="100%"
+                                                          controls
+                                                          autoPlay
+                                                          muted
+                                                          className="card-img-top w-full h-full"
+                                                          preload="auto"
+                                                          onLoadedData={() => console.log('Video Loaded')}
+                                                        >
+                                                          <source src={`${apiUrl}/videos/${youtube[i].video}`} type="video/mp4" />
+                                                          Your browser does not support the video tag.
+                                                        </video>
+                                                      )}
+                          
                         </div>
                       </div>
                     );

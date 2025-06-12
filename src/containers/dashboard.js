@@ -373,7 +373,7 @@ const UserDashboard = (props) => {
               <div className="main--content--inner">
                 <div className="">
                   <Story/>
-                  <div className="position-relative postinput bg-white roundedCard mt-2">
+                  <div className="position-relative postinput bg-white roundedCard mt-2 ">
                     <CreatePost
                       isOpen={openModal}
                       handleModal={handleModal}

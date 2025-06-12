@@ -26,6 +26,7 @@ const Youtube = (props) => {
   const [youtube, setYoutube] = useState([]);
   const [readmore, setReadMore] = useState('');
   const [loader, setLoader] = useState(true);
+  const [activeVideoId, setActiveVideoId]= useState(false);
 
   const Loading = () => {
     return (
@@ -81,7 +82,8 @@ const Youtube = (props) => {
                   </div>
                 ) : (
                   youtube &&
-                  youtube.map((item) => {
+                  youtube.map((item,index) => {
+                    console.log(youtube[index], index)
                     return (
                       <div className="col-md-4 mb-3" key={item.id}>
                         <div
@@ -89,11 +91,11 @@ const Youtube = (props) => {
                           id={`youtubeDiv_${methodModel.getYoutubeId1(
                             item.url
                           )}`}
-                          onClick={() =>
-                            youtubeClick(methodModel.getYoutubeId1(item.url))
-                          }
+                          // onClick={() =>
+                          //   youtubeClick(methodModel.getYoutubeId1(item.url))
+                          // }
                         >
-                          <img
+                          {/* <img
                             className="card-img-top"
                             src={
                               item.image
@@ -105,7 +107,7 @@ const Youtube = (props) => {
                             alt="Card cap"
                           />
                           {videoPlayer.video !=
-                          methodModel.getYoutubeId1(item.url) ? (
+                          methodModel.getYoutubeId1(item.video) ? (
                             <img
                               src="/assets/img/youtubeIcon.png"
                               className="youtubeIcon"
@@ -113,7 +115,38 @@ const Youtube = (props) => {
                           ) : (
                             <></>
                           )}
+ */}
+
+
+                          {activeVideoId !== item.id ? (
+                              <img
+                                src={`${apiUrl}/images/youtube/${item.image}`}
+                                className="card-img-top w-full h-full"
+                                alt="Play Video"
+                                onClick={() => setActiveVideoId(activeVideoId === item.id ? null : item.id)}
+                                style={{ cursor: 'pointer' }}
+                              />
+                            ) : (
+                              <video
+                                // width="90%"
+                                // height="100%"
+                                controls
+                                autoPlay
+                                muted
+                                className="card-img-top w-full h-full"
+                                preload="auto"
+                                onLoadedData={() => console.log('Video Loaded')}
+                              >
+                                <source src={`${apiUrl}/videos/${youtube[index].video}`} type="video/mp4" />
+                                Your browser does not support the video tag.
+                              </video>
+                            )}
                         </div>
+
+
+
+
+
                         <a href={item.url} target="_blank">
                           <h4 className="youtube_title mt-2">{item.title}</h4>
                         </a>

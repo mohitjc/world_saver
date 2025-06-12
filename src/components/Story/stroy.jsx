@@ -1,225 +1,186 @@
-import React from 'react'
-import { useEffect } from 'react';
-import { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react';
 import local from '../../environment';
-
 import Popup from 'reactjs-popup';
-import { useRef } from 'react';
+import { MdNavigateNext } from "react-icons/md";
 
 const Story = () => {
+  const [data, setData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null); // Track selected video
+  const [currentIndex, setCurrentIndex] = useState(null); // Track index of the currently playing video
+  const playerRef = useRef(null);
+  const iframeContainerRef = useRef(null);
 
-    const [data,setData] = useState([''])
-    // Pop for video play
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+  const API_SLUG = local.apiUrl;
+  const ALL_YOUTUBE_API = `${API_SLUG}/allyouTubeLink`;
+  const token = localStorage.getItem('token');
 
+  // Get YouTube items from API
+  async function getYoutubeItems(token, type, page, count, sortType, sort, search) {
+    const url = `${ALL_YOUTUBE_API}?type=${type}&search=${encodeURIComponent(search)}&page=${page}&count=${count}&sortBy=${sortType} ${sort}`;
 
-
-
-    // to play next video auotmatically
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const playerRef = useRef(null);
-    const iframeContainerRef = useRef(null);
-
-    const playVideo = (index) => {
-        setCurrentIndex(index);
-        setIsModalOpen(true);
+    const config = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     };
-    const getYoutubeId = (url) => {
-        const regExp = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-        const match = url.match(regExp);
-        return match ? match[1] : null;
-      };
 
-
-
-
-
-
-    const API_SLUG = local.apiUrl;
-    const ALL_YOUTUBE_API = `${API_SLUG}/allyouTubeLink`
-    const token = localStorage.getItem('token')
-    async function getYoutubeItems(token, type, page, count, sortType, sort, search) {
-        const url = `${ALL_YOUTUBE_API}?type=${type}&search=${encodeURIComponent(search)}&page=${page}&count=${count}&sortBy=${sortType} ${sort}`;
-        
-        const config = {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        };
-      
-        try {
-          const response = await fetch(url, config);
-          
-          if (!response.ok) {
-            // Extract error message if present
-            const errorData = await response.json();
-            const errorMessage = errorData.error_description || 'Something went wrong!';
-            throw new Error(errorMessage);
-          }
-      
-          const data = await response.json();
-          if (data.success) {
-            return data;  // Return the successful data
-          } else {
-            throw new Error('API did not return success');
-          }
-        } catch (error) {
-          // Handle or propagate error
-          throw error;
-        }
+    try {
+      const response = await fetch(url, config);
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData.error_description || 'Something went wrong!';
+        throw new Error(errorMessage);
       }
-      useEffect(() => {
-        getYoutubeItems(token, 'I', 1, 10, 'date', 'asc', '')
-          .then(data => {
-            setData(data.data);
-            console.log(data.data)
-          })
-          .catch(err => {
-            console.log(err.message);
-          });
-      }, [token]);      
+      const data = await response.json();
+      if (data.success) {
+        console.log(Object.values(data.data));
+        setData(data.data);
+      } else {
+        throw new Error('API did not return success');
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
-      const getYoutubeThumbnail = (url) => {
-        try {
-          const urlObj = new URL(url);
-          const videoId = urlObj.searchParams.get('v');
-          return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-        } catch (e) {
-          return 'https://via.placeholder.com/150'; // fallback
-        }
-      };
+  useEffect(() => {
+    getYoutubeItems(token, 'I', 1, 10, 'date', 'asc', '')
+      .then(data => {
+        setData(data.data);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  }, [token]);
 
+  // Handle video click play
+  const handleVideoClick = (item, index) => {
+    setSelectedVideo(item); 
+    setCurrentIndex(index);  
+    setIsModalOpen(true);
+    if (playerRef.current) {
+      const duration = playerRef.current.duration;  // Get video duration (in seconds)
+      // Update state with duration
+      console.log('Video Duration: ', duration);  // Log the duration (in seconds)
+    }
+  };
 
+  // Play the next video when the current one ends
+  const handleVideoEnd = () => {
+    if (currentIndex < data.length - 1) {
 
-    //   useEffect to handle next Video Play
-    useEffect(() => {
-        if (!isModalOpen || !iframeContainerRef.current) return;
-    
-        const loadYouTubePlayer = () => {
-          if (playerRef.current) {
-            playerRef.current.loadVideoById(getYoutubeId(data[currentIndex].url));
-            return;
-          }
-    
-          playerRef.current = new window.YT.Player(iframeContainerRef.current, {
-            videoId: getYoutubeId(data[currentIndex].url),
-            events: {
-              onStateChange: (event) => {
-                if (event.data === window.YT.PlayerState.ENDED) {
-                  const nextIndex = (currentIndex + 1) % data.length;
-                  setCurrentIndex(nextIndex);
-                }
-              }
-            },
-            playerVars: {
-              autoplay: 1,
-              mute: 1,
-              rel: 0,
-              modestbranding: 1,
-            },
-          });
-        };
-    
-        if (window.YT && window.YT.Player) {
-          loadYouTubePlayer();
-        } else {
-          const tag = document.createElement('script');
-          tag.src = 'https://www.youtube.com/iframe_api';
-          window.onYouTubeIframeAPIReady = loadYouTubePlayer;
-          document.body.appendChild(tag);
-        }
-      }, [isModalOpen, currentIndex]);
-    
+      // Move  next video
+      const nextIndex = currentIndex + 1;
+      setSelectedVideo(data[nextIndex]);
+      setCurrentIndex(((prev)=>prev+1));
+      console.log(currentIndex)
+    } else {
+      // Close the modal when all videos have been played
+      setIsModalOpen(false);
+    }
+  };
+  const handleNext = () => {
+    if (currentIndex < data.length - 1) {
+      const nextIndex = currentIndex + 1;
+      setSelectedVideo(data[nextIndex]);
+      setCurrentIndex(nextIndex);
+    } else {
+      setIsModalOpen(false); // Close modal if no next video
+    }
+  };
 
+  // Move to the previous video manually via Prev button
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      const prevIndex = currentIndex - 1;
+      setSelectedVideo(data[prevIndex]);
+      setCurrentIndex(prevIndex);
+    }else{
+      setIsModalOpen(false);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (playerRef.current) {
+      const duration = playerRef.current.duration;  // Get video duration (in seconds)
+      // Update state with duration
+      console.log('Video Duration: ', duration);  // Log the duration (in seconds)
+    }
+  };
 
 
   return (
-    <div className='flex flex-row gap-4 bg-white px-4 py-2 overflow-x-auto'>
-        {/* <div className='bg-white h-[100px] w-[100px] border-2 border-[#ABABAB] rounded p-2'>
-            conatiner -1
-        </div> */}
-       
-        {/* {data.length >0 &&       data.map((video, index) => (
-        <div key={index}    style={{ width: '200px' }}>
-            
-          <img
-            src={getYoutubeThumbnail(video.url)}
-            alt={video.title}
-            style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-          />
-          <h4>{video.title}</h4>
-        </div>
-      ))} */}
-      {/* {data.length >0 &&       data.map((video, index) => (
-        <div key={index} style={{ width: '200px' }}>
-          <img
-            src={getYoutubeThumbnail(video.url)}
-            alt={video.title}
-            style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-          />
-          <h4>{video.title}</h4>
-        </div>
-      ))} */}
-      {data.length >0 &&       data.map((video, index) => (
-        <div key={index} style={{ width: '200px' }} onClick={() => playVideo(index)
-          }>
-          <img
-            src={getYoutubeThumbnail(video.url)}
-            alt={video.title}
-            style={{ width: '100%', height: 'auto%', borderRadius: '8px' }}
-          />
-          <h4 className='text-[12px]'>{video.title}</h4>
-          {isModalOpen && (
-  <Popup
-    modal
-    open={isModalOpen}
-    onClose={() => {
-        setIsModalOpen(false);
-        if (playerRef.current) {
-          playerRef.current.destroy(); // 💥 destroy player
-          playerRef.current = null;    // ✅ reset ref
-        }
-      }}
-    contentStyle={{
-      padding: '0', // Remove default padding
-    }}
-    overlayStyle={{
-      background: 'rgba(0, 0, 0, 0.5)', // Optional: dim background
-    }}
-  >
-    <div
-      // style={{
-      //   minWidth: '700px',
-      //   minHeight : "400px",
-      //   backgroundColor: '#fff',
-      //   padding: '1.25rem', // 
-      //   borderRadius: '1rem', // Equivalent to rounded-2xl
-      //   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Equivalent to shadow-lg
-      // }}
-    >
-      
-      <div style={{ width: '700px', height: '400px' }}>
-            <div
-              ref={iframeContainerRef}
-              style={{ width: '100%', height: '100%' }}
-            />
-          </div>
+    <div className="flex flex-row gap-4 bg-white px-4 py-2 overflow-x-auto">
+      {data.length > 0 &&
+        Object.values(data).map((item, index) => {
+          return (
+            <div key={index} style={{ width: '200px' }}>
+              <div onClick={() => handleVideoClick(item, index)}>
+                <img
+                  src={`${API_SLUG}/images/youtube/${item.image}`}
+                  alt={item.title}
+                  style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                />
+                <h4 className="text-[12px]">{item.title}</h4>
+              </div>
+
+
+              {/* Modal  display video */}
+              {isModalOpen && selectedVideo && selectedVideo === item && (
+                <Popup
+                  modal
+                  open={isModalOpen}
+                  onClose={() => {
+                    setIsModalOpen(false);
+                    setSelectedVideo(null); 
+                    setCurrentIndex(null); 
+                  }}
+                  contentStyle={{
+                    padding: '0',
+                  }}
+                  overlayStyle={{
+                    background: 'rgba(0, 0, 0, .8)', 
+                  }}
+                >
+                  <div className='bg-white p-4 rounded-xl'>
+                    <div style={{ width: '700px', height: '400px' }}>
+                      
+                      <div className='text-black mb-2 font-bold ml-4'>{selectedVideo.title}</div>
+                      <div className='flex '>
+                        <button className='w-8 border-0' onClick={handlePrev}>{"<"}</button>
+                        <video
+                        ref={playerRef}
+                        // className='w-full h-full'
+                        width="90%"
+                        height="100%"
+                        controls
+                        autoPlay
+                        muted
+                        onEnded={handleVideoEnd}  // automaticlly play next Video
+                        onLoadedData={() => console.log('Video Loaded')}
+                        onLoadedMetadata={handleLoadedMetadata}
+                        preload="auto" 
+                      >
+                        <source src={`${API_SLUG}/videos/${selectedVideo.video}`} />
+                      </video>
+                      <button className="w-8" onClick={handleNext} >{">"}</button>
+                      
+                      </div>
+                      
+                      
+                      
+                    </div>
+                  </div>
+                </Popup>
+              )}
+            </div>
+          );
+        })}
     </div>
-  </Popup>
-)}
-        </div>
-        
-      ))}
-    
-   
+  );
+};
 
-
-    </div>
-  )
-}
-
-export default Story
+export default Story;

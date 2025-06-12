@@ -150,12 +150,12 @@ const Story = () => {
                       
                       <div className='text-black mb-2 font-bold ml-4'>{selectedVideo.title}</div>
                       <div className='flex '>
-                        <button className='w-8 border-0' onClick={handlePrev}>{"<"}</button>
+                        <button className='w-8 border-0' onClick={handlePrev}><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                        </button>
                         <video
                         ref={playerRef}
                         // className='w-full h-full'
-                        width="90%"
-                        height="100%"
+                        style={{ width: '100%', height:'350px', }}
                         controls
                         autoPlay
                         muted
@@ -166,7 +166,8 @@ const Story = () => {
                       >
                         <source src={`${API_SLUG}/videos/${selectedVideo.video}`} />
                       </video>
-                      <button className="w-8" onClick={handleNext} >{">"}</button>
+                      <button className="w-8" onClick={handleNext} ><i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                      </button>
                       
                       </div>
                       

@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import methodModel from '../../../models/method.model';
 import { startVideoPlayer } from '../../../actions/YoutubePlayer';
 import Img from '../../../assets/imgpsh_fullsize_anim (1).png';
+import './style.scss';
 const RightWidgets = (props) => {
   const category = useSelector((state) => state.category);
   const videoPlayer = useSelector((state) => state.YoutubePlayer.videoPlayer);
@@ -180,7 +181,7 @@ const RightWidgets = (props) => {
                             {item.title}
                           </span>
                         </span>
-                        <div
+                        <div className='card_video' style={{ height: '170px'}}
                           // className={`youtubeDiv ${
                           //   videoPlayer.video ==
                           //     methodModel.getYoutubeId1(item.url) && 'active'
@@ -196,7 +197,7 @@ const RightWidgets = (props) => {
                                                           className="card-img-top w-full h-fit "
                                                           alt="Play Video"
                                                           onClick={() => setActiveVideoId(activeVideoId === item.id ? null : item.id)}
-                                                          style={{ cursor: 'pointer' }}
+                                                          style={{ cursor: 'pointer', height:'100%', objectFit: 'contain' }}
                                                         />
                                                       ) : (
                                                         <video

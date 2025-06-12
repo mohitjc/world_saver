@@ -87,7 +87,7 @@ const Youtube = (props) => {
                     return (
                       <div className="col-md-4 mb-3" key={item.id}>
                         <div
-                          className="youtubeDiv"
+                          className="youtubeDiv" style={{ height: '170px'}}
                           id={`youtubeDiv_${methodModel.getYoutubeId1(
                             item.url
                           )}`}
@@ -124,7 +124,7 @@ const Youtube = (props) => {
                                 className="card-img-top w-full h-full"
                                 alt="Play Video"
                                 onClick={() => setActiveVideoId(activeVideoId === item.id ? null : item.id)}
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer', height:'100%', objectFit: 'contain' }}
                               />
                             ) : (
                               <video
@@ -135,7 +135,7 @@ const Youtube = (props) => {
                                 muted
                                 className="card-img-top w-full h-full"
                                 preload="auto"
-                                onLoadedData={() => console.log('Video Loaded')}
+                                // onLoadedData={() => console.log('Video Loaded')}
                               >
                                 <source src={`${apiUrl}/videos/${youtube[index].video}`} type="video/mp4" />
                                 Your browser does not support the video tag.

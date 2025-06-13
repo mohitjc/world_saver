@@ -296,9 +296,8 @@ const UserDashboard = (props) => {
           <div className="row">
             {/* {/ <!-- Main Content Start --> /} */}
 
-            <div className="col-md-2">
+            <div className="col-lg-2">
               <div
-                style={{ marginLeft: '-50px' }}
                 className="stickycls marginunset"
               >
                 <span className="trendingevents">Trending Events</span>
@@ -369,7 +368,7 @@ const UserDashboard = (props) => {
               </div>
             </div>
 
-            <div className="main--content col-md-6 mb-3">
+            <div className="main--content col-lg-6 mb-3">
               <div className="main--content--inner">
                 <div className="">
                   <Story/>
@@ -407,7 +406,7 @@ const UserDashboard = (props) => {
               </div>
             </div>
 
-            <div className="main--sidebar col-md-4">
+            <div className="main--sidebar col-lg-4">
               <Rightwidges />
             </div>
           </div>

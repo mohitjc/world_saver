@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import local from '../../environment';
 import Popup from 'reactjs-popup';
-import { MdNavigateNext } from "react-icons/md";
 
 const Story = () => {
   const [data, setData] = useState([]);
@@ -113,18 +112,18 @@ const Story = () => {
 
 
   return (
-    <div className="flex flex-row gap-4 bg-white px-4 py-2 overflow-x-auto">
+    <div className="main_videosdiv">
+      <div className='row_videos'>
       {data.length > 0 &&
         Object.values(data).map((item, index) => {
           return (
-            <div key={index} style={{ width: '200px' }}>
-              <div onClick={() => handleVideoClick(item, index)}>
+              <div className='listgrid_video' key={index}>
+              <div className='img_video' onClick={() => handleVideoClick(item, index)}>
                 <img
                   src={`${API_SLUG}/images/youtube/${item.image}`}
                   alt={item.title}
-                  style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
                 />
-                <h4 className="text-[12px]">{item.title}</h4>
+                <h4 className="text-align-center mt-2">{item.title}</h4>
               </div>
 
 
@@ -133,6 +132,7 @@ const Story = () => {
                 <Popup
                   modal
                   open={isModalOpen}
+                  className='modal_design'
                   onClose={() => {
                     setIsModalOpen(false);
                     setSelectedVideo(null); 
@@ -145,17 +145,15 @@ const Story = () => {
                     background: 'rgba(0, 0, 0, .8)', 
                   }}
                 >
-                  <div className='bg-white p-4 rounded-xl'>
-                    <div style={{ width: '700px', height: '400px' }}>
+                  <div className='modal_layout'>
+                    <div>
                       
-                      <div className='text-black mb-2 font-bold ml-4'>{selectedVideo.title}</div>
-                      <div className='flex '>
-                        <button className='w-8 border-0' onClick={handlePrev}><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-                        </button>
+                      <div className='video-heading'>{selectedVideo.title}</div>
+                      <div className='modal_data'>
+                      <i onClick={handlePrev} class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                      <div className='video_div'>
                         <video
                         ref={playerRef}
-                        // className='w-full h-full'
-                        style={{ width: '100%', height:'350px', }}
                         controls
                         autoPlay
                         muted
@@ -166,8 +164,8 @@ const Story = () => {
                       >
                         <source src={`${API_SLUG}/videos/${selectedVideo.video}`} />
                       </video>
-                      <button className="w-8" onClick={handleNext} ><i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                      </button>
+                      </div>
+                      <i onClick={handleNext} class="fa fa-chevron-circle-right" aria-hidden="true"></i>
                       
                       </div>
                       
@@ -180,6 +178,7 @@ const Story = () => {
             </div>
           );
         })}
+    </div>
     </div>
   );
 };

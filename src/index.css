@@ -1,8 +1,4 @@
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .steps {
   position: relative;
   padding: 0 15px;
@@ -146,3 +142,172 @@
 h2.heading {
   font-size: 24px;
 }
+.main_videosdiv {
+    padding: 15px;
+    margin-bottom: 12px;
+    background-color: white;
+    border-radius: 8px;
+}
+.listgrid_video img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+}
+.listgrid_video {
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    text-align: center;
+}
+.img_video {
+    width: 121px;
+}
+.listgrid_video h4 {
+      line-height: 17px;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.row_videos {
+    display: flex;
+    gap: 15px 15px;
+    flex-wrap: nowrap;
+    overflow: auto;
+}
+.card_video {
+    height: 220px;
+    border-radius: 10px;
+}
+.card_video video {
+border-radius: 10px;
+height: 100%;
+width: 100%;
+}
+.card_video img {
+border-radius: 10px;
+height: 100%;
+width: 100%;
+object-fit: contain;
+}
+.row_videos::-webkit-scrollbar {
+  height: 0px !important;
+  width: 0px !important;
+}
+.youtubecard {
+     padding: 15px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    text-align: center;
+    height: 100%;
+}
+.layout_card {
+    height: 150px;
+}
+.layout_card img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+.layout_card video {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+.youtube_read {
+    display: inline-block;
+    font-weight: 500;
+    width: 100%;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.modal_layout {
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px 20px;
+}
+.modal_data {
+    display: flex;
+    align-items: center;
+}
+.video-heading {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-transform: capitalize;
+}
+.modal_data i {
+    font-size: 22px;
+    cursor: pointer;
+}
+.modal_data video {
+    height: 100%;
+    width: 100%;
+}
+.video_div {
+     height: 279px !important;
+}
+.modal_design-content {
+    max-width: 600px;
+}
+.fa-chevron-circle-left {
+    position: absolute;
+    left: 7px;
+}
+.fa-chevron-circle-right {
+    position: absolute;
+    right: 7px;
+}
+
+@media(max-width:1399px){
+.card_video {
+    height: 185px;
+}
+.layout_card {
+    height: 130px;
+}
+}
+
+@media(max-width:1199px){
+    .layout_card {
+        height: 170px;
+    }
+}
+
+@media(max-width:991px){
+        .card_video {
+        height: 370px;
+    }
+      .layout_card {
+      height: 190px;
+  }
+}
+
+@media(max-width:767px){
+        .card_video {
+        height: 270px;
+    }
+      .layout_card {
+    height: 140px;
+}
+  }
+
+  @media(max-width:575px){
+        .card_video {
+        height: 240px;
+    }
+        .layout_card {
+        height: 245px;
+    }
+  }
+
+    @media(max-width:480px){
+      .card_video {
+        height: 220px;
+    }
+        .layout_card {
+        height: 215px;
+    }
+  }

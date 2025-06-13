@@ -172,10 +172,11 @@ h2.heading {
     -webkit-box-orient: vertical;
 }
 .row_videos {
-    display: flex;
+     display: flex;
     gap: 15px 15px;
     flex-wrap: nowrap;
     overflow: auto;
+    padding-bottom: 3px;
 }
 .card_video {
     height: 220px;
@@ -191,10 +192,6 @@ border-radius: 10px;
 height: 100%;
 width: 100%;
 object-fit: contain;
-}
-.row_videos::-webkit-scrollbar {
-  height: 0px !important;
-  width: 0px !important;
 }
 .youtubecard {
      padding: 15px;
@@ -263,6 +260,31 @@ object-fit: contain;
 .fa-chevron-circle-right {
     position: absolute;
     right: 7px;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 30px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+
+  border-radius: 30px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #acacac;
+  border-radius: 30px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 30px;
 }
 
 @media(max-width:1399px){

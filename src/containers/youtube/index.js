@@ -169,7 +169,7 @@ const Youtube = (props) => {
                             <>
                               {item.description}
                               <a
-                                className="youtube_read ml-2"
+                                className="youtube_read"
                                 onClick={() => setReadMore('')}
                               >
                                 Read Less

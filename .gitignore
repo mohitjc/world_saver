@@ -21,3 +21,7 @@ package-lock.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+live admin port = 4011
+live frontend port = 8010

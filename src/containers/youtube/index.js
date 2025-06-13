@@ -74,7 +74,7 @@ const Youtube = (props) => {
 
         <div className="container youtubeContainer py-4">
           <div className="row">
-            <div className="col-md-8">
+            <div className="col-lg-8">
               <div className="row">
                 {loader ? (
                   <div className="col-md-12">
@@ -85,9 +85,10 @@ const Youtube = (props) => {
                   youtube.map((item,index) => {
                     console.log(youtube[index], index)
                     return (
-                      <div className="col-md-4 mb-3" key={item.id}>
+                      <div className="col-sm-6 col-xl-4 mb-3" key={item.id}>
+                        <div className='youtubecard'>
                         <div
-                          className="youtubeDiv" style={{ height: '170px'}}
+                          className="layout_card"
                           id={`youtubeDiv_${methodModel.getYoutubeId1(
                             item.url
                           )}`}
@@ -156,14 +157,14 @@ const Youtube = (props) => {
                               return (
                                 <span
                                   key={itm.toString()}
-                                  className="badge badge-primary mr-2 mb-2"
+                                  className="badge badge-primary mr-1"
                                 >
                                   {itm}
                                 </span>
                               );
                             })}
                         </div>
-                        <div className="youtube_desc mt-2">
+                        <div className="youtube_desc">
                           {readmore == item.title ? (
                             <>
                               {item.description}
@@ -189,12 +190,13 @@ const Youtube = (props) => {
                           )}
                         </div>
                       </div>
+                      </div>
                     );
                   })
                 )}
               </div>
             </div>
-            <div className="col-md-4 main--sidebar">
+            <div className="col-lg-4 main--sidebar">
               <Rightwidges />
             </div>
           </div>

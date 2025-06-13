@@ -22,6 +22,7 @@ import ImageUpload from '../global/ImageUpload';
 import TagInput from '../global/TagInput';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import VideoUpload from '../global/VideoUpload';
+import { API_SLUG } from '../../store/constants';
 
 
 const Form = ({
@@ -223,10 +224,10 @@ useEffect(()=>{
 
 
 
-              </div>
+              {/* </div>
               <div className="form-group col-md-12 mb-3">
-                <label>URL</label>
-                <input
+                <label>URL</label> */}
+                {/* <input
                   type="text"
                   name="url"
                   className="form-control"
@@ -235,15 +236,15 @@ useEffect(()=>{
                   value={values.url}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                />
-                {errors.url && touched.url && (
+                /> */}
+                {/* {errors.url && touched.url && (
                   <div
                     className="invalid-feedback"
                     style={{ display: 'block' }}
                   >
                     {errors.url}
                   </div>
-                )}
+                )} */}
               </div>
 
               <div className="form-group col-md-12">
@@ -295,7 +296,7 @@ const CatgeoryFormFormik = withFormik({
       title: singleData?.title || '',
       image: singleData?.image || '',
       description: singleData?.description || '',
-      url: singleData?.url || '',
+      url: `${API_SLUG}/videos//${singleData?.video}` || '',
       tags: singleData?.tags || '',
       video: singleData?.video || '' // Added video field to be pre-filled
     };

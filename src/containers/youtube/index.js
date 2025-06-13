@@ -87,8 +87,7 @@ const Youtube = (props) => {
                     return (
                       <div className="col-sm-6 col-xl-4 mb-3" key={item.id}>
                         <div className='youtubecard'>
-                        <div
-                          className="layout_card"
+                        <div className="layout_card"
                           id={`youtubeDiv_${methodModel.getYoutubeId1(
                             item.url
                           )}`}

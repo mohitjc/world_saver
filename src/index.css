@@ -224,9 +224,10 @@ object-fit: contain;
     cursor: pointer;
 }
 .modal_layout {
-    background: #fff;
+      background: #fff;
     border-radius: 15px;
     padding: 20px 20px;
+    margin: 0px 15px;
 }
 .modal_data {
     display: flex;
@@ -239,18 +240,21 @@ object-fit: contain;
     text-transform: capitalize;
 }
 .modal_data i {
-    font-size: 22px;
+     font-size: 22px;
     cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0px 0px 12px 1px #fff;
 }
 .modal_data video {
     height: 100%;
     width: 100%;
 }
 .video_div {
-     height: 279px !important;
+     height: 285px !important;
+     width: 100%;
 }
 .modal_design-content {
-    max-width: 600px;
+    width: 600px;
 }
 .fa-chevron-circle-left {
     position: absolute;
@@ -310,4 +314,7 @@ object-fit: contain;
         .layout_card {
         height: 215px;
     }
+    .video_div {
+    height: 245px !important;
+}
   }

@@ -46,7 +46,7 @@ const Story = () => {
   }
 
   useEffect(() => {
-    getYoutubeItems(token, 'I', 1, 10, 'date', 'asc', '')
+    getYoutubeItems(token, 'I', 1, 100, 'date', 'asc', '')
       .then(data => {
         setData(data.data);
       })
@@ -115,9 +115,11 @@ const Story = () => {
     <div className="main_videosdiv">
       <div className='row_videos'>
       {data.length > 0 &&
-        Object.values(data).map((item, index) => {
+        Object.values(data).filter((item)=> item.isArchive == false).map((item, index) => { 
+          
           return (
               <div className='listgrid_video' key={index}>
+                  
               <div className='img_video' onClick={() => handleVideoClick(item, index)}>
                 <img
                   src={`${API_SLUG}/images/youtube/${item.image}`}
